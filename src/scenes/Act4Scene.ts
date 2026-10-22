@@ -18,7 +18,7 @@ const act4Config: ActConfig = {
   groundStrokeColor: 0xf59e0b,  // Gilded royal edge
   groundTileKey: 'ground_act4_seamless',
   groundTileScale: 0.35,
-  groundTileOffsetY: 28,
+  groundTileOffsetY: 39,
   groundDirtKey: 'ground_act4_dirt',
   groundDirtScale: 0.75,
   propOffsetY: 12,

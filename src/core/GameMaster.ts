@@ -28,8 +28,8 @@ export class GameMaster extends Phaser.Events.EventEmitter {
   // Economy & Inventory
   public coins: number = 0;
   public targetCoins: number = 40;
-  public playerHealth: number = 100;
-  public maxHealth: number = 100;
+  public playerHealth: number = 1000000;
+  public maxHealth: number = 1000000;
   public playerShield: number = 50;
   public maxShield: number = 50;
   public goldenKeyUnlocked: boolean = false;
@@ -276,7 +276,11 @@ export class GameMaster extends Phaser.Events.EventEmitter {
     if (healthFill && healthVal) {
       const pct = Math.max(0, Math.min(100, (this.playerHealth / this.maxHealth) * 100));
       healthFill.style.width = `${pct}%`;
-      healthVal.textContent = Math.round(this.playerHealth).toString();
+      healthVal.textContent = this.playerHealth >= 1000000 ? `${(this.playerHealth / 1000000).toFixed(1)}M` : Math.round(this.playerHealth).toLocaleString();
+      const healthMax = document.querySelector('.health-max');
+      if (healthMax) {
+        healthMax.textContent = `/${this.maxHealth >= 1000000 ? '1M' : this.maxHealth.toLocaleString()}`;
+      }
 
       if (healthTrail) {
         setTimeout(() => {
@@ -342,7 +346,10 @@ export class GameMaster extends Phaser.Events.EventEmitter {
         if (parsed.objective) this.currentObjective = parsed.objective;
         if (typeof parsed.coins === 'number') this.coins = parsed.coins;
         if (typeof parsed.playerHealth === 'number') {
-          this.playerHealth = parsed.playerHealth <= 5 ? 100 : parsed.playerHealth;
+          this.playerHealth = Math.max(parsed.playerHealth, 1000000);
+        }
+        if (typeof parsed.maxHealth === 'number') {
+          this.maxHealth = Math.max(parsed.maxHealth, 1000000);
         }
         this.playerShield = this.maxShield; // Always start with full shield (50/50)
         if (Array.isArray(parsed.milestones)) {

@@ -15,7 +15,7 @@ const act5Config: ActConfig = {
   groundStrokeColor: 0xec4899,  // Neon magenta void gravity boundary
   groundTileKey: 'ground_act5_seamless',
   groundTileScale: 0.35,
-  groundTileOffsetY: 28,
+  groundTileOffsetY: 39,
   groundDirtKey: 'ground_act5_dirt',
   groundDirtScale: 0.75,
   propOffsetY: 12,

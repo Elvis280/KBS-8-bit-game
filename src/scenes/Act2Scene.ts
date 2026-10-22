@@ -15,7 +15,7 @@ const act2Config: ActConfig = {
   groundStrokeColor: 0xa855f7,  // Glowing violet miasma edge
   groundTileKey: 'ground_act2_seamless',
   groundTileScale: 0.35,
-  groundTileOffsetY: 28,
+  groundTileOffsetY: 91,
   groundDirtKey: 'ground_act2_dirt',
   groundDirtScale: 0.75,
   propOffsetY: 12,

@@ -460,7 +460,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
             platform_act1_log: 0.14,
             platform_act1_stone: 0.12,
             platform_act1_moss: 0.23,
-            platform_act2: 0.15,
+            platform_act2: 0.06,
             platform_act3: 0.15,
             platform_act4: 0.15,
             platform_act5: 0.16,
@@ -824,15 +824,22 @@ export abstract class ActBaseScene extends Phaser.Scene {
     });
   }
 
+  protected getFloorYAt(x: number, defaultY: number = 640): number {
+    const seg = this.config.groundSegments.find(s => x >= s.x && x <= s.x + s.w);
+    return seg ? (seg.y ?? defaultY) : defaultY;
+  }
+
   protected buildExitGate() {
     const exitX = this.config.worldWidth - 140;
-    const exitY = 560;
+    const floorY = this.getFloorYAt(exitX, 640);
+    const gateH = 110;
+    const exitY = floorY - gateH / 2; // Gate bottom rests flush on ground surface!
 
-    const gateFrame = this.add.rectangle(exitX, exitY, 60, 110, 0x0f172a, 0.85);
+    const gateFrame = this.add.rectangle(exitX, exitY, 60, gateH, 0x0f172a, 0.85);
     gateFrame.setStrokeStyle(3, 0xf59e0b, 0.9);
     gateFrame.setDepth(4);
 
-    const gateCore = this.add.rectangle(exitX, exitY, 44, 94, 0xf59e0b, 0.35);
+    const gateCore = this.add.rectangle(exitX, exitY, 44, gateH - 16, 0xf59e0b, 0.35);
     gateCore.setDepth(4);
     this.tweens.add({
       targets: gateCore,
@@ -842,7 +849,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
       repeat: -1
     });
 
-    const label = this.add.text(exitX, exitY - 70, this.config.nextSceneLabel, {
+    const label = this.add.text(exitX, exitY - gateH / 2 - 16, this.config.nextSceneLabel, {
       fontFamily: 'Cinzel, serif',
       fontSize: '13px',
       fontStyle: 'bold',
@@ -2204,8 +2211,9 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
   protected checkExitGate() {
     const exitX = this.config.worldWidth - 140;
+    const floorY = this.getFloorYAt(exitX, 640);
 
-    if (Math.abs(this.player.x - exitX) < 40 && Math.abs(this.player.y - 580) < 80) {
+    if (Math.abs(this.player.x - exitX) < 45 && Math.abs(this.player.y - (floorY - 50)) < 90) {
       if (!this.isTransitioning && this.config.nextSceneKey) {
         this.isTransitioning = true;
         sound.playMagicChime();

@@ -15,7 +15,7 @@ const act3Config: ActConfig = {
   groundStrokeColor: 0x38bdf8,  // Glowing cyan sanctuary stone trim
   groundTileKey: 'ground_act3_seamless',
   groundTileScale: 0.35,
-  groundTileOffsetY: 28,
+  groundTileOffsetY: 39,
   groundDirtKey: 'ground_act3_dirt',
   groundDirtScale: 0.75,
   propOffsetY: 12,
