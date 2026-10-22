@@ -15,14 +15,16 @@ const act1Config: ActConfig = {
   groundStrokeColor: 0x4ade80,  // Bright green grass edge
   groundTileKey: 'ground_act1_seamless',
   groundTileScale: 1.05,
-  groundTileOffsetY: 35,
+  groundTileOffsetY: 47,
   groundDirtKey: 'ground_act1_dirt',
   groundDirtScale: 0.75,
-  propOffsetY: 12,
-  buildingOffsetY: 12,
-  enemyOffsetY: 12,
+  propOffsetY: 0,
+  buildingOffsetY: 0,
+  enemyOffsetY: 0,
   platformKeys: ['platform_act1_1', 'platform_act1_2', 'platform_act1_log', 'platform_act1_stone', 'platform_act1_moss'],
   boxKey: 'box_wood',           // Wooden crates
+  useSingleSpriteProcedural: true, // Single pristine character sprite with expressive procedural motion & scaled-up elements
+  heroJumpVelocity: -550,       // Generous 168px jump apex to comfortably vault elevated floating platforms
 
   // Strategic layout: pits reduced 20%, zero-overlap platforms & boxes
   groundSegments: layout.groundSegments,

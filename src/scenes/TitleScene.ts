@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { sound } from '../audio/SoundSynth';
 import { dialogue } from '../systems/DialogueDirector';
 import { gameState } from '../systems/GameState';
+import { gameMaster } from '../core/GameMaster';
 
 export class TitleScene extends Phaser.Scene {
   constructor() {
@@ -59,8 +60,8 @@ export class TitleScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Title Menu Options
-    const startBtn = this.createMenuButton(width / 2, height / 2 + 20, 'Begin Journey (Act I)', () => {
-      this.playPrologue();
+    const startBtn = this.createMenuButton(width / 2, height / 2 + 20, 'Begin Journey', () => {
+      this.playBeginJourneyCutscene();
     });
 
     const actSelectBtn = this.createMenuButton(width / 2, height / 2 + 75, 'Act Selection (Teleport)', () => {
@@ -121,6 +122,71 @@ export class TitleScene extends Phaser.Scene {
     return container;
   }
 
+  /**
+   * Cinematic cutscene triggered when clicking "Begin Journey":
+   * The traveler hears cries for help, clears the heavy enchanted rubble,
+   * rescues the trapped mascot Zeno, and starts Act 1 with Zeno accompanying them!
+   */
+  private playBeginJourneyCutscene() {
+    sound.playDistantBell();
+
+    dialogue.playCutscene([
+      {
+        speaker: 'NARRATOR',
+        text: 'A quiet mist hangs over the outskirts of Lumenfall. A lone traveler walks the desolate borderlands… until a faint, desperate cry breaks the silence.'
+      },
+      {
+        speaker: 'Zeno',
+        portrait: '/assets/portraits/game/mascot_portrait.png',
+        text: 'Help! Is anyone there?! Please… the stones are too heavy… I can’t breathe!'
+      },
+      {
+        speaker: 'Hero',
+        portrait: '/assets/portraits/game/hero_portrait.png',
+        text: 'Hold on! Stay completely still. I’m lifting the rubble right now!'
+      },
+      {
+        speaker: 'NARRATOR',
+        text: 'With a surge of strength, the traveler heaves the crushing timber and dark stones aside, pulling the luminous creature safely from the debris.'
+      },
+      {
+        speaker: 'Zeno',
+        portrait: '/assets/portraits/game/mascot_portrait.png',
+        text: 'You… you actually came back for me! Nobody stops to help anymore…'
+      },
+      {
+        speaker: 'Hero',
+        portrait: '/assets/portraits/game/hero_portrait.png',
+        text: 'I wasn’t about to leave you trapped out here in the dark. Are you hurt?'
+      },
+      {
+        speaker: 'Zeno',
+        portrait: '/assets/portraits/game/mascot_portrait.png',
+        text: 'My name is Zeno! King Krish stole my heart and locked it away inside the castle crown to feed his dark magic. Without it, the land will wither forever.'
+      },
+      {
+        speaker: 'Hero',
+        portrait: '/assets/portraits/game/hero_portrait.png',
+        text: 'Then we go to the castle together, Zeno. Stay close to me—let’s take back what was stolen!'
+      },
+      {
+        speaker: 'Zeno',
+        portrait: '/assets/portraits/game/mascot_portrait.png',
+        text: 'Thank you! Together, we can restore the light to Lumenfall!'
+      }
+    ], () => {
+      // Mark mascot as rescued so Zeno immediately accompanies the hero across Act 1
+      gameMaster.completeMilestone('mascot_rescued');
+      gameState.hasRescuedMascot = true;
+      sound.playMagicChime();
+      this.cameras.main.fade(600, 0, 0, 0, false, (_cam: any, progress: number) => {
+        if (progress === 1) {
+          this.scene.start('Act1Scene');
+        }
+      });
+    });
+  }
+
   private playPrologue() {
     sound.playDistantBell();
 
@@ -131,7 +197,7 @@ export class TitleScene extends Phaser.Scene {
       },
       {
         speaker: 'NARRATOR',
-        text: 'A little creature wandered through empty fields, leaving flowers in its footsteps. Rivers followed its dreams. Trees grew where it laughed. And the people of Lumenfall called it their guardian.'
+        text: 'A little creature named Zeno wandered through empty fields, leaving flowers in its footsteps. Rivers followed its dreams. Trees grew where it laughed. And the people of Lumenfall called it their guardian.'
       },
       {
         speaker: 'NARRATOR',
@@ -142,20 +208,20 @@ export class TitleScene extends Phaser.Scene {
         text: 'One night, the sky turned black. The earth split. The rivers stopped. Shadows swallowed entire villages. And in the heart of the disaster, one man made a choice.'
       },
       {
-        speaker: 'YOUNG AUREL',
+        speaker: 'YOUNG KRISH',
         portrait: '/assets/svg/young_aurel.svg',
         text: '"Forgive me."'
       },
       {
         speaker: 'NARRATOR',
-        text: 'Aurel bound the creature\'s power to himself. The kingdom survived. But the crown did not release its prisoner. And its prisoner did not release its king.'
+        text: 'Krish bound the creature\'s power to himself. The kingdom survived. But the crown did not release its prisoner. And its prisoner did not release its king.'
       },
       {
         speaker: 'NARRATOR',
         text: 'Years passed. The flowers withered. The rivers darkened. Monsters appeared along the roads. The people saw a king who had become a tyrant. They never saw the chain beneath his crown.'
       }
     ], () => {
-      this.scene.start('Act1Scene');
+      this.playBeginJourneyCutscene();
     });
   }
 

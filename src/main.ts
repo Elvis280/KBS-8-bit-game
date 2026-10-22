@@ -43,6 +43,7 @@ const config: Phaser.Types.Core.GameConfig = {
 
 // Initialize Phaser Game
 export const game = new Phaser.Game(config);
+(window as any).__PHASER_GAME__ = game;
 
 // Setup DOM UI Event Listeners
 window.addEventListener('DOMContentLoaded', () => {

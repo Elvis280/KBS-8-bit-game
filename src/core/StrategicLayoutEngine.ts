@@ -99,6 +99,8 @@ export interface BossSpawn {
   maxHp: number;
   attackInterval?: number;
   milestoneId?: string;
+  width?: number;
+  height?: number;
 }
 
 export interface ValidatedActLayout {
@@ -167,8 +169,7 @@ export class StrategicLayoutEngine {
   public static getAct1Layout(): ValidatedActLayout {
     return {
       groundSegments: [
-        { x: 0, w: 760, y: 640 },             // Zone 1 Lowlands: 0 - 760
-        { x: 920, w: 1040, y: 640 },          // Lowlands: 920 - 1960 (Pit 1: 760-920, 160px)
+        { x: 0, w: 1960, y: 640 },            // Zone 1 Lowlands: 0 - 1960 (Safe continuous scenic road)
         { x: 1960, w: 840, y: 520 },          // Zone 2 Foothill Plateau: 1960 - 2800 (Elevated y=520, Cliff at 1960)
         { x: 2960, w: 1000, y: 520 },         // Foothill Plateau: 2960 - 3960 (Pit 2: 2800-2960, 160px)
         { x: 3960, w: 1000, y: 400 },         // Zone 3 Pine Ridge Bastion: 3960 - 4960 (Elevated y=400, Cliff at 3960)
@@ -181,20 +182,20 @@ export class StrategicLayoutEngine {
         { x: 4960, y: 400, height: 140, mantleDir: 1 }   // Pine Ridge y=400 down to Colosseum y=540
       ],
       platforms: [
-        { x: 840, y: 560, w: 130 },           // Bridge across Pit 1 (760 - 920)
-        { x: 1150, y: 500, w: 150 },          // Lowlands high path
-        { x: 1680, y: 490, w: 150 },          // Lowlands high path
-        { x: 2880, y: 440, w: 130 },          // Bridge across Pit 2 (2800 - 2960)
-        { x: 3300, y: 390, w: 160 },          // Plateau high vantage
-        { x: 3650, y: 330, w: 160 },          // Plateau high vantage
-        { x: 4250, y: 280, w: 160 },          // Pine Ridge high vantage
-        { x: 4700, y: 230, w: 160 },          // Pine Ridge high vantage
+        { x: 840, y: 490, w: 140 },           // Lowlands aerial meadow platform (y=490, 150px above road y=640)
+        { x: 1150, y: 470, w: 160 },          // Lowlands high path (y=470, 170px above ground)
+        { x: 1660, y: 460, w: 150 },          // Lowlands high path (y=460, 180px above ground)
+        { x: 2880, y: 390, w: 140 },          // Bridge across Pit 2 (y=390, 130px above plateau y=520)
+        { x: 3300, y: 340, w: 160 },          // Plateau high vantage (y=340, 180px above plateau)
+        { x: 3660, y: 270, w: 160 },          // Plateau high step (y=270, ascending to Pine Ridge)
+        { x: 4250, y: 260, w: 160 },          // Pine Ridge high vantage (y=260, 140px above bastion y=400)
+        { x: 4700, y: 190, w: 160 },          // Pine Ridge sky vantage (y=190, 210px above bastion)
         // Colosseum tactical spectator platforms
-        { x: 5450, y: 420, w: 170 },
-        { x: 5850, y: 340, w: 160 },
-        { x: 6250, y: 340, w: 160 },
-        { x: 6650, y: 420, w: 170 },
-        { x: 6910, y: 480, w: 130 }           // Bridge across Moat (6840 - 6980)
+        { x: 5450, y: 390, w: 170 },          // Left flank perch (150px above floor)
+        { x: 5850, y: 280, w: 160 },          // High arena spectator perch (260px above floor)
+        { x: 6250, y: 280, w: 160 },          // High arena spectator perch (260px above floor)
+        { x: 6650, y: 390, w: 170 },          // Right flank perch (150px above floor)
+        { x: 6910, y: 430, w: 130 }           // Bridge across Moat (y=430, 110px above Colosseum, 210px above exit)
       ],
       boss: {
         x: 6050,
@@ -203,7 +204,9 @@ export class StrategicLayoutEngine {
         name: 'Goliath Oaken Treant',
         title: 'Ancient Sentinel of the Glade',
         maxHp: 250,
-        attackInterval: 3200
+        attackInterval: 3200,
+        width: 360,
+        height: 420
       },
       boxes: [
         { x: 260, y: 616 },
@@ -226,12 +229,12 @@ export class StrategicLayoutEngine {
         { x: 3350, y: 520, patrolRange: 80, isCorrupted: true },
         { x: 4300, y: 400, patrolRange: 75, isCorrupted: true },
         // Elevated Platform Patrols
-        { x: 1150, y: 500, patrolRange: 45 },
-        { x: 1680, y: 490, patrolRange: 45 },
-        { x: 3300, y: 390, patrolRange: 50, isCorrupted: true },
-        { x: 4250, y: 280, patrolRange: 50, isCorrupted: true },
-        { x: 5450, y: 420, patrolRange: 55, isCorrupted: true },
-        { x: 6650, y: 420, patrolRange: 55, isCorrupted: true }
+        { x: 1150, y: 470, patrolRange: 45 },
+        { x: 1660, y: 460, patrolRange: 45 },
+        { x: 3300, y: 340, patrolRange: 50, isCorrupted: true },
+        { x: 4250, y: 260, patrolRange: 50, isCorrupted: true },
+        { x: 5450, y: 390, patrolRange: 55, isCorrupted: true },
+        { x: 6650, y: 390, patrolRange: 55, isCorrupted: true }
       ],
       npcs: [
         {
@@ -271,19 +274,19 @@ export class StrategicLayoutEngine {
       ],
       coins: [
         { x: 380, y: 450 },
-        { x: 840, y: 500 },
-        { x: 1150, y: 440 },
-        { x: 1680, y: 430 },
-        { x: 2880, y: 380 },
-        { x: 3300, y: 330 },
-        { x: 3650, y: 270 },
-        { x: 4250, y: 220 },
-        { x: 4700, y: 170 },
-        { x: 5450, y: 360 },
-        { x: 5850, y: 280 },
-        { x: 6250, y: 280 },
-        { x: 6650, y: 360 },
-        { x: 6910, y: 420 }
+        { x: 840, y: 430 },
+        { x: 1150, y: 410 },
+        { x: 1660, y: 400 },
+        { x: 2880, y: 330 },
+        { x: 3300, y: 280 },
+        { x: 3660, y: 210 },
+        { x: 4250, y: 200 },
+        { x: 4700, y: 130 },
+        { x: 5450, y: 330 },
+        { x: 5850, y: 220 },
+        { x: 6250, y: 220 },
+        { x: 6650, y: 330 },
+        { x: 6910, y: 370 }
       ],
       buildings: [
         { x: 1400, y: 640, key: 'bldg_act1_cottage', width: 260, height: 208 },
@@ -296,26 +299,26 @@ export class StrategicLayoutEngine {
           x: 340,
           y: 640,
           key: 'mascot',
-          title: 'Trapped Creature in Rubble',
-          promptText: 'Clear Debris & Rescue Creature',
+          title: 'Trapped Zeno in Rubble',
+          promptText: 'Clear Debris & Rescue Zeno',
           milestoneId: 'mascot_rescued',
           lines: [
             { speaker: 'Hero', text: 'Another road. Another empty village. Maybe the next town will be different.' },
-            { speaker: 'Mascot', text: 'Help! Somebody! Please!' },
+            { speaker: 'Zeno', text: 'Help! Somebody! Please!' },
             { speaker: 'Hero', text: 'Hold still. I\'ve got you.' },
-            { speaker: 'Mascot', text: 'Oh! You actually helped me!' },
+            { speaker: 'Zeno', text: 'Oh! You actually helped me!' },
             { speaker: 'Hero', text: 'Was I supposed to leave you there?' },
-            { speaker: 'Mascot', text: 'Most people do.' },
+            { speaker: 'Zeno', text: 'Most people do.' },
             { speaker: 'Hero', text: 'Then most people are idiots.' },
             { speaker: 'Hero', text: 'Did you just do that? A small flower bloomed beneath your feet.' },
-            { speaker: 'Mascot', text: 'Do what? Never mind! My name doesn\'t matter right now. What matters is that I need to get to the castle.' },
-            { speaker: 'Hero', text: 'The castle? That\'s a long way from here. What\'s waiting for you there?' },
-            { speaker: 'Mascot', text: 'My heart. The king took it from me. He took my magic, my memories… everything. Because he wanted my power.' },
-            { speaker: 'Mascot', text: 'If I get it back, I can fix everything. The forests. The rivers. The people who\'ve lost their homes. Please.' },
-            { speaker: 'Hero', text: 'All right. We\'ll get your heart back.' },
-            { speaker: 'Mascot', text: 'Really? Then let\'s go, brave knight!' },
+            { speaker: 'Zeno', text: 'Do what? Oh—my name is Zeno! But that doesn\'t matter right now. What matters is that I need to get to the castle.' },
+            { speaker: 'Hero', text: 'The castle? That\'s a long way from here, Zeno. What\'s waiting for you there?' },
+            { speaker: 'Zeno', text: 'My heart. King Krish took it from me. He took my magic, my memories… everything. Because he wanted my power.' },
+            { speaker: 'Zeno', text: 'If I get it back, I can fix everything. The forests. The rivers. The people who\'ve lost their homes. Please.' },
+            { speaker: 'Hero', text: 'All right, Zeno. We\'ll get your heart back.' },
+            { speaker: 'Zeno', text: 'Really? Then let\'s go, brave knight!' },
             { speaker: 'Hero', text: 'I\'m not a knight.' },
-            { speaker: 'Mascot', text: 'You are now! Welcome to adventure!' }
+            { speaker: 'Zeno', text: 'You are now! Welcome to adventure!' }
           ]
         },
         // Scene 4: The Village Gift
@@ -324,14 +327,14 @@ export class StrategicLayoutEngine {
           y: 640,
           key: 'interact_noticeboard',
           title: 'Abandoned Homestead',
-          promptText: 'Inspect Wooden Carving (Gift #1)',
+          promptText: 'Inspect Wooden Carving of Zeno (Gift #1)',
           milestoneId: 'first_gift_found',
           lines: [
-            { speaker: 'Hero', text: 'Someone made this for you—a small wooden carving of you.' },
-            { speaker: 'Mascot', text: 'I think… I remember this place.' },
+            { speaker: 'Hero', text: 'Someone made this for you, Zeno—a small wooden carving of you.' },
+            { speaker: 'Zeno', text: 'I think… I remember this place.' },
             { speaker: 'Hero', text: 'You\'ve been here before?' },
-            { speaker: 'Mascot', text: 'Maybe. I don\'t remember much from before the king took my heart.' },
-            { speaker: 'Mascot', text: 'Come on. We should keep moving.' }
+            { speaker: 'Zeno', text: 'Maybe. I don\'t remember much from before King Krish took my heart.' },
+            { speaker: 'Zeno', text: 'Come on. We should keep moving.' }
           ]
         },
         // Scene 5: Act I Ending Overlook
@@ -342,11 +345,11 @@ export class StrategicLayoutEngine {
           title: 'Overlook of Lumenfall',
           promptText: 'Gaze Toward Castle',
           lines: [
-            { speaker: 'Hero', text: 'That\'s where he is?' },
-            { speaker: 'Mascot', text: 'Yes.' },
+            { speaker: 'Hero', text: 'That\'s where King Krish is?' },
+            { speaker: 'Zeno', text: 'Yes.' },
             { speaker: 'Hero', text: 'Then that\'s where we\'re going.' },
-            { speaker: 'Mascot', text: 'Thank you.' },
-            { speaker: 'Mascot', text: '(whispering) I\'ll be whole again. I have to be.' }
+            { speaker: 'Zeno', text: 'Thank you.' },
+            { speaker: 'Zeno', text: '(whispering) I\'ll be whole again. I have to be.' }
           ]
         }
       ]
@@ -374,19 +377,19 @@ export class StrategicLayoutEngine {
         { x: 4960, y: 400, height: 140, mantleDir: 1 }   // Ridge down to Hydra Colosseum
       ],
       platforms: [
-        { x: 840, y: 560, w: 130 },           // Bridge across Pit 1
-        { x: 1150, y: 500, w: 150 },
-        { x: 1680, y: 490, w: 150 },
-        { x: 2880, y: 440, w: 130 },          // Bridge across Pit 2
-        { x: 3300, y: 390, w: 160 },
-        { x: 3650, y: 330, w: 160 },
-        { x: 4250, y: 280, w: 160 },
-        { x: 4700, y: 230, w: 160 },
-        { x: 5450, y: 420, w: 170 },
-        { x: 5850, y: 340, w: 160 },
-        { x: 6250, y: 340, w: 160 },
-        { x: 6650, y: 420, w: 170 },
-        { x: 6910, y: 480, w: 130 }           // Bridge across Moat
+        { x: 840, y: 490, w: 140 },           // Bridge across Pit 1 (elevated)
+        { x: 1150, y: 470, w: 160 },
+        { x: 1660, y: 460, w: 150 },
+        { x: 2880, y: 390, w: 140 },          // Bridge across Pit 2 (elevated)
+        { x: 3300, y: 340, w: 160 },
+        { x: 3660, y: 270, w: 160 },
+        { x: 4250, y: 260, w: 160 },
+        { x: 4700, y: 190, w: 160 },
+        { x: 5450, y: 390, w: 170 },
+        { x: 5850, y: 280, w: 160 },
+        { x: 6250, y: 280, w: 160 },
+        { x: 6650, y: 390, w: 170 },
+        { x: 6910, y: 430, w: 130 }           // Bridge across Moat (elevated)
       ],
       boss: {
         x: 6050,
@@ -395,7 +398,9 @@ export class StrategicLayoutEngine {
         name: 'Thornblight Hydra',
         title: 'Scourge of the Corrupted Mire',
         maxHp: 350,
-        attackInterval: 3000
+        attackInterval: 3000,
+        width: 360,
+        height: 420
       },
       boxes: [
         { x: 260, y: 616 },
@@ -422,12 +427,12 @@ export class StrategicLayoutEngine {
         { x: 3350, y: 520, patrolRange: 80, isCorrupted: true },
         { x: 4300, y: 400, patrolRange: 75, isCorrupted: true },
         // Elevated Platform Patrols
-        { x: 1150, y: 500, patrolRange: 45 },
-        { x: 1680, y: 490, patrolRange: 45, isCorrupted: true },
-        { x: 3300, y: 390, patrolRange: 50, isCorrupted: true },
-        { x: 4250, y: 280, patrolRange: 50, isCorrupted: true },
-        { x: 5450, y: 420, patrolRange: 55, isCorrupted: true },
-        { x: 6650, y: 420, patrolRange: 55, isCorrupted: true }
+        { x: 1150, y: 470, patrolRange: 45 },
+        { x: 1660, y: 460, patrolRange: 45, isCorrupted: true },
+        { x: 3300, y: 340, patrolRange: 50, isCorrupted: true },
+        { x: 4250, y: 260, patrolRange: 50, isCorrupted: true },
+        { x: 5450, y: 390, patrolRange: 55, isCorrupted: true },
+        { x: 6650, y: 390, patrolRange: 55, isCorrupted: true }
       ],
       npcs: [
         {
@@ -439,11 +444,11 @@ export class StrategicLayoutEngine {
             { speaker: 'Royal Guard', text: 'Stay back! This bridge is unsafe!' },
             { speaker: 'Hero', text: 'We need to cross.' },
             { speaker: 'Royal Guard', text: 'Then find another road.' },
-            { speaker: 'Mascot', text: 'He\'s one of the king\'s men. Don\'t listen to him.' },
+            { speaker: 'Zeno', text: 'He\'s one of the king\'s men. Don\'t listen to him.' },
             { speaker: 'Royal Guard', text: 'You think I want to serve that monster? I\'ve watched this land die. I\'ve watched good people disappear. And every day, the king orders us to hold the line.' },
             { speaker: 'Hero', text: 'Then why are you still here?' },
             { speaker: 'Royal Guard', text: 'Because someone has to protect the people who can\'t run. If you\'re going to the castle, don\'t mistake the king\'s silence for ignorance.' },
-            { speaker: 'Mascot', text: 'Enough. He\'s trying to confuse you.' },
+            { speaker: 'Zeno', text: 'Enough. He\'s trying to confuse you.' },
             { speaker: 'Royal Guard', text: 'No. I\'m trying to keep you alive.' }
           ]
         },
@@ -474,19 +479,19 @@ export class StrategicLayoutEngine {
       ],
       coins: [
         { x: 380, y: 450 },
-        { x: 840, y: 500 },
-        { x: 1150, y: 440 },
-        { x: 1680, y: 430 },
-        { x: 2880, y: 380 },
-        { x: 3300, y: 330 },
-        { x: 3650, y: 270 },
-        { x: 4250, y: 220 },
-        { x: 4700, y: 170 },
-        { x: 5450, y: 360 },
-        { x: 5850, y: 280 },
-        { x: 6250, y: 280 },
-        { x: 6650, y: 360 },
-        { x: 6910, y: 420 }
+        { x: 840, y: 430 },
+        { x: 1150, y: 410 },
+        { x: 1660, y: 400 },
+        { x: 2880, y: 330 },
+        { x: 3300, y: 280 },
+        { x: 3660, y: 210 },
+        { x: 4250, y: 200 },
+        { x: 4700, y: 130 },
+        { x: 5450, y: 330 },
+        { x: 5850, y: 220 },
+        { x: 6250, y: 220 },
+        { x: 6650, y: 330 },
+        { x: 6910, y: 370 }
       ],
       buildings: [
         { x: 1400, y: 640, key: 'bldg_act2_crypt', width: 260, height: 208 },
@@ -504,14 +509,14 @@ export class StrategicLayoutEngine {
           milestoneId: 'corrupted_lands_entered',
           lines: [
             { speaker: 'Hero', text: 'This place feels… wrong.' },
-            { speaker: 'Mascot', text: 'Everything near the castle is like this.' },
+            { speaker: 'Zeno', text: 'Everything near the castle is like this.' },
             { speaker: 'Hero', text: 'That corrupted creature wasn\'t just attacking. It looked terrified.' },
-            { speaker: 'Mascot', text: 'It\'s a monster. Not when they\'re trying to eat you.' },
+            { speaker: 'Zeno', text: 'It\'s a monster. Not when they\'re trying to eat you.' },
             { speaker: 'Hero', text: 'Look at these broken carts... and this royal shelter. A child\'s drawing of a royal guard protecting villagers.' },
             { speaker: 'Hero', text: 'Someone was protecting people here.' },
-            { speaker: 'Mascot', text: 'Or pretending to.' },
+            { speaker: 'Zeno', text: 'Or pretending to.' },
             { speaker: 'Hero', text: 'Why do you always do that? Turn everything into proof that he\'s evil.' },
-            { speaker: 'Mascot', text: '(looking hurt) Because I remember what he did to me.' }
+            { speaker: 'Zeno', text: '(looking hurt) Because I remember what he did to me.' }
           ]
         },
         // Scene 3: The Stone Mural
@@ -519,17 +524,17 @@ export class StrategicLayoutEngine {
           x: 2650,
           y: 520,
           key: 'interact_mural',
-          title: 'Ancient Stone Mural',
+          title: 'Ancient Stone Mural of King Krish',
           promptText: 'Examine Stone Mural Behind Vines',
           milestoneId: 'mural_inspected',
           lines: [
             { speaker: 'Hero', text: 'Look at this huge mural hidden behind the vines.' },
-            { speaker: 'Mascot', text: 'Let\'s go.' },
-            { speaker: 'Hero', text: 'Wait. Aurel is standing between the darkness and the kingdom. The crown shines above his head. The mascot lies unconscious behind him.' },
+            { speaker: 'Zeno', text: 'Let\'s go.' },
+            { speaker: 'Hero', text: 'Wait. Krish is standing between the darkness and the kingdom. The crown shines above his head. Zeno lies unconscious behind him.' },
             { speaker: 'Hero', text: 'It looks like he\'s fighting it.' },
-            { speaker: 'Mascot', text: 'Paintings can tell whatever story their owners want.' },
+            { speaker: 'Zeno', text: 'Paintings can tell whatever story their owners want.' },
             { speaker: 'Hero', text: 'Why are you scared of a painting?' },
-            { speaker: 'Mascot', text: '(voice unusually sharp) I\'m not scared. Just keep moving.' }
+            { speaker: 'Zeno', text: '(voice unusually sharp) I\'m not scared. Just keep moving.' }
           ]
         },
         // Scene 5: Act II Ending (Ruined Watchtower Campfire)
@@ -542,9 +547,9 @@ export class StrategicLayoutEngine {
           milestoneId: 'guard_confronted',
           lines: [
             { speaker: 'Hero', text: 'The guard said the king knows what\'s happening.' },
-            { speaker: 'Mascot', text: 'Of course he knows. He\'s responsible.' },
+            { speaker: 'Zeno', text: 'Of course he knows. He\'s responsible.' },
             { speaker: 'Hero', text: 'But what if there\'s more to it?' },
-            { speaker: 'Mascot', text: '(staring into the embers) What if you\'re helping the wrong person?' },
+            { speaker: 'Zeno', text: '(staring into the embers) What if you\'re helping the wrong person?' },
             { speaker: 'Hero', text: 'I was going to ask you the same thing.' }
           ]
         }
@@ -573,19 +578,19 @@ export class StrategicLayoutEngine {
         { x: 4960, y: 400, height: 140, mantleDir: 1 }   // Archive down to Colosseum Arena
       ],
       platforms: [
-        { x: 840, y: 560, w: 130 },           // Bridge across Pit 1
-        { x: 1150, y: 500, w: 150 },
-        { x: 1680, y: 490, w: 150 },
-        { x: 2880, y: 440, w: 130 },          // Bridge across Pit 2
-        { x: 3300, y: 390, w: 160 },
-        { x: 3650, y: 330, w: 160 },
-        { x: 4250, y: 280, w: 160 },
-        { x: 4700, y: 230, w: 160 },
-        { x: 5450, y: 420, w: 170 },
-        { x: 5850, y: 340, w: 160 },
-        { x: 6250, y: 340, w: 160 },
-        { x: 6650, y: 420, w: 170 },
-        { x: 6910, y: 480, w: 130 }           // Bridge across Moat
+        { x: 840, y: 490, w: 140 },           // Bridge across Pit 1 (elevated)
+        { x: 1150, y: 470, w: 160 },
+        { x: 1660, y: 460, w: 150 },
+        { x: 2880, y: 390, w: 140 },          // Bridge across Pit 2 (elevated)
+        { x: 3300, y: 340, w: 160 },
+        { x: 3660, y: 270, w: 160 },
+        { x: 4250, y: 260, w: 160 },
+        { x: 4700, y: 190, w: 160 },
+        { x: 5450, y: 390, w: 170 },
+        { x: 5850, y: 280, w: 160 },
+        { x: 6250, y: 280, w: 160 },
+        { x: 6650, y: 390, w: 170 },
+        { x: 6910, y: 430, w: 130 }           // Bridge across Moat (elevated)
       ],
       boss: {
         x: 6050,
@@ -595,7 +600,9 @@ export class StrategicLayoutEngine {
         title: 'Guardian of the Forgotten Crypts',
         maxHp: 400,
         attackInterval: 2800,
-        milestoneId: 'beast_defeated'
+        milestoneId: 'beast_defeated',
+        width: 360,
+        height: 420
       },
       boxes: [
         { x: 260, y: 616 },
@@ -622,12 +629,12 @@ export class StrategicLayoutEngine {
         { x: 3350, y: 520, patrolRange: 80, isCorrupted: true },
         { x: 4300, y: 400, patrolRange: 75, isCorrupted: true },
         // Elevated Platform Patrols
-        { x: 1150, y: 500, patrolRange: 45, isCorrupted: true },
-        { x: 1680, y: 490, patrolRange: 45 },
-        { x: 3300, y: 390, patrolRange: 50, isCorrupted: true },
-        { x: 4250, y: 280, patrolRange: 50, isCorrupted: true },
-        { x: 5450, y: 420, patrolRange: 55, isCorrupted: true },
-        { x: 6650, y: 420, patrolRange: 55, isCorrupted: true }
+        { x: 1150, y: 470, patrolRange: 45, isCorrupted: true },
+        { x: 1660, y: 460, patrolRange: 45 },
+        { x: 3300, y: 340, patrolRange: 50, isCorrupted: true },
+        { x: 4250, y: 260, patrolRange: 50, isCorrupted: true },
+        { x: 5450, y: 390, patrolRange: 55, isCorrupted: true },
+        { x: 6650, y: 390, patrolRange: 55, isCorrupted: true }
       ],
       npcs: [
         {
@@ -666,19 +673,19 @@ export class StrategicLayoutEngine {
       ],
       coins: [
         { x: 380, y: 450 },
-        { x: 840, y: 500 },
-        { x: 1150, y: 440 },
-        { x: 1680, y: 430 },
-        { x: 2880, y: 380 },
-        { x: 3300, y: 330 },
-        { x: 3650, y: 270 },
-        { x: 4250, y: 220 },
-        { x: 4700, y: 170 },
-        { x: 5450, y: 360 },
-        { x: 5850, y: 280 },
-        { x: 6250, y: 280 },
-        { x: 6650, y: 360 },
-        { x: 6910, y: 420 }
+        { x: 840, y: 430 },
+        { x: 1150, y: 410 },
+        { x: 1660, y: 400 },
+        { x: 2880, y: 330 },
+        { x: 3300, y: 280 },
+        { x: 3660, y: 210 },
+        { x: 4250, y: 200 },
+        { x: 4700, y: 130 },
+        { x: 5450, y: 330 },
+        { x: 5850, y: 220 },
+        { x: 6250, y: 220 },
+        { x: 6650, y: 330 },
+        { x: 6910, y: 370 }
       ],
       buildings: [
         { x: 1400, y: 640, key: 'bldg_act3_temple', width: 265, height: 210 },
@@ -695,15 +702,15 @@ export class StrategicLayoutEngine {
           promptText: 'Read Illuminated Sanctuary Inscription',
           milestoneId: 'sanctuary_discovered',
           lines: [
-            { speaker: 'Mascot', text: 'I don\'t like this place.' },
+            { speaker: 'Zeno', text: 'I don\'t like this place.' },
             { speaker: 'Hero', text: 'Why?' },
-            { speaker: 'Mascot', text: 'I don\'t know. Can we please just find the exit?' },
+            { speaker: 'Zeno', text: 'I don\'t know. Can we please just find the exit?' },
             { speaker: 'Hero', text: 'We didn\'t come this far to turn around. Look, an inscription illuminates:' },
             { speaker: 'Ancient Record', text: '"When the Guardian\'s dream became a nightmare, the world began to unravel."' },
             { speaker: 'Ancient Record', text: '"When its fear became stronger than its will, the living things around it changed."' },
             { speaker: 'Ancient Record', text: '"Only the bearer of the Dawn could bind the darkness without destroying the light."' },
-            { speaker: 'Hero', text: 'The Guardian… that\'s you, isn\'t it? But you could create things. The flowers. The magic.' },
-            { speaker: 'Mascot', text: 'I said I don\'t know!' }
+            { speaker: 'Hero', text: 'The Guardian… that\'s you, Zeno, isn\'t it? But you could create things. The flowers. The magic.' },
+            { speaker: 'Zeno', text: 'I said I don\'t know!' }
           ]
         },
         // Scene 3 & 4: The King's Sacrifice & The Memory Fragment
@@ -717,38 +724,38 @@ export class StrategicLayoutEngine {
             { speaker: 'Ancient Record', text: '"The king offered his life to become the prison."' },
             { speaker: 'Ancient Record', text: '"The crown would hold the Guardian\'s power, and the king would hold the crown. If the chain broke, the darkness would return to its source."' },
             { speaker: 'Hero', text: 'He didn\'t steal your power just to become stronger.' },
-            { speaker: 'Mascot', text: 'He still took it.' },
+            { speaker: 'Zeno', text: 'He still took it.' },
             { speaker: 'Hero', text: 'Maybe he was trying to save everyone.' },
-            { speaker: 'Mascot', text: 'Then why did he leave me alone?' },
+            { speaker: 'Zeno', text: 'Then why did he leave me alone?' },
             { speaker: 'Hero', text: 'I don\'t know.' },
-            { speaker: 'Mascot', text: 'Neither do I.' },
-            { speaker: 'Young Mascot', text: '(Memory) Make it stop! Please!' },
+            { speaker: 'Zeno', text: 'Neither do I.' },
+            { speaker: 'Young Zeno', text: '(Memory) Make it stop! Please!' },
             { speaker: 'Hero', text: 'You were there when it happened.' },
-            { speaker: 'Mascot', text: 'I remember the screaming. Everyone\'s. I thought he took my heart because he hated me.' },
+            { speaker: 'Zeno', text: 'I remember the screaming. Everyone\'s. I thought he took my heart because he hated me.' },
             { speaker: 'Hero', text: 'Maybe he was afraid of what would happen.' },
-            { speaker: 'Mascot', text: 'Maybe. But I still want my heart back.' },
+            { speaker: 'Zeno', text: 'Maybe. But I still want my heart back.' },
             { speaker: 'Hero', text: 'Then we\'ll find out what really happened.' }
           ]
         },
-        // Scene 5: The Records of Aurel
+        // Scene 5: The Records of King Krish
         {
           x: 4400,
           y: 400,
           key: 'interact_lectern',
-          title: 'Records of Aurel (Journal)',
-          promptText: 'Read Aurel\'s Journal',
+          title: 'Records of King Krish (Journal)',
+          promptText: 'Read King Krish\'s Journal',
           milestoneId: 'aurel_journal_found',
           lines: [
-            { speaker: 'Records of Aurel', text: '"Day 43 beneath the crown."' },
-            { speaker: 'Records of Aurel', text: '"The people curse my name. They see the ruined fields, the empty villages, the creatures in the forest."' },
-            { speaker: 'Records of Aurel', text: '"They do not see what waits beneath the throne."' },
-            { speaker: 'Records of Aurel', text: '"I could tell them the truth. But what would that change? They cannot carry this burden for me."' },
-            { speaker: 'Records of Aurel', text: '"The crown takes more each day. Sometimes I cannot remember the sound of my own voice before it."' },
-            { speaker: 'Records of Aurel', text: '"I tell myself that silence is protection. I am beginning to fear that silence is only cowardice."' },
+            { speaker: 'Records of King Krish', text: '"Day 43 beneath the crown."' },
+            { speaker: 'Records of King Krish', text: '"The people curse my name. They see the ruined fields, the empty villages, the creatures in the forest."' },
+            { speaker: 'Records of King Krish', text: '"They do not see what waits beneath the throne."' },
+            { speaker: 'Records of King Krish', text: '"I could tell them the truth. But what would that change? They cannot carry this burden for me."' },
+            { speaker: 'Records of King Krish', text: '"The crown takes more each day. Sometimes I cannot remember the sound of my own voice before it."' },
+            { speaker: 'Records of King Krish', text: '"I tell myself that silence is protection. I am beginning to fear that silence is only cowardice."' },
             { speaker: 'Hero', text: 'He knew what he was becoming.' },
-            { speaker: 'Mascot', text: 'Then why didn\'t he stop?' },
+            { speaker: 'Zeno', text: 'Then why didn\'t he stop?' },
             { speaker: 'Hero', text: 'Maybe he thought he had no choice.' },
-            { speaker: 'Mascot', text: 'Everyone has a choice.' },
+            { speaker: 'Zeno', text: 'Everyone has a choice.' },
             { speaker: 'Hero', text: 'Yes. They do. So do we.' }
           ]
         },
@@ -758,14 +765,14 @@ export class StrategicLayoutEngine {
           y: 640,
           key: 'interact_monument',
           title: 'Passage to Castle Ramparts',
-          promptText: 'Check on Mascot',
+          promptText: 'Check on Zeno',
           lines: [
-            { speaker: 'Mascot', text: 'We\'re almost there.' },
+            { speaker: 'Zeno', text: 'We\'re almost there.' },
             { speaker: 'Hero', text: 'When we meet the king, I want answers.' },
-            { speaker: 'Mascot', text: 'So do I.' },
+            { speaker: 'Zeno', text: 'So do I.' },
             { speaker: 'Hero', text: 'Hey! Are you all right? A sudden magical pulse knocked you down!' },
-            { speaker: 'Mascot', text: 'I\'m fine.' },
-            { speaker: 'Mascot', text: '(whispering, as its shadow twists into a monstrous shape) Not again.' }
+            { speaker: 'Zeno', text: 'I\'m fine.' },
+            { speaker: 'Zeno', text: '(whispering, as its shadow twists into a monstrous shape) Not again.' }
           ]
         }
       ]
@@ -793,29 +800,31 @@ export class StrategicLayoutEngine {
         { x: 4960, y: 400, height: 140, mantleDir: 1 }   // Bastion to Throne Room
       ],
       platforms: [
-        { x: 840, y: 560, w: 130 },           // Bridge across Pit 1
-        { x: 1150, y: 500, w: 150 },
-        { x: 1680, y: 490, w: 150 },
-        { x: 2880, y: 440, w: 130 },          // Bridge across Pit 2
-        { x: 3300, y: 390, w: 160 },
-        { x: 3650, y: 330, w: 160 },
-        { x: 4250, y: 280, w: 160 },
-        { x: 4700, y: 230, w: 160 },
-        { x: 5450, y: 420, w: 170 },
-        { x: 5850, y: 340, w: 160 },
-        { x: 6250, y: 340, w: 160 },
-        { x: 6650, y: 420, w: 170 },
-        { x: 6910, y: 480, w: 130 }           // Bridge across Moat
+        { x: 840, y: 490, w: 140 },           // Bridge across Pit 1 (elevated)
+        { x: 1150, y: 470, w: 160 },
+        { x: 1660, y: 460, w: 150 },
+        { x: 2880, y: 390, w: 140 },          // Bridge across Pit 2 (elevated)
+        { x: 3300, y: 340, w: 160 },
+        { x: 3660, y: 270, w: 160 },
+        { x: 4250, y: 260, w: 160 },
+        { x: 4700, y: 190, w: 160 },
+        { x: 5450, y: 390, w: 170 },
+        { x: 5850, y: 280, w: 160 },
+        { x: 6250, y: 280, w: 160 },
+        { x: 6650, y: 390, w: 170 },
+        { x: 6910, y: 430, w: 130 }           // Bridge across Moat (elevated)
       ],
       boss: {
         x: 6050,
         y: 540,
         key: 'boss_king_aurel',
-        name: 'King Aurel, Bearer of the Crown',
+        name: 'King Krish, Bearer of the Crown',
         title: 'The Corrupted Sovereign',
         maxHp: 600,
         attackInterval: 2500,
-        milestoneId: 'king_aurel_confronted'
+        milestoneId: 'king_aurel_confronted',
+        width: 360,
+        height: 420
       },
       boxes: [
         { x: 260, y: 616 },
@@ -842,12 +851,12 @@ export class StrategicLayoutEngine {
         { x: 3350, y: 520, patrolRange: 80, isCorrupted: true },
         { x: 4300, y: 400, patrolRange: 75, isCorrupted: true },
         // Elevated Platform Patrols
-        { x: 1150, y: 500, patrolRange: 45, isCorrupted: true },
-        { x: 1680, y: 490, patrolRange: 45, isCorrupted: true },
-        { x: 3300, y: 390, patrolRange: 50, isCorrupted: true },
-        { x: 4250, y: 280, patrolRange: 50, isCorrupted: true },
-        { x: 5450, y: 420, patrolRange: 55, isCorrupted: true },
-        { x: 6650, y: 420, patrolRange: 55, isCorrupted: true }
+        { x: 1150, y: 470, patrolRange: 45, isCorrupted: true },
+        { x: 1660, y: 460, patrolRange: 45, isCorrupted: true },
+        { x: 3300, y: 340, patrolRange: 50, isCorrupted: true },
+        { x: 4250, y: 260, patrolRange: 50, isCorrupted: true },
+        { x: 5450, y: 390, patrolRange: 55, isCorrupted: true },
+        { x: 6650, y: 390, patrolRange: 55, isCorrupted: true }
       ],
       npcs: [
         {
@@ -857,7 +866,7 @@ export class StrategicLayoutEngine {
           name: 'Captain Valen',
           lines: [
             { speaker: 'Captain Valen', text: 'Hero of the Dawn! The garrison has fallen back to defend the ramparts.' },
-            { speaker: 'Captain Valen', text: 'King Aurel is sealed within the throne room at the end of the courtyard. The crown is driving him mad!' }
+            { speaker: 'Captain Valen', text: 'King Krish is sealed within the throne room at the end of the courtyard. The crown is driving him mad!' }
           ]
         }
       ],
@@ -880,39 +889,39 @@ export class StrategicLayoutEngine {
         { x: 260, y: 550 },
         { x: 380, y: 570 },
         { x: 620, y: 570 },
-        { x: 840, y: 500 },
+        { x: 840, y: 430 },
         { x: 1040, y: 550 },
-        { x: 1150, y: 440 },
+        { x: 1150, y: 410 },
         { x: 1400, y: 570 },
-        { x: 1680, y: 430 },
+        { x: 1660, y: 400 },
         { x: 1850, y: 570 },
         // Zone 2 Lower Ramparts
         { x: 2150, y: 440 },
         { x: 2350, y: 450 },
         { x: 2550, y: 450 },
         { x: 2750, y: 450 },
-        { x: 2880, y: 380 },
+        { x: 2880, y: 330 },
         { x: 3100, y: 450 },
-        { x: 3300, y: 330 },
+        { x: 3300, y: 280 },
         { x: 3500, y: 450 },
-        { x: 3650, y: 270 },
+        { x: 3660, y: 210 },
         { x: 3850, y: 450 },
         // Zone 3 High Bastion Tower
         { x: 4100, y: 330 },
-        { x: 4250, y: 220 },
+        { x: 4250, y: 200 },
         { x: 4450, y: 330 },
-        { x: 4700, y: 170 },
+        { x: 4700, y: 130 },
         { x: 4850, y: 330 },
         // Zone 4 Throne Room
         { x: 5200, y: 470 },
-        { x: 5450, y: 360 },
+        { x: 5450, y: 330 },
         { x: 5650, y: 470 },
-        { x: 5850, y: 280 },
-        { x: 6250, y: 280 },
+        { x: 5850, y: 220 },
+        { x: 6250, y: 220 },
         { x: 6450, y: 470 },
-        { x: 6650, y: 360 },
+        { x: 6650, y: 330 },
         { x: 6800, y: 470 },
-        { x: 6910, y: 420 },
+        { x: 6910, y: 370 },
         { x: 7050, y: 570 }
       ],
       buildings: [
@@ -931,14 +940,14 @@ export class StrategicLayoutEngine {
           milestoneId: 'gate_machine_unlocked',
           lines: [
             { speaker: 'Hero', text: 'Looks like we need a key.' },
-            { speaker: 'Mascot', text: 'There\'s an old machine nearby. It can make one.' },
+            { speaker: 'Zeno', text: 'There\'s an old machine nearby. It can make one.' },
             { speaker: 'Hero', text: 'How do you know that?' },
-            { speaker: 'Mascot', text: 'I… remember something.' },
+            { speaker: 'Zeno', text: 'I… remember something.' },
             { speaker: 'Mechanism', text: 'GATE MECHANISM ACTIVATED: 40 COINS REQUIRED TO FORGE GOLDEN CASTLE KEY.' },
             { speaker: 'Hero', text: 'Forty coins? For a key?' },
-            { speaker: 'Mascot', text: 'Ancient magic isn\'t cheap.' },
+            { speaker: 'Zeno', text: 'Ancient magic isn\'t cheap.' },
             { speaker: 'Hero', text: 'That\'s a terrible excuse.' },
-            { speaker: 'Mascot', text: 'Do you want to open the gate or not?' }
+            { speaker: 'Zeno', text: 'Do you want to open the gate or not?' }
           ]
         },
         // Scene 3: The Throne Gate
@@ -947,24 +956,24 @@ export class StrategicLayoutEngine {
           y: 400,
           key: 'interact_machine',
           title: 'Throne Chamber Gates',
-          promptText: 'Enter King Aurel\'s Throne Room',
+          promptText: 'Enter King Krish\'s Throne Room',
           lines: [
-            { speaker: 'King Aurel', text: 'So. The little wanderer has reached the end of the road.' },
-            { speaker: 'Hero', text: 'King Aurel.' },
-            { speaker: 'King Aurel', text: 'You have crossed a dying kingdom to stand before me. Tell me, do you know what you are fighting for?' },
+            { speaker: 'King Krish', text: 'So. The little wanderer has reached the end of the road.' },
+            { speaker: 'Hero', text: 'King Krish.' },
+            { speaker: 'King Krish', text: 'You have crossed a dying kingdom to stand before me. Tell me, do you know what you are fighting for?' },
             { speaker: 'Hero', text: 'I\'m here to return what you stole.' },
-            { speaker: 'King Aurel', text: 'Then you know nothing.' },
-            { speaker: 'Mascot', text: 'Don\'t listen to him!' },
-            { speaker: 'King Aurel', text: 'Still hiding behind another, little one?' },
-            { speaker: 'Mascot', text: 'You took my heart!' },
-            { speaker: 'King Aurel', text: 'I took your power because you could not control it.' },
-            { speaker: 'Mascot', text: 'You left me alone!' },
-            { speaker: 'King Aurel', text: 'I left you alive.' },
+            { speaker: 'King Krish', text: 'Then you know nothing.' },
+            { speaker: 'Zeno', text: 'Don\'t listen to him!' },
+            { speaker: 'King Krish', text: 'Still hiding behind another, little one?' },
+            { speaker: 'Zeno', text: 'You took my heart!' },
+            { speaker: 'King Krish', text: 'I took your power because you could not control it.' },
+            { speaker: 'Zeno', text: 'You left me alone!' },
+            { speaker: 'King Krish', text: 'I left you alive.' },
             { speaker: 'Hero', text: 'You could have told the kingdom the truth.' },
-            { speaker: 'King Aurel', text: 'And what would they have done? Worship me for the destruction I prevented? Forgive me for the destruction they witnessed?' },
+            { speaker: 'King Krish', text: 'And what would they have done? Worship me for the destruction I prevented? Forgive me for the destruction they witnessed?' },
             { speaker: 'Hero', text: 'They deserved the truth.' },
-            { speaker: 'King Aurel', text: 'Yes... They did.' },
-            { speaker: 'King Aurel', text: 'But there is no time left. Forgive me, child.' }
+            { speaker: 'King Krish', text: 'Yes... They did.' },
+            { speaker: 'King Krish', text: 'But there is no time left. Forgive me, child.' }
           ]
         }
       ]
@@ -992,29 +1001,31 @@ export class StrategicLayoutEngine {
         { x: 4960, y: 400, height: 140, mantleDir: 1 }   // Spire down to Colossus Void
       ],
       platforms: [
-        { x: 840, y: 560, w: 130 },           // Bridge across Pit 1
-        { x: 1150, y: 500, w: 150 },
-        { x: 1680, y: 490, w: 150 },
-        { x: 2880, y: 440, w: 130 },          // Bridge across Pit 2
-        { x: 3300, y: 390, w: 160 },
-        { x: 3650, y: 330, w: 160 },
-        { x: 4250, y: 280, w: 160 },
-        { x: 4700, y: 230, w: 160 },
-        { x: 5450, y: 420, w: 170 },
-        { x: 5850, y: 340, w: 160 },
-        { x: 6250, y: 340, w: 160 },
-        { x: 6650, y: 420, w: 170 },
-        { x: 6910, y: 480, w: 130 }           // Bridge across Moat
+        { x: 840, y: 490, w: 140 },           // Bridge across Pit 1 (elevated)
+        { x: 1150, y: 470, w: 160 },
+        { x: 1660, y: 460, w: 150 },
+        { x: 2880, y: 390, w: 140 },          // Bridge across Pit 2 (elevated)
+        { x: 3300, y: 340, w: 160 },
+        { x: 3660, y: 270, w: 160 },
+        { x: 4250, y: 260, w: 160 },
+        { x: 4700, y: 190, w: 160 },
+        { x: 5450, y: 390, w: 170 },
+        { x: 5850, y: 280, w: 160 },
+        { x: 6250, y: 280, w: 160 },
+        { x: 6650, y: 390, w: 170 },
+        { x: 6910, y: 430, w: 130 }           // Bridge across Moat (elevated)
       ],
       boss: {
         x: 6050,
         y: 540,
         key: 'boss_void_colossus',
-        name: 'The Transformed Mascot',
+        name: 'The Transformed Guardian (Zeno)',
         title: 'Corrupted Ancient Guardian',
         maxHp: 750,
         attackInterval: 2200,
-        milestoneId: 'heart_of_dawn_choice'
+        milestoneId: 'heart_of_dawn_choice',
+        width: 360,
+        height: 420
       },
       boxes: [
         { x: 260, y: 616 },
@@ -1041,12 +1052,12 @@ export class StrategicLayoutEngine {
         { x: 3350, y: 520, patrolRange: 80, isCorrupted: true },
         { x: 4300, y: 400, patrolRange: 75, isCorrupted: true },
         // Elevated Platform Patrols
-        { x: 1150, y: 500, patrolRange: 45, isCorrupted: true },
-        { x: 1680, y: 490, patrolRange: 45, isCorrupted: true },
-        { x: 3300, y: 390, patrolRange: 50, isCorrupted: true },
-        { x: 4250, y: 280, patrolRange: 50, isCorrupted: true },
-        { x: 5450, y: 420, patrolRange: 55, isCorrupted: true },
-        { x: 6650, y: 420, patrolRange: 55, isCorrupted: true }
+        { x: 1150, y: 470, patrolRange: 45, isCorrupted: true },
+        { x: 1660, y: 460, patrolRange: 45, isCorrupted: true },
+        { x: 3300, y: 340, patrolRange: 50, isCorrupted: true },
+        { x: 4250, y: 260, patrolRange: 50, isCorrupted: true },
+        { x: 5450, y: 390, patrolRange: 55, isCorrupted: true },
+        { x: 6650, y: 390, patrolRange: 55, isCorrupted: true }
       ],
       npcs: [
         // Scene 1: The Last Chain
@@ -1054,18 +1065,18 @@ export class StrategicLayoutEngine {
           x: 340,
           y: 640,
           key: 'boss_king_aurel',
-          name: 'Fallen King Aurel',
+          name: 'Fallen King Krish',
           lines: [
             { speaker: 'Hero', text: 'King! Get up!' },
-            { speaker: 'Aurel', text: 'There\'s… no time.' },
+            { speaker: 'Krish', text: 'There\'s… no time.' },
             { speaker: 'Hero', text: 'What happened to it?' },
-            { speaker: 'Aurel', text: 'The crown held the power. But it also held the fear that shaped it.' },
+            { speaker: 'Krish', text: 'The crown held the power. But it also held the fear that shaped it.' },
             { speaker: 'Hero', text: 'Then how do I stop it?' },
-            { speaker: 'Aurel', text: 'Listen carefully. I was never its jailer. I was its last chain.' },
-            { speaker: 'Aurel', text: 'Beneath the throne… find the Heart of Dawn.' },
+            { speaker: 'Krish', text: 'Listen carefully. I was never its jailer. I was its last chain.' },
+            { speaker: 'Krish', text: 'Beneath the throne… find the Heart of Dawn.' },
             { speaker: 'Hero', text: 'Where is it?' },
-            { speaker: 'Aurel', text: 'The chamber below. The old seal.' },
-            { speaker: 'Aurel', text: 'Do not try to kill it. By remembering that it is still the creature you came here to save.' }
+            { speaker: 'Krish', text: 'The chamber below. The old seal.' },
+            { speaker: 'Krish', text: 'Do not try to kill it. By remembering that it is still the creature you came here to save.' }
           ]
         }
       ],
@@ -1085,19 +1096,19 @@ export class StrategicLayoutEngine {
       ],
       coins: [
         { x: 380, y: 450 },
-        { x: 840, y: 500 },
-        { x: 1150, y: 440 },
-        { x: 1680, y: 430 },
-        { x: 2880, y: 380 },
-        { x: 3300, y: 330 },
-        { x: 3650, y: 270 },
-        { x: 4250, y: 220 },
-        { x: 4700, y: 170 },
-        { x: 5450, y: 360 },
-        { x: 5850, y: 280 },
-        { x: 6250, y: 280 },
-        { x: 6650, y: 360 },
-        { x: 6910, y: 420 }
+        { x: 840, y: 430 },
+        { x: 1150, y: 410 },
+        { x: 1660, y: 400 },
+        { x: 2880, y: 330 },
+        { x: 3300, y: 280 },
+        { x: 3660, y: 210 },
+        { x: 4250, y: 200 },
+        { x: 4700, y: 130 },
+        { x: 5450, y: 330 },
+        { x: 5850, y: 220 },
+        { x: 6250, y: 220 },
+        { x: 6650, y: 330 },
+        { x: 6910, y: 370 }
       ],
       buildings: [
         { x: 1400, y: 640, key: 'bldg_act5_voidspire', width: 262, height: 220 },
@@ -1105,7 +1116,7 @@ export class StrategicLayoutEngine {
         { x: 4450, y: 400, key: 'bldg_act5_voidspire', width: 262, height: 220 }
       ],
       interactionPoints: [
-        // Scene 2 & 3: The Chamber Beneath the Throne & Aurel Without a Crown
+        // Scene 2 & 3: The Chamber Beneath the Throne & Krish Without a Crown
         {
           x: 1350,
           y: 640,
@@ -1117,10 +1128,10 @@ export class StrategicLayoutEngine {
             { speaker: 'Ancient Inscription', text: '"Fear without trust becomes a prison."' },
             { speaker: 'Ancient Inscription', text: '"What is broken by force cannot always be healed by force."' },
             { speaker: 'Hero', text: 'I thought I was saving my friend. I never asked what saving them would cost.' },
-            { speaker: 'Mascot', text: '(Echo) Please… make it stop.' },
+            { speaker: 'Zeno', text: '(Echo) Please… make it stop.' },
             { speaker: 'Hero', text: 'I\'m coming.' },
-            { speaker: 'Aurel', text: 'I have spent years being a king. Let me spend what remains of my life being a man. Hold the relic against the crown!' },
-            { speaker: 'Aurel', text: 'I can no longer hold the darkness back. But I know where it began. And I know how we can end it.' }
+            { speaker: 'Krish', text: 'I have spent years being a king. Let me spend what remains of my life being a man. Hold the relic against the crown!' },
+            { speaker: 'Krish', text: 'I can no longer hold the darkness back. But I know where it began. And I know how we can end it.' }
           ]
         },
         // Scene 5: First Anchor — The Village
@@ -1131,9 +1142,9 @@ export class StrategicLayoutEngine {
           title: 'First Anchor — The Village',
           promptText: 'Awaken Anchor of the Village',
           lines: [
-            { speaker: 'Mascot', text: '(Memory) Look! I made them bloom!' },
+            { speaker: 'Zeno', text: '(Memory) Look! I made them bloom!' },
             { speaker: 'Child', text: '(Memory) Do it again!' },
-            { speaker: 'Mascot', text: 'I remember… being happy.' }
+            { speaker: 'Zeno', text: 'I remember… being happy.' }
           ]
         },
         // Scene 5: Second Anchor — The Disaster
@@ -1144,9 +1155,9 @@ export class StrategicLayoutEngine {
           title: 'Second Anchor — The Disaster',
           promptText: 'Awaken Anchor of the Disaster',
           lines: [
-            { speaker: 'Young Mascot', text: '(Memory) No… no, make it stop! I\'m scared!' },
-            { speaker: 'Young Aurel', text: '(Memory) I\'m here. I know.' },
-            { speaker: 'Mascot', text: 'He wasn\'t trying to hurt me... But I was so afraid.' }
+            { speaker: 'Young Zeno', text: '(Memory) No… no, make it stop! I\'m scared!' },
+            { speaker: 'Young Krish', text: '(Memory) I\'m here. I know.' },
+            { speaker: 'Zeno', text: 'He wasn\'t trying to hurt me... But I was so afraid.' }
           ]
         },
         // Scene 5: Third Anchor — The Promise
@@ -1158,11 +1169,11 @@ export class StrategicLayoutEngine {
           promptText: 'Awaken Anchor of the Promise',
           milestoneId: 'anchors_cleared',
           lines: [
-            { speaker: 'Aurel', text: '(Memory) "I promise I will hold this power until you can carry it safely."' },
-            { speaker: 'Young Mascot', text: '"Will you come back?"' },
-            { speaker: 'Aurel', text: '"If I can."' },
-            { speaker: 'Mascot', text: 'You promised. Then why didn\'t you come back?' },
-            { speaker: 'Aurel', text: 'Because I was afraid of what would happen if I let go. I should have trusted you. I should have told the truth. I should have found another way. I\'m sorry.' }
+            { speaker: 'Krish', text: '(Memory) "I promise I will hold this power until you can carry it safely."' },
+            { speaker: 'Young Zeno', text: '"Will you come back?"' },
+            { speaker: 'Krish', text: '"If I can."' },
+            { speaker: 'Zeno', text: 'You promised. Then why didn\'t you come back?' },
+            { speaker: 'Krish', text: 'Because I was afraid of what would happen if I let go. I should have trusted you. I should have told the truth. I should have found another way. I\'m sorry.' }
           ]
         }
       ]
@@ -1170,64 +1181,43 @@ export class StrategicLayoutEngine {
   }
 
   // =========================================================================
-  // EPILOGUE: A KINGDOM WITHOUT A CROWN (5400px Width)
+  // EPILOGUE: A KINGDOM WITHOUT A CROWN (2400px Width - Short Peaceful Walk)
   // Restored Sunrise | Full Kingdom Reunion | Post-Credits Scene
   // =========================================================================
   public static getEpilogueLayout(): ValidatedActLayout {
     return {
       groundSegments: [
-        { x: 0, w: 760, y: 640 },             // Promenade Zone 1: 0 - 760
-        { x: 920, w: 980, y: 640 },           // Promenade: 920 - 1900 (Pit 1: 760-920, 160px)
-        { x: 1900, w: 740, y: 520 },          // Sun Terrace Zone 2: 1900 - 2640 (Elevated y=520, Cliff at 1900)
-        { x: 2800, w: 900, y: 520 },          // Sun Terrace: 2800 - 3700 (Pit 2: 2640-2800, 160px)
-        { x: 3700, w: 1700, y: 420 }          // Sunrise Peak Zone 3: 3700 - 5400 (Elevated y=420, Cliff at 3700)
+        { x: 0, w: 2400, y: 640 }              // Continuous peaceful promenade: 0 - 2400 (no pits!)
       ],
-      climbSurfaces: [
-        { x: 1900, y: 520, height: 120, mantleDir: 1 },  // Promenade up to Sun Terrace
-        { x: 3700, y: 420, height: 100, mantleDir: 1 }   // Sun Terrace up to Sunrise Peak
-      ],
+      climbSurfaces: [],
       platforms: [
-        { x: 840, y: 560, w: 130 },           // Bridge across Pit 1
-        { x: 1250, y: 500, w: 160 },
-        { x: 1650, y: 500, w: 160 },
-        { x: 2720, y: 440, w: 130 },          // Bridge across Pit 2
-        { x: 3100, y: 390, w: 160 },
-        { x: 3450, y: 390, w: 160 },
-        { x: 4100, y: 300, w: 160 },
-        { x: 4700, y: 300, w: 160 }
+        { x: 500, y: 500, w: 160 },
+        { x: 1200, y: 500, w: 160 },
+        { x: 1800, y: 500, w: 160 }
       ],
-      boxes: [
-        { x: 260, y: 616 },
-        { x: 1050, y: 616 },
-        { x: 1750, y: 616 },
-        { x: 2100, y: 496 },
-        { x: 2500, y: 496 },
-        { x: 2950, y: 496 },
-        { x: 3900, y: 396 },
-        { x: 4900, y: 396 }
-      ],
+      boxes: [],
       npcs: [
-        // Scene 1: The First Sunrise (Aurel Rebuilding with Villagers)
+        // Scene 1: The First Sunrise (Krish Rebuilding with Villagers)
         {
-          x: 650,
+          x: 450,
           y: 640,
           key: 'boss_king_aurel',
-          name: 'Aurel (Rebuilding)',
+          name: 'Krish (Rebuilding)',
           lines: [
             { speaker: 'Narrator', text: 'For the first time in years, the darkness lifted. The rivers began to flow. The trees remembered how to grow. The creatures of the forest returned to their homes.' },
             { speaker: 'Narrator', text: 'But the kingdom did not heal in a single morning. There were villages to rebuild, roads to repair, and people who had lost too much to forgive quickly.' },
             { speaker: 'Villager', text: 'You could have told us.' },
-            { speaker: 'Aurel', text: 'Yes.' },
+            { speaker: 'Krish', text: 'Yes.' },
             { speaker: 'Villager', text: 'We lost our homes.' },
-            { speaker: 'Aurel', text: 'I know.' },
+            { speaker: 'Krish', text: 'I know.' },
             { speaker: 'Villager', text: 'Some of us lost our families.' },
-            { speaker: 'Aurel', text: 'I cannot undo that.' },
+            { speaker: 'Krish', text: 'I cannot undo that.' },
             { speaker: 'Villager', text: 'No. You can\'t.' },
-            { speaker: 'Hero', text: '(Aurel watches for a moment before picking up a heavy piece of timber himself, carrying it toward the bridge to rebuild alongside his people).' }
+            { speaker: 'Hero', text: '(Krish watches for a moment before picking up a heavy piece of timber himself, carrying it toward the bridge to rebuild alongside his people).' }
           ]
         },
         {
-          x: 1350,
+          x: 850,
           y: 640,
           key: 'npc_priestess',
           name: 'Priestess Selene',
@@ -1236,8 +1226,8 @@ export class StrategicLayoutEngine {
           ]
         },
         {
-          x: 2200,
-          y: 520,
+          x: 1250,
+          y: 640,
           key: 'npc_guard',
           name: 'Captain Valen',
           lines: [
@@ -1245,8 +1235,8 @@ export class StrategicLayoutEngine {
           ]
         },
         {
-          x: 3100,
-          y: 520,
+          x: 1550,
+          y: 640,
           key: 'npc_merchant',
           name: 'Rowan the Merchant',
           lines: [
@@ -1256,72 +1246,64 @@ export class StrategicLayoutEngine {
       ],
       props: [
         { x: 180, y: 640, key: 'prop_flowers' },
-        { x: 500, y: 640, key: 'prop_lamp' },
-        { x: 1020, y: 640, key: 'prop_flowers' },
-        { x: 1600, y: 640, key: 'prop_lamp' },
-        { x: 2050, y: 520, key: 'prop_flowers' },
-        { x: 2500, y: 520, key: 'prop_lamp' },
-        { x: 3000, y: 520, key: 'prop_flowers' },
-        { x: 3500, y: 520, key: 'prop_lamp' },
-        { x: 3850, y: 420, key: 'prop_flowers' },
-        { x: 4400, y: 420, key: 'prop_lamp' },
-        { x: 4800, y: 420, key: 'prop_flowers' },
-        { x: 5200, y: 420, key: 'prop_lamp' }
+        { x: 350, y: 640, key: 'prop_lamp' },
+        { x: 650, y: 640, key: 'prop_flowers' },
+        { x: 1050, y: 640, key: 'prop_flowers' },
+        { x: 1400, y: 640, key: 'prop_lamp' },
+        { x: 1750, y: 640, key: 'prop_flowers' },
+        { x: 2150, y: 640, key: 'prop_lamp' }
       ],
       coins: [
-        { x: 380, y: 450 },
-        { x: 840, y: 500 },
-        { x: 1250, y: 440 },
-        { x: 1650, y: 440 },
-        { x: 2720, y: 380 },
-        { x: 3100, y: 330 },
-        { x: 3450, y: 330 },
-        { x: 4100, y: 240 },
-        { x: 4700, y: 240 },
-        { x: 5200, y: 360 }
+        { x: 300, y: 550 },
+        { x: 500, y: 440 },
+        { x: 750, y: 550 },
+        { x: 1000, y: 550 },
+        { x: 1200, y: 440 },
+        { x: 1500, y: 550 },
+        { x: 1800, y: 440 },
+        { x: 2050, y: 550 }
       ],
       buildings: [
-        { x: 1380, y: 640, key: 'bldg_epilogue_pavilion', width: 262, height: 220 },
-        { x: 2280, y: 520, key: 'bldg_epilogue_pavilion', width: 262, height: 220, flipX: true },
-        { x: 4500, y: 420, key: 'bldg_epilogue_pavilion', width: 262, height: 220 }
+        { x: 900, y: 640, key: 'bldg_epilogue_pavilion', width: 262, height: 220 },
+        { x: 1650, y: 640, key: 'bldg_epilogue_pavilion', width: 262, height: 220, flipX: true }
       ],
       interactionPoints: [
         // Scene 2: The Hero's Reward
         {
-          x: 2300,
-          y: 520,
+          x: 1050,
+          y: 640,
           key: 'interact_monument',
           title: 'Restored Village Promenade',
-          promptText: 'Talk with Mascot',
+          promptText: 'Talk with Zeno',
           lines: [
-            { speaker: 'Mascot', text: 'Do you think they\'ll remember us?' },
+            { speaker: 'Zeno', text: 'Do you think they\'ll remember us?' },
             { speaker: 'Hero', text: 'Probably.' },
-            { speaker: 'Mascot', text: 'Do you think they\'ll call me a hero?' },
+            { speaker: 'Zeno', text: 'Do you think they\'ll call me a hero?' },
             { speaker: 'Hero', text: 'Probably not.' },
-            { speaker: 'Mascot', text: 'Hey!' },
+            { speaker: 'Zeno', text: 'Hey!' },
             { speaker: 'Hero', text: 'You turned into a giant shadow monster and tried to flatten me.' },
-            { speaker: 'Mascot', text: 'I said I was sorry!' },
+            { speaker: 'Zeno', text: 'I said I was sorry!' },
             { speaker: 'Hero', text: 'And I accepted.' },
-            { speaker: 'Mascot', text: 'What happens now?' },
+            { speaker: 'Zeno', text: 'What happens now?' },
             { speaker: 'Hero', text: 'We keep going.' },
-            { speaker: 'Mascot', text: 'Where?' },
+            { speaker: 'Zeno', text: 'Where?' },
             { speaker: 'Hero', text: 'Somewhere we don\'t have to pretend we know everything.' }
           ]
         },
         // Scene 3: The Final Image & Post-Credits Scene
         {
-          x: 4300,
-          y: 420,
+          x: 2000,
+          y: 640,
           key: 'interact_monument',
           title: 'Overlook of Lumenfall',
-          promptText: 'Sit on the Hill with Mascot',
+          promptText: 'Sit on the Hill with Zeno',
           milestoneId: 'epilogue_sunrise',
           lines: [
-            { speaker: 'Mascot', text: 'Do you think I\'ll ever control my power completely?' },
+            { speaker: 'Zeno', text: 'Do you think I\'ll ever control my power completely?' },
             { speaker: 'Hero', text: 'I don\'t know.' },
-            { speaker: 'Mascot', text: 'That\'s not a very comforting answer.' },
+            { speaker: 'Zeno', text: 'That\'s not a very comforting answer.' },
             { speaker: 'Hero', text: 'It\'s an honest one.' },
-            { speaker: 'Mascot', text: 'Then I guess we\'ll figure it out.' },
+            { speaker: 'Zeno', text: 'Then I guess we\'ll figure it out.' },
             { speaker: 'Hero', text: 'Together.' },
             { speaker: 'Narrator', text: 'A kingdom is not saved by the strength of its ruler, or the power of its guardian.' },
             { speaker: 'Narrator', text: 'It is saved by those willing to stand together when the truth is hardest to face.' },

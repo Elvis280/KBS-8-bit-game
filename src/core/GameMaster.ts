@@ -23,7 +23,7 @@ export class GameMaster extends Phaser.Events.EventEmitter {
 
   // Story & World Progression
   public currentAct: GameAct = 'ACT_I';
-  public currentObjective: string = 'Meet the Mascot and begin your journey';
+  public currentObjective: string = 'Meet Zeno and begin your journey';
   
   // Economy & Inventory
   public coins: number = 0;
@@ -39,11 +39,11 @@ export class GameMaster extends Phaser.Events.EventEmitter {
 
   // Canonical Gift Definitions
   public gifts: GiftItem[] = [
-    { id: 1, name: 'Wooden Carving of Mascot', description: 'Someone made this for the mascot before the fall.', unlocked: false },
+    { id: 1, name: 'Wooden Carving of Zeno', description: 'Someone made this for Zeno before the fall.', unlocked: false },
     { id: 2, name: "Child's Drawing of Royal Guard", description: 'Shows a brave soldier standing between people and beasts.', unlocked: false },
-    { id: 3, name: 'Stone Mural Fragment', description: 'Depicts Aurel holding back the darkness alone.', unlocked: false },
+    { id: 3, name: 'Stone Mural Fragment', description: 'Depicts King Krish holding back the darkness alone.', unlocked: false },
     { id: 4, name: 'Memory Crystal', description: 'Glows faintly with the screams of a forgotten disaster.', unlocked: false },
-    { id: 5, name: "Aurel's Journal", description: 'A king’s record of his burden and silent agony.', unlocked: false },
+    { id: 5, name: "King Krish's Journal", description: 'A king’s record of his burden and silent agony.', unlocked: false },
     { id: 6, name: 'Village Lantern', description: 'Guided travelers safely home in peaceful nights.', unlocked: false },
     { id: 7, name: 'Old Map Fragment', description: 'Shows ancient hidden tunnels beneath Lumenfall.', unlocked: false },
     { id: 8, name: 'Silver Brooch', description: 'A family heirloom left behind in hasty flight.', unlocked: false },
@@ -56,16 +56,16 @@ export class GameMaster extends Phaser.Events.EventEmitter {
   // Story Milestones
   public milestones: Map<string, StoryMilestone> = new Map([
     ['mascot_met', { id: 'mascot_met', act: 'ACT_I', title: 'Hear the cries beneath the rubble', completed: false }],
-    ['mascot_rescued', { id: 'mascot_rescued', act: 'ACT_I', title: 'Clear debris and free the Mascot', completed: false }],
-    ['first_gift_found', { id: 'first_gift_found', act: 'ACT_I', title: 'Discover the Wooden Carving (Gift #1)', completed: false }],
+    ['mascot_rescued', { id: 'mascot_rescued', act: 'ACT_I', title: 'Clear debris and free Zeno', completed: false }],
+    ['first_gift_found', { id: 'first_gift_found', act: 'ACT_I', title: 'Discover the Wooden Carving of Zeno (Gift #1)', completed: false }],
     ['corrupted_lands_entered', { id: 'corrupted_lands_entered', act: 'ACT_II', title: 'Cross into the Corrupted Lands', completed: false }],
-    ['mural_inspected', { id: 'mural_inspected', act: 'ACT_II', title: 'Inspect the Stone Mural of Aurel', completed: false }],
+    ['mural_inspected', { id: 'mural_inspected', act: 'ACT_II', title: 'Inspect the Stone Mural of King Krish', completed: false }],
     ['guard_confronted', { id: 'guard_confronted', act: 'ACT_II', title: 'Speak with the Royal Guard at the bridge', completed: false }],
     ['sanctuary_discovered', { id: 'sanctuary_discovered', act: 'ACT_III', title: 'Enter the Forgotten Sanctuary', completed: false }],
     ['beast_defeated', { id: 'beast_defeated', act: 'ACT_III', title: 'Survive the Sanctuary Beast', completed: false }],
-    ['aurel_journal_found', { id: 'aurel_journal_found', act: 'ACT_III', title: 'Read the Records of Aurel', completed: false }],
+    ['aurel_journal_found', { id: 'aurel_journal_found', act: 'ACT_III', title: 'Read the Records of King Krish', completed: false }],
     ['gate_machine_unlocked', { id: 'gate_machine_unlocked', act: 'ACT_IV', title: 'Insert 40 coins into the Castle Gate Machine', completed: false }],
-    ['king_aurel_confronted', { id: 'king_aurel_confronted', act: 'ACT_IV', title: 'Confront King Aurel in the Throne Room', completed: false }],
+    ['king_aurel_confronted', { id: 'king_aurel_confronted', act: 'ACT_IV', title: 'Confront King Krish in the Throne Room', completed: false }],
     ['crown_broken', { id: 'crown_broken', act: 'ACT_IV', title: 'The seal shatters and corruption unleashes', completed: false }],
     ['anchors_cleared', { id: 'anchors_cleared', act: 'ACT_V', title: 'Awaken the 3 Memory Anchors', completed: false }],
     ['heart_of_dawn_choice', { id: 'heart_of_dawn_choice', act: 'ACT_V', title: 'Make the choice: Strike or Embrace', completed: false }],

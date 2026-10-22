@@ -24,17 +24,17 @@ The game features an authentic, hand-drawn 2D indie storybook aesthetic:
 
 ## 📖 Story & Journey
 
-Follow a young wanderer and an ancient guardian mascot across six story acts:
+Follow a young wanderer and their guardian companion Zeno across six story acts:
 
 | Act | Title | Setting & Objective |
 | :---: | :--- | :--- |
-| **Prologue** | *Echoes of Lumenfall* | The coronation of King Aurel and the tragic awakening of the void crown. |
-| **Act I** | *Lumenfall Outskirts* | Wake in the peaceful outskirts, rescue your companion mascot, and learn sword combat against roaming forest slimes. |
+| **Prologue** | *Echoes of Lumenfall* | The coronation of King Krish and the tragic awakening of the void crown. |
+| **Act I** | *Lumenfall Outskirts* | Wake in the peaceful outskirts, rescue your companion Zeno, and learn sword combat against roaming forest slimes. |
 | **Act II** | *The Corrupted Lands* | Venture past deadwood trees and purple-tinged blight, overcoming corrupted beasts and reading ancient murals. |
 | **Act III** | *The Forgotten Sanctuary* | Navigate sacred stone ruins, collect 40 golden coins to forge the Castle Key, and overcome the Sanctuary Chimera. |
-| **Act IV** | *Castle Ramparts & Grand Throne* | Ascend sunset castle battlements, bypass royal automated defenses, and confront the corrupted King Aurel on his throne. |
+| **Act IV** | *Castle Ramparts & Grand Throne* | Ascend sunset castle battlements, bypass royal automated defenses, and confront the corrupted King Krish on his throne. |
 | **Act V** | *The Shattered Arena* | Enter the cosmic void rift. Awaken the 3 Memory Anchors, face the Void Colossus, and make the fateful nonlethal choice. |
-| **Epilogue** | *A Kingdom Without a Crown* | Walk the restored sunlit hills alongside the redeemed king, celebrating a peaceful dawn without tyrannical crowns. |
+| **Epilogue** | *A Kingdom Without a Crown* | Walk the restored sunlit hills alongside the redeemed King Krish, celebrating a peaceful dawn without tyrannical crowns. |
 
 ---
 

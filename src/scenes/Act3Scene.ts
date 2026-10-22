@@ -24,6 +24,8 @@ const act3Config: ActConfig = {
   platformKeys: ['platform_act3'],
   boxKey: 'box_temple',         // Ancient sanctuary temple blocks
   hazardBoxKey: 'box_spike_temple', // Spiked temple electric hazard traps
+  useSingleSpriteProcedural: true,
+  heroJumpVelocity: -550,
 
   // Strategic layout: pits reduced 20%, zero-overlap platforms & boxes
   groundSegments: layout.groundSegments,

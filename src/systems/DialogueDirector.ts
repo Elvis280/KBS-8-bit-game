@@ -192,8 +192,8 @@ export class DialogueDirector {
   private getDefaultPortrait(speaker: string): string | null {
     const s = speaker.toUpperCase();
     if (s.includes('HERO') || s.includes('TRAVELER')) return '/assets/portraits/game/hero_portrait.png';
-    if (s.includes('MASCOT')) return '/assets/portraits/game/mascot_portrait.png';
-    if (s.includes('YOUNG AUREL')) return '/assets/svg/young_aurel.svg';
+    if (s.includes('MASCOT') || s.includes('ZENO')) return '/assets/portraits/game/mascot_portrait.png';
+    if (s.includes('YOUNG AUREL') || s.includes('YOUNG KRISH')) return '/assets/svg/young_aurel.svg';
     if (s.includes('AUREL') || s.includes('KRISH')) return '/assets/portraits/game/king_krish_portrait.png';
     if (s.includes('GUARD') || s.includes('VALEN') || s.includes('KAEL')) return '/assets/portraits/game/captain_valen_portrait.png';
     if (s.includes('ELDER') || s.includes('ROBIN')) return '/assets/portraits/game/elder_robin_portrait.png';
@@ -211,8 +211,8 @@ export class DialogueDirector {
   private getSpeakerColor(speaker: string): string {
     const s = speaker.toUpperCase();
     if (s.includes('HERO')) return '#b45309';
-    if (s.includes('MASCOT')) return '#0284c7';
-    if (s.includes('YOUNG AUREL')) return '#b45309';
+    if (s.includes('MASCOT') || s.includes('ZENO')) return '#0284c7';
+    if (s.includes('YOUNG AUREL') || s.includes('YOUNG KRISH')) return '#b45309';
     if (s.includes('AUREL') || s.includes('KRISH')) return '#7e22ce';
     if (s.includes('GUARD') || s.includes('VALEN') || s.includes('KAEL')) return '#b91c1c';
     if (s.includes('ELDER')) return '#15803d';

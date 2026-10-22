@@ -28,26 +28,28 @@
       <!-- In-Game HUD -->
       <header id="hud" class="hud-layer">
         <div class="hud-left">
-          <div class="hud-stat health-container" id="health-container" title="Hero Health">
-            <span class="hud-label">HP</span>
-            <div class="health-bar-wrapper">
-              <div class="health-bar-track">
-                <div id="health-bar-trail" class="health-bar-trail"></div>
-                <div id="health-bar-fill" class="health-bar-fill high" style="width: 100%;"></div>
-              </div>
-              <div class="health-numeric">
-                <span id="health-value">1.0M</span><span class="health-max">/1M</span>
+          <div class="hud-stat vital-bars-container" id="vital-bars-container" title="Hero Health & Aegis Shield">
+            <div class="vital-row health-row" id="health-container" title="Hero Health">
+              <span class="hud-label">HP</span>
+              <div class="health-bar-wrapper">
+                <div class="health-bar-track">
+                  <div id="health-bar-trail" class="health-bar-trail"></div>
+                  <div id="health-bar-fill" class="health-bar-fill high" style="width: 100%;"></div>
+                </div>
+                <div class="health-numeric">
+                  <span id="health-value">1.0M</span><span class="health-max">/1M</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="hud-stat shield-container" id="shield-container" title="Aegis Shield (Press Shift or C to Guard & Deflect)">
-            <img src="/assets/svg/shield.svg" alt="Shield" class="shield-hud-icon" />
-            <div class="shield-bar-wrapper">
-              <div class="shield-bar-track">
-                <div id="shield-bar-fill" class="shield-bar-fill" style="width: 100%;"></div>
-              </div>
-              <div class="shield-numeric">
-                <span id="shield-value">50</span><span class="shield-max">/50</span>
+            <div class="vital-row shield-row" id="shield-container" title="Aegis Shield (Press Shift or C to Guard & Deflect)">
+              <span class="hud-label shield-label">SHD</span>
+              <div class="shield-bar-wrapper">
+                <div class="shield-bar-track">
+                  <div id="shield-bar-fill" class="shield-bar-fill" style="width: 100%;"></div>
+                </div>
+                <div class="shield-numeric">
+                  <span id="shield-value">50</span><span class="shield-max">/50</span>
+                </div>
               </div>
             </div>
           </div>
@@ -61,14 +63,6 @@
         <div class="hud-center">
           <div class="act-badge" id="act-badge">ACT I</div>
           <div class="objective-banner" id="objective-banner">Before the Light Went Out</div>
-          <div class="act-nav-pills">
-            <button class="act-pill-btn" data-act="Act1Scene">Act I</button>
-            <button class="act-pill-btn" data-act="Act2Scene">Act II</button>
-            <button class="act-pill-btn" data-act="Act3Scene">Act III</button>
-            <button class="act-pill-btn" data-act="Act4Scene">Act IV</button>
-            <button class="act-pill-btn" data-act="Act5Scene">Act V</button>
-            <button class="act-pill-btn" data-act="EpilogueScene">Epilogue</button>
-          </div>
         </div>
 
         <div class="hud-right">

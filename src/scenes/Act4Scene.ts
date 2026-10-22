@@ -27,6 +27,8 @@ const act4Config: ActConfig = {
   platformKeys: ['platform_act4'],
   boxKey: 'box_metal',          // Iron-bound castle armory crates
   hazardBoxKey: 'box_spike_metal', // Spiked iron fortress traps
+  useSingleSpriteProcedural: true,
+  heroJumpVelocity: -550,
 
   // Strategic layout: pits reduced 20%, zero-overlap platforms & boxes
   groundSegments: layout.groundSegments,
@@ -348,7 +350,7 @@ export class Act4Scene extends ActBaseScene {
     }).setOrigin(0.5);
     titleText.setStroke('#000', 3);
 
-    const subText = this.add.text(0, 18, 'Confrontation with King Aurel, Bearer of the Crown', {
+    const subText = this.add.text(0, 18, 'Confrontation with King Krish, Bearer of the Crown', {
       fontFamily: 'Inter, sans-serif',
       fontSize: '13px',
       color: '#cbd5e1'
@@ -371,17 +373,17 @@ export class Act4Scene extends ActBaseScene {
   }
 
   /**
-   * Triggers the confrontation dialogue between Hero, King Aurel, and Mascot before combat commences
+   * Triggers the confrontation dialogue between Hero, King Krish, and Zeno before combat commences
    */
   private startKingAurelThroneDialogue() {
     const confrontationLines: DialogueLine[] = [
-      { speaker: 'King Aurel', text: 'So. The little wanderer has entered my sanctuary. You have crossed a dying kingdom to stand before me.' },
-      { speaker: 'King Aurel', text: 'Tell me, child... do you truly know what you are fighting for?' },
+      { speaker: 'King Krish', text: 'So. The little wanderer has entered my sanctuary. You have crossed a dying kingdom to stand before me.' },
+      { speaker: 'King Krish', text: 'Tell me, child... do you truly know what you are fighting for?' },
       { speaker: 'Hero', text: 'I know what your darkness did to this land. The empty villages, the terrified people, the miasma choking the forest.' },
-      { speaker: 'King Aurel', text: 'You understand nothing! The crown is the only vessel strong enough to contain the primordial void! If I fall, the darkness will swallow everything!' },
-      { speaker: 'Mascot', text: 'He\'s lying! He stole my power and trapped it in that cruel crown!' },
-      { speaker: 'Hero', text: 'You thought silence was protection, Aurel. But it only made you a tyrant. Let the people go!' },
-      { speaker: 'King Aurel', text: 'Then come, wanderer! Face the sovereign of Lumenfall!' }
+      { speaker: 'King Krish', text: 'You understand nothing! The crown is the only vessel strong enough to contain the primordial void! If I fall, the darkness will swallow everything!' },
+      { speaker: 'Zeno', text: 'He\'s lying! He stole my power and trapped it in that cruel crown!' },
+      { speaker: 'Hero', text: 'You thought silence was protection, Krish. But it only made you a tyrant. Let the people go!' },
+      { speaker: 'King Krish', text: 'Then come, wanderer! Face the sovereign of Lumenfall!' }
     ];
 
     dialogue.playCutscene(confrontationLines, () => {
@@ -404,7 +406,7 @@ export class Act4Scene extends ActBaseScene {
       }
       if (this.bossHudEl) {
         this.bossHudEl.classList.remove('hidden');
-        if (this.bossNameEl) this.bossNameEl.textContent = 'King Aurel, Bearer of the Crown';
+        if (this.bossNameEl) this.bossNameEl.textContent = 'King Krish, Bearer of the Crown';
         if (this.bossPhaseTextEl) this.bossPhaseTextEl.textContent = 'Phase 1: Corrupted Sovereign';
       }
       const interval = this.config.boss?.attackInterval || 2500;

@@ -14,16 +14,18 @@ const act2Config: ActConfig = {
   groundColor: 0x1e1035,        // Scorched corrupted dark earth
   groundStrokeColor: 0xa855f7,  // Glowing violet miasma edge
   groundTileKey: 'ground_act2_seamless',
-  groundTileScale: 0.35,
-  groundTileOffsetY: 91,
+  groundTileScale: 0.75,
+  groundTileOffsetY: 0,
   groundDirtKey: 'ground_act2_dirt',
   groundDirtScale: 0.75,
-  propOffsetY: 12,
-  buildingOffsetY: 12,
-  enemyOffsetY: 12,
-  platformKeys: ['platform_act2'],
+  propOffsetY: 0,
+  buildingOffsetY: 0,
+  enemyOffsetY: 0,
+  platformKeys: ['platform_act2_1', 'platform_act2_2', 'platform_act2_3'],
   boxKey: 'box_corrupt',        // Corrupted obsidian rune blocks
   hazardBoxKey: 'box_spike_corrupt', // Spiked corrupted hazard crates
+  useSingleSpriteProcedural: true,
+  heroJumpVelocity: -550,
 
   // Strategic layout: pits reduced 20%, zero-overlap platforms & boxes
   groundSegments: layout.groundSegments,

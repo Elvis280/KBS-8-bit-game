@@ -50,6 +50,9 @@ export class BootScene extends Phaser.Scene {
     this.load.image('ground_act2_seamless', '/assets/tiles/Act_2/ground_seamless_game.png');
     this.load.image('ground_act2_dirt', '/assets/tiles/Act_2/dirt_game.png');
     this.load.image('platform_act2', '/assets/tiles/Act_2/platform_game.png');
+    this.load.image('platform_act2_1', '/assets/tiles/Act_2/platform_act2_1.png');
+    this.load.image('platform_act2_2', '/assets/tiles/Act_2/platform_act2_2.png');
+    this.load.image('platform_act2_3', '/assets/tiles/Act_2/platform_act2_3.png');
 
     // Act 3 (Forgotten Sanctuary)
     this.load.image('ground_act3_seamless', '/assets/tiles/Act_3/ground_seamless_game.png');
@@ -198,36 +201,36 @@ export class BootScene extends Phaser.Scene {
     this.load.image('climb_ladder', '/assets/props/climb_ladder.png');
     this.load.image('ladder', '/assets/props/climb_ladder.png');
 
-    // 10. Epic Act Boss Entities (PNG Game Sheets: 192x192)
+    // 10. Epic Act Boss Entities (PNG Game Sheets / High-Res Pristine Sprites)
     // Treant (Act 1)
     this.load.image('boss_treant', '/assets/sprites/Bosses/game/boss_treant_idle_game.png');
-    this.load.spritesheet('boss_treant_attack', '/assets/sprites/Bosses/game/boss_treant_attack_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_treant_attack', '/assets/sprites/Bosses/game/boss_treant_attack_game.png');
     this.load.image('boss_treant_flinch', '/assets/sprites/Bosses/game/boss_treant_flinch_game.png');
     this.load.image('boss_treant_defeated', '/assets/sprites/Bosses/game/boss_treant_defeated_game.png');
 
     // Hydra (Act 2)
-    this.load.spritesheet('boss_hydra', '/assets/sprites/Bosses/game/boss_hydra_idle_game.png', { frameWidth: 192, frameHeight: 192 });
-    this.load.spritesheet('boss_hydra_attack', '/assets/sprites/Bosses/game/boss_hydra_attack_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_hydra', '/assets/sprites/Bosses/game/boss_hydra_idle_game.png');
+    this.load.image('boss_hydra_attack', '/assets/sprites/Bosses/game/boss_hydra_attack_game.png');
     this.load.image('boss_hydra_flinch', '/assets/sprites/Bosses/game/boss_hydra_flinch_game.png');
-    this.load.spritesheet('boss_hydra_defeated', '/assets/sprites/Bosses/game/boss_hydra_defeated_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_hydra_defeated', '/assets/sprites/Bosses/game/boss_hydra_defeated_game.png');
 
     // Chimera (Act 3)
-    this.load.spritesheet('boss_chimera', '/assets/sprites/Bosses/game/boss_chimera_idle_game.png', { frameWidth: 192, frameHeight: 192 });
-    this.load.spritesheet('boss_chimera_attack', '/assets/sprites/Bosses/game/boss_chimera_attack_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_chimera', '/assets/sprites/Bosses/game/boss_chimera_idle_game.png');
+    this.load.image('boss_chimera_attack', '/assets/sprites/Bosses/game/boss_chimera_attack_game.png');
     this.load.image('boss_chimera_flinch', '/assets/sprites/Bosses/game/boss_chimera_flinch_game.png');
-    this.load.spritesheet('boss_chimera_defeated', '/assets/sprites/Bosses/game/boss_chimera_defeated_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_chimera_defeated', '/assets/sprites/Bosses/game/boss_chimera_defeated_game.png');
 
     // King Aurel / Krish (Act 4)
-    this.load.spritesheet('boss_king_aurel', '/assets/sprites/Bosses/game/boss_king_aurel_idle_game.png', { frameWidth: 192, frameHeight: 192 });
-    this.load.spritesheet('boss_king_aurel_attack', '/assets/sprites/Bosses/game/boss_king_aurel_attack_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_king_aurel', '/assets/sprites/Bosses/game/boss_king_aurel_idle_game.png');
+    this.load.image('boss_king_aurel_attack', '/assets/sprites/Bosses/game/boss_king_aurel_attack_game.png');
     this.load.image('boss_king_aurel_flinch', '/assets/sprites/Bosses/game/boss_king_aurel_flinch_game.png');
-    this.load.spritesheet('boss_king_aurel_defeated', '/assets/sprites/Bosses/game/boss_king_aurel_defeated_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_king_aurel_defeated', '/assets/sprites/Bosses/game/boss_king_aurel_defeated_game.png');
 
     // Void Colossus (Act 5)
-    this.load.spritesheet('boss_void_colossus', '/assets/sprites/Bosses/game/boss_void_colossus_idle_game.png', { frameWidth: 192, frameHeight: 192 });
-    this.load.spritesheet('boss_void_colossus_attack', '/assets/sprites/Bosses/game/boss_void_colossus_attack_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_void_colossus', '/assets/sprites/Bosses/game/boss_void_colossus_idle_game.png');
+    this.load.image('boss_void_colossus_attack', '/assets/sprites/Bosses/game/boss_void_colossus_attack_game.png');
     this.load.image('boss_void_colossus_flinch', '/assets/sprites/Bosses/game/boss_void_colossus_flinch_game.png');
-    this.load.spritesheet('boss_void_colossus_defeated', '/assets/sprites/Bosses/game/boss_void_colossus_defeated_game.png', { frameWidth: 192, frameHeight: 192 });
+    this.load.image('boss_void_colossus_defeated', '/assets/sprites/Bosses/game/boss_void_colossus_defeated_game.png');
   }
 
   create() {

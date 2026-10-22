@@ -33,6 +33,8 @@ export class GameStateManager {
 
   public get hasRescuedMascot(): boolean { return gameMaster.isMilestoneCompleted('mascot_rescued'); }
   public set hasRescuedMascot(v: boolean) { if (v) gameMaster.completeMilestone('mascot_rescued'); }
+  public get hasRescuedZeno(): boolean { return this.hasRescuedMascot; }
+  public set hasRescuedZeno(v: boolean) { this.hasRescuedMascot = v; }
 
   public get goldenKeyAcquired(): boolean { return gameMaster.goldenKeyUnlocked; }
   public set goldenKeyAcquired(v: boolean) { gameMaster.goldenKeyUnlocked = v; }
@@ -42,6 +44,8 @@ export class GameStateManager {
 
   public get aurelDefeated(): boolean { return gameMaster.isMilestoneCompleted('king_aurel_confronted'); }
   public set aurelDefeated(v: boolean) { if (v) gameMaster.completeMilestone('king_aurel_confronted'); }
+  public get krishDefeated(): boolean { return this.aurelDefeated; }
+  public set krishDefeated(v: boolean) { this.aurelDefeated = v; }
 
   public get crownBroken(): boolean { return gameMaster.isMilestoneCompleted('crown_broken'); }
   public set crownBroken(v: boolean) { if (v) gameMaster.completeMilestone('crown_broken'); }
@@ -56,6 +60,8 @@ export class GameStateManager {
 
   public get mascotSaved(): boolean { return gameMaster.isMilestoneCompleted('epilogue_sunrise'); }
   public set mascotSaved(v: boolean) { if (v) gameMaster.completeMilestone('epilogue_sunrise'); }
+  public get zenoSaved(): boolean { return this.mascotSaved; }
+  public set zenoSaved(v: boolean) { this.mascotSaved = v; }
 
   public get gifts(): GiftItem[] {
     return gameMaster.gifts.map(g => ({

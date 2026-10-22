@@ -42,7 +42,10 @@ export interface ActConfig {
   coins: { x: number; y: number }[];
   nextSceneKey: string;
   nextSceneLabel: string;
+  redirectUrl?: string;
   createAmbientEffects?: (scene: Phaser.Scene) => void;
+  useSingleSpriteProcedural?: boolean;
+  heroJumpVelocity?: number;
 }
 
 export abstract class ActBaseScene extends Phaser.Scene {
@@ -118,6 +121,15 @@ export abstract class ActBaseScene extends Phaser.Scene {
   protected isInvulnerable: boolean = false;
   protected isHurt: boolean = false;
 
+  // Single-Sprite Procedural Motion State
+  protected heroWasOnFloor: boolean = true;
+  protected heroLandingTween?: Phaser.Tweens.Tween;
+  protected heroStepDustTimer: number = 0;
+  protected heroAirborneTime: number = 0;
+  protected heroLastFallSpeed: number = 0;
+  protected heroJumpBufferTimer: number = 0;
+  protected heroCoyoteTimer: number = 0;
+
   // Combat Damage & HP Constants
   public static readonly DAMAGE_COMBO_1: number = 15;
   public static readonly DAMAGE_COMBO_2: number = 20;
@@ -128,6 +140,9 @@ export abstract class ActBaseScene extends Phaser.Scene {
   public static readonly HP_SPIKED_BOX: number = 150;
   public static readonly HP_NORMAL_SLIME: number = 30;
   public static readonly HP_CORRUPTED_SLIME: number = 80; // +50 HP over normal slime
+
+  // Active skill wave projectiles for collision detection
+  protected activeSkillWaves: { sprite: Phaser.Physics.Arcade.Sprite; dissolve: (x: number, y: number) => void }[] = [];
 
   // Mascot Companion Follower
   protected mascotCompanion: Phaser.GameObjects.Sprite | null = null;
@@ -177,7 +192,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
     this.isSkillActive = false;
     this.comboStep = 0;
     this.lastCheckpointX = 80;
-    this.lastCheckpointY = 550;
+    this.lastCheckpointY = this.getFloorYAt(80, 640);
     this.isClimbing = false;
     this.isTouchingClimbSurface = false;
     this.currentClimbSurface = null;
@@ -319,6 +334,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
         ground.setVisible(false);
       }
       this.physics.add.existing(ground, true);
+      const gBody = ground.body as Phaser.Physics.Arcade.StaticBody;
+      if (gBody) gBody.updateFromGameObject();
       this.groundGroup.add(ground);
 
       if (hasGroundSprite) {
@@ -384,6 +401,26 @@ export abstract class ActBaseScene extends Phaser.Scene {
         topCap.setDepth(2);
       }
     });
+
+    // Deep dark cavernous chasm backing in pits between ground segments
+    for (let i = 0; i < this.config.groundSegments.length - 1; i++) {
+      const seg1 = this.config.groundSegments[i];
+      const seg2 = this.config.groundSegments[i + 1];
+      const pitX = seg1.x + seg1.w;
+      const pitW = seg2.x - pitX;
+      if (pitW > 10) {
+        const pitTopY = Math.min(seg1.y ?? defaultFloorY, seg2.y ?? defaultFloorY);
+        const pitDepthRect = this.add.rectangle(
+          pitX + pitW / 2,
+          pitTopY + 140,
+          pitW,
+          280,
+          0x07120e,
+          0.94
+        );
+        pitDepthRect.setDepth(1.9); // Under ground surface and bridge platforms, over background
+      }
+    }
   }
 
   protected buildClimbSurfaces() {
@@ -446,7 +483,13 @@ export abstract class ActBaseScene extends Phaser.Scene {
       }
       this.physics.add.existing(plat, true);
       const body = plat.body as Phaser.Physics.Arcade.StaticBody;
-      if (body) body.updateFromGameObject();
+      if (body) {
+        body.checkCollision.down = false;
+        body.checkCollision.left = false;
+        body.checkCollision.right = false;
+        body.checkCollision.up = true;
+        body.updateFromGameObject();
+      }
       this.platformsGroup.add(plat);
 
       // Render textured platform image
@@ -460,7 +503,10 @@ export abstract class ActBaseScene extends Phaser.Scene {
             platform_act1_log: 0.14,
             platform_act1_stone: 0.12,
             platform_act1_moss: 0.23,
-            platform_act2: 0.06,
+            platform_act2: 0.16,
+            platform_act2_1: 0.12,
+            platform_act2_2: 0.16,
+            platform_act2_3: 0.14,
             platform_act3: 0.15,
             platform_act4: 0.15,
             platform_act5: 0.16,
@@ -484,8 +530,12 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
     this.config.buildings.forEach(b => {
       const bldg = this.add.image(b.x, b.y + bldgOffsetY, b.key);
-      const w = b.width || 240;
-      const h = b.height || 210;
+      let w = b.width || 240;
+      let h = b.height || 210;
+      if (this.config.useSingleSpriteProcedural && b.key.includes('cottage')) {
+        w = 320;
+        h = 270;
+      }
       bldg.setDisplaySize(w, h);
       bldg.setOrigin(0.5, 1.0); // Foundation rests flush on ground surface!
       bldg.setDepth(3);
@@ -548,6 +598,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
     if (!this.config.props) return;
 
     const propOffsetY = this.config.propOffsetY ?? 12;
+    const isScaledUp = !!this.config.useSingleSpriteProcedural;
 
     this.config.props.forEach(p => {
       const prop = this.add.image(p.x, p.y + propOffsetY, p.key);
@@ -557,7 +608,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
       if (p.flipX) prop.setFlipX(true);
 
       if (p.key === 'prop_lamp') {
-        prop.setDisplaySize(32, 64);
+        prop.setDisplaySize(isScaledUp ? 42 : 32, isScaledUp ? 84 : 64);
         this.tweens.add({
           targets: prop,
           alpha: { from: 0.82, to: 1 },
@@ -567,9 +618,9 @@ export abstract class ActBaseScene extends Phaser.Scene {
           ease: 'Sine.easeInOut'
         });
       } else if (p.key === 'prop_signpost') {
-        prop.setDisplaySize(40, 56);
+        prop.setDisplaySize(isScaledUp ? 52 : 40, isScaledUp ? 66 : 56);
       } else if (p.key === 'prop_torch') {
-        prop.setDisplaySize(28, 48);
+        prop.setDisplaySize(isScaledUp ? 38 : 28, isScaledUp ? 64 : 48);
         this.tweens.add({
           targets: prop,
           scaleY: { from: 1, to: 1.08 },
@@ -580,7 +631,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
           ease: 'Sine.easeInOut'
         });
       } else if (p.key === 'prop_shrine') {
-        prop.setDisplaySize(44, 84);
+        prop.setDisplaySize(isScaledUp ? 52 : 44, isScaledUp ? 92 : 84);
         this.tweens.add({
           targets: prop,
           alpha: { from: 0.85, to: 1 },
@@ -590,7 +641,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
           ease: 'Sine.easeInOut'
         });
       } else if (p.key === 'prop_flowers') {
-        prop.setDisplaySize(40, 32);
+        prop.setDisplaySize(isScaledUp ? 52 : 40, isScaledUp ? 38 : 32);
         this.tweens.add({
           targets: prop,
           angle: { from: -3, to: 3 },
@@ -610,16 +661,18 @@ export abstract class ActBaseScene extends Phaser.Scene {
     if (!this.config.npcs) return;
 
     const npcOffsetY = this.config.propOffsetY ?? 12;
+    const isSingleSprite = !!this.config.useSingleSpriteProcedural;
 
     this.config.npcs.forEach(n => {
       const textureKey = n.key === 'boss_king_aurel' ? 'npc_aurel' : n.key;
       const isMerchant = n.key === 'npc_merchant';
       const idleFrame = isMerchant ? 0 : 1;
       const talkFrame = isMerchant ? 1 : 0;
+      const frameToUse = isSingleSprite ? 0 : idleFrame;
 
-      const npc = this.physics.add.staticSprite(n.x, n.y + npcOffsetY, textureKey, idleFrame);
+      const npc = this.physics.add.staticSprite(n.x, n.y + npcOffsetY, textureKey, frameToUse);
       npc.setOrigin(0.5, 1.0); // Feet stand flush on ground surface!
-      npc.setDisplaySize(72, 96);
+      npc.setDisplaySize(isSingleSprite ? 96 : 72, isSingleSprite ? 128 : 96);
       npc.setSize(44, 114);
       npc.setOffset(26, 12);
       npc.refreshBody();
@@ -627,7 +680,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
       npc.setData('name', n.name);
       npc.setData('lines', n.lines);
-      npc.setData('idleFrame', idleFrame);
+      npc.setData('idleFrame', frameToUse);
       npc.setData('talkFrame', talkFrame);
       npc.setData('portrait', n.portrait);
 
@@ -642,7 +695,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
       });
 
       // Ambient overhead storybook nameplate
-      const nameplate = this.add.text(n.x, n.y + npcOffsetY - 104, n.name, {
+      const nameplateY = isSingleSprite ? (n.y + npcOffsetY - 134) : (n.y + npcOffsetY - 104);
+      const nameplate = this.add.text(n.x, nameplateY, n.name, {
         fontFamily: "'Cinzel', serif, system-ui",
         fontSize: '11px',
         color: '#fdfaf2',
@@ -662,6 +716,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
     if (!this.config.interactionPoints) return;
 
     const propOffsetY = this.config.propOffsetY ?? 12;
+    const isScaledUp = !!this.config.useSingleSpriteProcedural;
 
     this.config.interactionPoints.forEach(ip => {
       // If Mascot has already been rescued, do not respawn the trapped debris marker
@@ -672,9 +727,12 @@ export abstract class ActBaseScene extends Phaser.Scene {
       const textureKey = (ip.milestoneId === 'mascot_rescued') ? 'mascot_trapped' : ip.key;
       const point = this.physics.add.staticSprite(ip.x, ip.y + propOffsetY, textureKey);
       point.setOrigin(0.5, 1.0); // Base flush on ground surface!
-      point.setDisplaySize(56, 56);
-      point.setSize(44, 44);
-      point.setOffset(10, 10);
+      const isMascotTrapped = ip.milestoneId === 'mascot_rescued';
+      const dispW = isMascotTrapped ? 110 : (isScaledUp ? 68 : 56);
+      const dispH = isMascotTrapped ? 110 : (isScaledUp ? 68 : 56);
+      point.setDisplaySize(dispW, dispH);
+      point.setSize(Math.round(dispW * 0.8), Math.round(dispH * 0.8));
+      point.setOffset(Math.round(dispW * 0.1), Math.round(dispH * 0.1));
       point.refreshBody();
       point.setDepth(8);
 
@@ -684,13 +742,14 @@ export abstract class ActBaseScene extends Phaser.Scene {
       point.setData('lines', ip.lines);
 
       // Glowing pulsing beacon overhead
-      const beacon = this.add.circle(ip.x, ip.y + propOffsetY - 64, 4, 0xfde047, 0.9);
+      const beaconY = ip.y + propOffsetY - (isScaledUp ? 76 : 64);
+      const beacon = this.add.circle(ip.x, beaconY, 4, 0xfde047, 0.9);
       beacon.setDepth(11);
       point.setData('beacon', beacon);
 
       this.tweens.add({
         targets: beacon,
-        y: ip.y + propOffsetY - 70,
+        y: beaconY - 6,
         scale: 1.35,
         alpha: 0.45,
         duration: 900 + Math.random() * 200,
@@ -953,15 +1012,25 @@ export abstract class ActBaseScene extends Phaser.Scene {
   }
 
   protected createPlayer() {
-    this.setupHeroAnimations();
-
-    this.player = this.physics.add.sprite(80, 550, 'hero_idle');
-    this.player.setCollideWorldBounds(false);
-    this.player.setDisplaySize(72, 96);
-    this.player.setSize(44, 114);
-    this.player.setOffset(26, 12);
-    this.player.setDepth(10);
-    this.player.anims.play('hero_idle');
+    const spawnY = this.getFloorYAt(80, 640);
+    if (this.config.useSingleSpriteProcedural) {
+      this.player = this.physics.add.sprite(80, spawnY, 'hero_idle');
+      this.player.setCollideWorldBounds(false);
+      this.player.setOrigin(0.5, 123 / 128); // Boot soles in hero_idle_game.png sit at pixel 123
+      this.player.setDisplaySize(96, 128); // 1.0x native unscaled crisp resolution
+      this.player.setSize(44, 110);
+      this.player.setOffset(26, 13); // 13 + 110 = 123: boot soles stay precisely on ground level at all scales!
+      this.player.setDepth(10);
+    } else {
+      this.setupHeroAnimations();
+      this.player = this.physics.add.sprite(80, spawnY, 'hero_idle');
+      this.player.setCollideWorldBounds(false);
+      this.player.setDisplaySize(72, 96);
+      this.player.setSize(44, 114);
+      this.player.setOffset(26, 12);
+      this.player.setDepth(10);
+      this.player.anims.play('hero_idle');
+    }
 
     this.physics.add.collider(this.player, this.groundGroup);
     this.physics.add.collider(this.player, this.platformsGroup);
@@ -1004,8 +1073,10 @@ export abstract class ActBaseScene extends Phaser.Scene {
     });
 
     // Visual radiant shield aura following hero
-    this.shieldAuraSprite = this.add.sprite(this.player.x, this.player.y, 'shield');
-    this.shieldAuraSprite.setDisplaySize(64, 64);
+    const auraSize = this.config.useSingleSpriteProcedural ? 80 : 64;
+    const auraY = this.player.y - (this.config.useSingleSpriteProcedural ? 56 : 0);
+    this.shieldAuraSprite = this.add.sprite(this.player.x, auraY, 'shield');
+    this.shieldAuraSprite.setDisplaySize(auraSize, auraSize);
     this.shieldAuraSprite.setDepth(11);
     this.shieldAuraSprite.setAlpha(0.35);
 
@@ -1089,11 +1160,163 @@ export abstract class ActBaseScene extends Phaser.Scene {
     this.handlePlayerMovement();
     this.updateMascotCompanion();
     this.updateBoss();
+    this.updateActiveSkillWaves();
     this.updateSlimes();
     this.checkCheckpointsAndPits();
     this.checkNPCProximity();
     this.checkExitGate();
     this.updateSkillCooldownUI();
+
+    if (this.config.useSingleSpriteProcedural) {
+      this.updateHeroProceduralMotion(this.time.now, this.game.loop.delta);
+    }
+  }
+
+  protected updateActiveSkillWaves() {
+    if (this.activeSkillWaves.length === 0) return;
+
+    // Continuous geometric intersection check between each skill wave and active boss
+    if (this.bossSprite && this.bossSprite.active && !this.isBossDefeated) {
+      const bossBounds = this.bossSprite.getBounds();
+      // Expand boss target bounds generously (+50px in all directions) so fast skill waves never miss
+      const paddedBossBounds = new Phaser.Geom.Rectangle(
+        bossBounds.x - 50,
+        bossBounds.y - 50,
+        bossBounds.width + 100,
+        bossBounds.height + 70
+      );
+
+      for (let i = this.activeSkillWaves.length - 1; i >= 0; i--) {
+        const item = this.activeSkillWaves[i];
+        if (!item || !item.sprite || !item.sprite.active || item.sprite.getData('destroyed')) continue;
+        const waveBounds = item.sprite.getBounds();
+        if (Phaser.Geom.Intersects.RectangleToRectangle(waveBounds, paddedBossBounds)) {
+          const bx = this.bossSprite.x;
+          const by = this.bossSprite.y;
+          this.damageBoss(ActBaseScene.DAMAGE_SKILL, true);
+          item.dissolve(bx, by);
+        }
+      }
+    }
+  }
+
+  protected updateHeroProceduralMotion(time: number, _delta: number) {
+    if (!this.player || !this.player.active || !this.player.body) return;
+    const body = this.player.body as Phaser.Physics.Arcade.Body;
+    const onFloor = body.blocked.down || body.touching.down;
+    const vx = body.velocity.x;
+    const vy = body.velocity.y;
+
+    // Track airborne duration and downward fall speed
+    if (!onFloor) {
+      this.heroAirborneTime += _delta;
+      this.heroLastFallSpeed = vy;
+      this.heroWasOnFloor = false;
+    } else {
+      // Only trigger landing squash if hero was genuinely falling in the air
+      if (!this.heroWasOnFloor && this.heroAirborneTime > 80 && this.heroLastFallSpeed > 80) {
+        this.spawnLandingDust(this.player.x, this.player.y);
+
+        // Gentle elastic landing impact (anchored at feet)
+        if (this.heroLandingTween) this.heroLandingTween.stop();
+        this.heroLandingTween = this.tweens.add({
+          targets: this.player,
+          scaleY: 0.90,
+          scaleX: 1.10,
+          duration: 90,
+          yoyo: true,
+          ease: 'Quad.easeOut',
+          onComplete: () => {
+            this.heroLandingTween = undefined;
+          }
+        });
+      }
+      this.heroAirborneTime = 0;
+      this.heroLastFallSpeed = 0;
+      this.heroWasOnFloor = true;
+    }
+
+    // Skip continuous scale updates while landing tween or hurt recoil tween is active
+    if (this.heroLandingTween || this.isHurt) return;
+
+    if (this.isClimbing) {
+      // Climbing: rhythmic subtle tilt
+      const isMovingVert = Math.abs(vy) > 10;
+      if (isMovingVert) {
+        this.player.setAngle(Math.sin(time * 0.015) * 4);
+      } else {
+        this.player.setAngle(0);
+      }
+      this.player.setScale(1, 1);
+    } else if (this.isGuarding) {
+      // Guard stance: crouched and firm
+      this.player.setScale(1.08, 0.92);
+      this.player.setAngle(0);
+    } else if (this.isAttacking) {
+      // Attack lunge tilt is controlled by attack combo step
+      this.player.setScale(1.05, 0.98);
+    } else if (!onFloor) {
+      // Airborne: Jump ascent or fall descent
+      if (vy < -40) {
+        // Ascending stretch
+        this.player.setScale(0.94, 1.06);
+        this.player.setAngle(vx > 10 ? 4 : (vx < -10 ? -4 : 0));
+      } else if (vy > 40) {
+        // Descending anticipation
+        this.player.setScale(1.04, 0.96);
+        this.player.setAngle(vx > 10 ? 5 : (vx < -10 ? -5 : 0));
+      } else {
+        this.player.setScale(1, 1);
+        this.player.setAngle(0);
+      }
+    } else if (Math.abs(vx) > 10) {
+      // Running on ground: forward tilt and vertical trot bob
+      const targetAngle = (vx > 0 ? 5 : -5) + Math.sin(time * 0.018) * 2.5;
+      this.player.setAngle(Phaser.Math.Linear(this.player.angle, targetAngle, 0.25));
+
+      const bob = Math.abs(Math.sin(time * 0.018)) * 3;
+      this.player.setScale(1 + bob * 0.012, 1 - bob * 0.015);
+
+      // Footstep dust at feet
+      if (time - this.heroStepDustTimer > 180) {
+        this.heroStepDustTimer = time;
+        this.spawnStepDust(this.player.x - (vx > 0 ? 18 : -18), this.player.y);
+      }
+    } else {
+      // Idle on ground: calm breathing motion
+      const breath = Math.sin(time * 0.005);
+      this.player.setScale(1 - breath * 0.015, 1 + breath * 0.02);
+      this.player.setAngle(0);
+    }
+  }
+
+  protected spawnStepDust(x: number, y: number) {
+    const dust = this.add.circle(x, y - 2, Phaser.Math.Between(3, 5), 0xd1fae5, 0.6);
+    dust.setDepth(9);
+    this.tweens.add({
+      targets: dust,
+      y: y - Phaser.Math.Between(6, 12),
+      scale: 0,
+      alpha: 0,
+      duration: 260,
+      onComplete: () => dust.destroy()
+    });
+  }
+
+  protected spawnLandingDust(x: number, y: number) {
+    for (let i = -1; i <= 1; i += 2) {
+      const dust = this.add.circle(x + i * 14, y - 2, Phaser.Math.Between(4, 7), 0xd1fae5, 0.7);
+      dust.setDepth(9);
+      this.tweens.add({
+        targets: dust,
+        x: dust.x + i * Phaser.Math.Between(12, 24),
+        y: y - Phaser.Math.Between(4, 8),
+        scale: 0,
+        alpha: 0,
+        duration: 280,
+        onComplete: () => dust.destroy()
+      });
+    }
   }
 
   protected handleCombatInput() {
@@ -1133,6 +1356,87 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
     const isFacingLeft = this.player.flipX;
     const dir = isFacingLeft ? -1 : 1;
+
+    if (this.config.useSingleSpriteProcedural) {
+      const attackY = this.player.y - 56;
+      if (this.comboStep === 1) {
+        this.player.setVelocityX(dir * 180);
+        this.player.setAngle(dir * 7);
+
+        const slash = this.add.image(this.player.x + dir * 42, attackY, 'slash_combo1');
+        slash.setDisplaySize(76, 76);
+        slash.setFlipX(isFacingLeft);
+        slash.setDepth(15);
+        this.tweens.add({
+          targets: slash,
+          scaleX: isFacingLeft ? -1.2 : 1.2,
+          scaleY: 1.2,
+          alpha: { from: 1, to: 0 },
+          duration: 200,
+          onComplete: () => slash.destroy()
+        });
+
+        this.checkAttackCollision(this.player.x + dir * 42, attackY, 75, ActBaseScene.DAMAGE_COMBO_1);
+
+        this.time.delayedCall(220, () => {
+          this.isAttacking = false;
+          if (!this.player || !this.player.active) return;
+          this.player.setAngle(0);
+        });
+      } else if (this.comboStep === 2) {
+        this.player.setVelocityX(dir * 200);
+        this.player.setAngle(dir * 9);
+
+        const slash = this.add.image(this.player.x + dir * 48, attackY, 'slash_combo2');
+        slash.setDisplaySize(88, 88);
+        slash.setFlipX(isFacingLeft);
+        slash.setDepth(15);
+        this.tweens.add({
+          targets: slash,
+          scaleX: isFacingLeft ? -1.3 : 1.3,
+          scaleY: 1.3,
+          alpha: { from: 1, to: 0 },
+          duration: 180,
+          onComplete: () => slash.destroy()
+        });
+
+        this.checkAttackCollision(this.player.x + dir * 48, attackY, 82, ActBaseScene.DAMAGE_COMBO_2);
+
+        this.time.delayedCall(200, () => {
+          this.isAttacking = false;
+          if (!this.player || !this.player.active) return;
+          this.player.setAngle(0);
+        });
+      } else {
+        this.player.setVelocityX(dir * 280);
+        this.player.setAngle(dir * 11);
+        this.player.setTint(0xfde047);
+        this.cameras.main.shake(120, 0.007);
+
+        const slash = this.add.image(this.player.x + dir * 60, attackY, 'slash_combo3');
+        slash.setDisplaySize(104, 104);
+        slash.setFlipX(isFacingLeft);
+        slash.setDepth(15);
+        this.tweens.add({
+          targets: slash,
+          scaleX: isFacingLeft ? -1.45 : 1.45,
+          scaleY: 1.45,
+          alpha: { from: 1, to: 0 },
+          duration: 250,
+          onComplete: () => slash.destroy()
+        });
+
+        this.checkAttackCollision(this.player.x + dir * 60, attackY, 96, ActBaseScene.DAMAGE_COMBO_3);
+
+        this.time.delayedCall(270, () => {
+          this.isAttacking = false;
+          if (!this.player || !this.player.active) return;
+          this.player.clearTint();
+          this.player.setAngle(0);
+        });
+      }
+      return;
+    }
 
     if (this.comboStep === 1) {
       // Step 1: Swift Horizontal Crescent Slash (4 frames @ 18fps ~ 220ms)
@@ -1273,7 +1577,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
     this.time.delayedCall(120, () => {
       this.cameras.main.shake(150, 0.01);
 
-      const wave = this.physics.add.sprite(this.player.x + dir * 42, this.player.y - 4, 'skill_wave');
+      const waveY = this.player.y - (this.config.useSingleSpriteProcedural ? 56 : 4);
+      const wave = this.physics.add.sprite(this.player.x + dir * 42, waveY, 'skill_wave');
       wave.setDisplaySize(88, 54);
       wave.setSize(64, 40);
       wave.setFlipX(isFacingLeft);
@@ -1309,6 +1614,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
       const dissolveWave = (impactX: number, impactY: number) => {
         if (!wave.active || wave.getData('destroyed')) return;
         wave.setData('destroyed', true);
+        this.activeSkillWaves = this.activeSkillWaves.filter(item => item.sprite !== wave);
         if (wave.body) {
           (wave.body as Phaser.Physics.Arcade.Body).enable = false;
         }
@@ -1341,6 +1647,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
         wave.destroy();
       };
+
+      this.activeSkillWaves.push({ sprite: wave, dissolve: dissolveWave });
 
       // Shatter normal obstacle box on wave impact (single target -> wave dissolves immediately)
       this.physics.add.overlap(wave, this.boxesGroup, (_w, boxObj) => {
@@ -1424,6 +1732,7 @@ export abstract class ActBaseScene extends Phaser.Scene {
       // Wave disappears after travel range if no target was struck
       this.time.delayedCall(750, () => {
         if (!wave.getData('destroyed')) {
+          this.activeSkillWaves = this.activeSkillWaves.filter(item => item.sprite !== wave);
           trailTimer.destroy();
           if (wave.active) wave.destroy();
         }
@@ -1449,7 +1758,9 @@ export abstract class ActBaseScene extends Phaser.Scene {
   }
 
   protected checkAttackCollision(centerX: number, centerY: number, reach: number, damage: number = ActBaseScene.DAMAGE_COMBO_1) {
-    const attackBox = new Phaser.Geom.Rectangle(centerX - reach / 2, centerY - 45, reach, 90);
+    // Generous player attack reach and vertical height (height 140px, reach expanded 35%)
+    const expandedReach = Math.round(reach * 1.35);
+    const attackBox = new Phaser.Geom.Rectangle(centerX - expandedReach / 2, centerY - 70, expandedReach, 140);
 
     const checkGroup = (group: Phaser.Physics.Arcade.StaticGroup, isHazard: boolean) => {
       if (!group) return;
@@ -1521,9 +1832,17 @@ export abstract class ActBaseScene extends Phaser.Scene {
       }
     }
 
-    // Sword slash damages active boss
+    // Sword slash damages active boss with generous boss bounding box padding
     if (this.bossSprite && this.bossSprite.active && !this.isBossDefeated) {
-      if (Phaser.Geom.Intersects.RectangleToRectangle(attackBox, this.bossSprite.getBounds())) {
+      const bossBounds = this.bossSprite.getBounds();
+      // Expand boss target bounds by 40px in all directions so melee always connects cleanly
+      const paddedBossBounds = new Phaser.Geom.Rectangle(
+        bossBounds.x - 40,
+        bossBounds.y - 40,
+        bossBounds.width + 80,
+        bossBounds.height + 60
+      );
+      if (Phaser.Geom.Intersects.RectangleToRectangle(attackBox, paddedBossBounds)) {
         this.damageBoss(damage, false);
       }
     }
@@ -1689,6 +2008,32 @@ export abstract class ActBaseScene extends Phaser.Scene {
       }
 
       // Vertical Climbing Movement & Hero Climbing Animation
+      if (this.config.useSingleSpriteProcedural) {
+        if (isPressingUp) {
+          this.player.setVelocityY(-160);
+          if (this.time.now - this.lastClimbSoundTime > 230) {
+            sound.playClimb();
+            this.lastClimbSoundTime = this.time.now;
+          }
+        } else if (isPressingDown) {
+          this.player.setVelocityY(160);
+          if (this.time.now - this.lastClimbSoundTime > 230) {
+            sound.playClimb();
+            this.lastClimbSoundTime = this.time.now;
+          }
+          if (onFloor) {
+            this.isClimbing = false;
+            body.setAllowGravity(true);
+            this.player.setAngle(0);
+          }
+        } else {
+          this.player.setVelocityY(0);
+        }
+
+        this.player.setVelocityX(0);
+        return;
+      }
+
       if (isPressingUp) {
         this.player.setVelocityY(-160);
         this.player.anims.play('hero_climb', true);
@@ -1726,6 +2071,47 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
     const speed = this.isGuarding ? 140 : 280;
 
+    if (this.config.useSingleSpriteProcedural) {
+      if (this.keys.A.isDown || this.cursors.left.isDown) {
+        this.player.setVelocityX(-speed);
+        this.player.setFlipX(true);
+      } else if (this.keys.D.isDown || this.cursors.right.isDown) {
+        this.player.setVelocityX(speed);
+        this.player.setFlipX(false);
+      } else {
+        if (!this.isAttacking) {
+          this.player.setVelocityX(0);
+        }
+      }
+
+      const deltaMs = this.game.loop.delta || 16;
+      const isJumpPressed = Phaser.Input.Keyboard.JustDown(this.keys.W) || 
+                            Phaser.Input.Keyboard.JustDown(this.keys.Space) || 
+                            Phaser.Input.Keyboard.JustDown(this.cursors.up);
+
+      if (isJumpPressed) {
+        this.heroJumpBufferTimer = 140;
+      } else if (this.heroJumpBufferTimer > 0) {
+        this.heroJumpBufferTimer -= deltaMs;
+      }
+
+      if (onFloor) {
+        this.heroCoyoteTimer = 100;
+      } else if (this.heroCoyoteTimer > 0) {
+        this.heroCoyoteTimer -= deltaMs;
+      }
+
+      const canJump = (onFloor || this.heroCoyoteTimer > 0) && (this.keys.W.isDown || this.keys.Space.isDown || this.cursors.up.isDown || this.heroJumpBufferTimer > 0);
+      if (canJump && !this.isAttacking && !this.isGuarding) {
+        const jumpVel = this.config.heroJumpVelocity ?? -540;
+        this.player.setVelocityY(jumpVel);
+        this.heroCoyoteTimer = 0;
+        this.heroJumpBufferTimer = 0;
+        sound.playJump();
+      }
+      return;
+    }
+
     if (this.keys.A.isDown || this.cursors.left.isDown) {
       this.player.setVelocityX(-speed);
       this.player.setFlipX(true);
@@ -1759,7 +2145,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
     }
 
     if ((this.keys.W.isDown || this.keys.Space.isDown || this.cursors.up.isDown) && onFloor) {
-      this.player.setVelocityY(-460);
+      const jumpVel = this.config.heroJumpVelocity ?? -460;
+      this.player.setVelocityY(jumpVel);
       sound.playJump();
       if (!this.isGuarding && !this.isAttacking) {
         this.player.anims.play('hero_jump', true);
@@ -1784,8 +2171,19 @@ export abstract class ActBaseScene extends Phaser.Scene {
     const onFloor = body.blocked.down || body.touching.down;
 
     if (onFloor && this.player.y < 670) {
-      this.lastCheckpointX = this.player.x;
-      this.lastCheckpointY = this.player.y - 10;
+      // Avoid recording checkpoints right on the brink of pit edges
+      const isNearPitEdge = this.config.groundSegments.some(seg => {
+        const leftEdge = seg.x;
+        const rightEdge = seg.x + seg.w;
+        const isNearLeft = Math.abs(this.player.x - leftEdge) < 60 && leftEdge > 0;
+        const isNearRight = Math.abs(this.player.x - rightEdge) < 60 && rightEdge < this.config.worldWidth;
+        return isNearLeft || isNearRight;
+      });
+
+      if (!isNearPitEdge) {
+        this.lastCheckpointX = this.player.x;
+        this.lastCheckpointY = this.player.y;
+      }
     }
 
     if (this.player.y > 700 && !this.isInvulnerable) {
@@ -1912,12 +2310,41 @@ export abstract class ActBaseScene extends Phaser.Scene {
     sound.playHit();
     this.cameras.main.shake(130, 0.008);
 
+    if (this.config.useSingleSpriteProcedural) {
+      if (knockbackVx !== 0) {
+        this.player.setFlipX(knockbackVx > 0);
+      }
+      this.player.setVelocity(knockbackVx, knockbackVy);
+      this.player.setAngle(knockbackVx > 0 ? 10 : -10);
+      this.player.setTint(0xef4444);
+
+      // Flash invulnerability tween
+      this.tweens.add({
+        targets: this.player,
+        alpha: { from: 0.25, to: 1 },
+        duration: 100,
+        repeat: 6,
+        onComplete: () => {
+          if (this.player && this.player.active) {
+            this.player.setAlpha(1);
+            this.player.clearTint();
+          }
+          this.isInvulnerable = false;
+        }
+      });
+
+      this.time.delayedCall(duration, () => {
+        this.isHurt = false;
+        if (!this.player || !this.player.active) return;
+        this.player.clearTint();
+        this.player.setAngle(0);
+      });
+      return;
+    }
+
     // Play hurt posture and knockback velocity
     this.player.anims.play('hero_hurt', true);
     if (knockbackVx !== 0) {
-      // Facing: sprite faces right by default while recoiling to the left.
-      // If knocked to the right (Vx > 0), face left (flipX = true).
-      // If knocked to the left (Vx < 0), face right (flipX = false).
       this.player.setFlipX(knockbackVx > 0);
     }
     this.player.setVelocity(knockbackVx, knockbackVy);
@@ -2028,7 +2455,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
     }
 
     if (this.shieldAuraSprite && this.player.active) {
-      this.shieldAuraSprite.setPosition(this.player.x, this.player.y - 4);
+      const auraOffsetY = this.config.useSingleSpriteProcedural ? 56 : 4;
+      this.shieldAuraSprite.setPosition(this.player.x, this.player.y - auraOffsetY);
 
       if (this.isGuarding) {
         this.shieldAuraSprite.setAlpha(0.88);
@@ -2177,8 +2605,15 @@ export abstract class ActBaseScene extends Phaser.Scene {
     gameMaster.damagePlayer(25);
     this.cameras.main.shake(180, 0.012);
 
-    this.player.setVelocity(0, 0);
-    this.player.setPosition(this.lastCheckpointX, this.lastCheckpointY);
+    this.heroAirborneTime = 0;
+    this.heroLastFallSpeed = 0;
+
+    const body = this.player.body as Phaser.Physics.Arcade.Body;
+    if (body) {
+      body.reset(this.lastCheckpointX, this.lastCheckpointY);
+    } else {
+      this.player.setPosition(this.lastCheckpointX, this.lastCheckpointY);
+    }
 
     this.tweens.add({
       targets: this.player,
@@ -2214,14 +2649,27 @@ export abstract class ActBaseScene extends Phaser.Scene {
     const floorY = this.getFloorYAt(exitX, 640);
 
     if (Math.abs(this.player.x - exitX) < 45 && Math.abs(this.player.y - (floorY - 50)) < 90) {
-      if (!this.isTransitioning && this.config.nextSceneKey) {
-        this.isTransitioning = true;
-        sound.playMagicChime();
-        this.cameras.main.fade(600, 0, 0, 0, false, (_cam: any, progress: number) => {
-          if (progress === 1) {
-            this.scene.start(this.config.nextSceneKey);
-          }
-        });
+      if (!this.isTransitioning) {
+        if (this.config.redirectUrl) {
+          this.isTransitioning = true;
+          sound.playMagicChime();
+          this.cameras.main.fade(800, 0, 0, 0, false, (_cam: any, progress: number) => {
+            if (progress === 1) {
+              window.location.href = this.config.redirectUrl!;
+            }
+          });
+          return;
+        }
+
+        if (this.config.nextSceneKey) {
+          this.isTransitioning = true;
+          sound.playMagicChime();
+          this.cameras.main.fade(600, 0, 0, 0, false, (_cam: any, progress: number) => {
+            if (progress === 1) {
+              this.scene.start(this.config.nextSceneKey);
+            }
+          });
+        }
       }
     }
   }
@@ -2338,6 +2786,25 @@ export abstract class ActBaseScene extends Phaser.Scene {
         }
 
         body.setVelocityX(dir * patrolSpeed);
+      }
+
+      if (this.config.useSingleSpriteProcedural) {
+        const isGrounded = body.blocked.down || body.touching.down;
+        let seed = slime.getData('hopSeed');
+        if (seed === undefined) {
+          seed = (slime.x % 100) * 0.1;
+          slime.setData('hopSeed', seed);
+        }
+
+        if (!isGrounded) {
+          slime.setScale(0.88, 1.14);
+        } else if (Math.abs(body.velocity.x) > 5) {
+          const hop = Math.sin(now * 0.014 + seed);
+          slime.setScale(1 - hop * 0.12, 1 + hop * 0.14);
+        } else {
+          const breath = Math.sin(now * 0.005 + seed);
+          slime.setScale(1 + breath * 0.05, 1 - breath * 0.05);
+        }
       }
     }
   }
@@ -2561,7 +3028,9 @@ export abstract class ActBaseScene extends Phaser.Scene {
       // Upward bounce recoil
       this.player.setVelocityY(-400);
       sound.playJump();
-      this.player.anims.play('hero_jump', true);
+      if (!this.config.useSingleSpriteProcedural) {
+        this.player.anims.play('hero_jump', true);
+      }
       this.cameras.main.shake(90, 0.006);
       this.showBoxHitText(sx, sy - 20, 'STOMP!');
       return;
@@ -2900,37 +3369,63 @@ export abstract class ActBaseScene extends Phaser.Scene {
     const floorY = (b.y || 540) + enemyOffsetY;
     this.bossSprite = this.physics.add.sprite(b.x, floorY, b.key);
     this.bossSprite.setOrigin(0.5, 1.0); // Base sits flush on top of the arena floor!
-    this.bossSprite.setDisplaySize(180, 180);
-    this.bossSprite.setSize(120, 164);
-    this.bossSprite.setOffset(36, 26);
-    this.bossSprite.setDepth(9);
 
-    // Register Boss Idle and Attack Animations
-    const idleAnimKey = `${b.key}_idle_anim`;
-    if (!this.anims.exists(idleAnimKey)) {
-      const tex = this.textures.get(b.key);
-      const frameTotal = tex ? tex.frameTotal - 1 : 1;
-      if (frameTotal > 1) {
+    if (this.config.useSingleSpriteProcedural) {
+      const bossW = b.width || 360;
+      const bossH = b.height || 420; // Towering colossal boss (over 3.3x the 128px player!)
+      this.bossSprite.setDisplaySize(bossW, bossH);
+      this.bossSprite.setSize(Math.round(bossW * 0.85), Math.round(bossH * 0.92));
+      this.bossSprite.setOffset(Math.round(bossW * 0.075), Math.round(bossH * 0.08));
+      this.bossSprite.setDepth(9);
+
+      // Deep ancient sway & breathing tween anchored around base scale
+      const baseScaleX = this.bossSprite.scaleX;
+      const baseScaleY = this.bossSprite.scaleY;
+      this.tweens.add({
+        targets: this.bossSprite,
+        scaleY: { from: baseScaleY, to: baseScaleY * 0.96 },
+        scaleX: { from: baseScaleX, to: baseScaleX * 1.03 },
+        angle: { from: -1.5, to: 1.5 },
+        duration: 1800,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+    } else {
+      const bossW = b.width || 280;
+      const bossH = b.height || 360; // Towering boss (3.7x standard 96px player!)
+      this.bossSprite.setDisplaySize(bossW, bossH);
+      this.bossSprite.setSize(Math.round(bossW * 0.60), Math.round(bossH * 0.86));
+      this.bossSprite.setOffset(Math.round(bossW * 0.20), Math.round(bossH * 0.14));
+      this.bossSprite.setDepth(9);
+
+      // Register Boss Idle and Attack Animations
+      const idleAnimKey = `${b.key}_idle_anim`;
+      if (!this.anims.exists(idleAnimKey)) {
+        const tex = this.textures.get(b.key);
+        const frameTotal = tex ? tex.frameTotal - 1 : 1;
+        if (frameTotal > 1) {
+          this.anims.create({
+            key: idleAnimKey,
+            frames: this.anims.generateFrameNumbers(b.key, { start: 0, end: frameTotal - 1 }),
+            frameRate: 4,
+            repeat: -1
+          });
+        }
+      }
+      if (this.anims.exists(idleAnimKey)) {
+        this.bossSprite.play(idleAnimKey);
+      }
+
+      const attackAnimKey = `${b.key}_attack_anim`;
+      if (!this.anims.exists(attackAnimKey) && this.textures.exists(`${b.key}_attack`)) {
         this.anims.create({
-          key: idleAnimKey,
-          frames: this.anims.generateFrameNumbers(b.key, { start: 0, end: frameTotal - 1 }),
-          frameRate: 4,
-          repeat: -1
+          key: attackAnimKey,
+          frames: this.anims.generateFrameNumbers(`${b.key}_attack`, { start: 0, end: 2 }),
+          frameRate: 6,
+          repeat: 0
         });
       }
-    }
-    if (this.anims.exists(idleAnimKey)) {
-      this.bossSprite.play(idleAnimKey);
-    }
-
-    const attackAnimKey = `${b.key}_attack_anim`;
-    if (!this.anims.exists(attackAnimKey) && this.textures.exists(`${b.key}_attack`)) {
-      this.anims.create({
-        key: attackAnimKey,
-        frames: this.anims.generateFrameNumbers(`${b.key}_attack`, { start: 0, end: 2 }),
-        frameRate: 6,
-        repeat: 0
-      });
     }
 
     const body = this.bossSprite.body as Phaser.Physics.Arcade.Body;
@@ -2949,15 +3444,6 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
     // Create the floating in-game health bar directly overhead
     this.createBossOverheadHealthBar();
-
-    this.tweens.add({
-      targets: this.bossSprite,
-      scaleY: { from: 1, to: 0.94 },
-      duration: 1100,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut'
-    });
   }
 
   protected updateBoss() {
@@ -2974,7 +3460,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
     // Keep floating overhead health bar directly above boss
     if (this.bossOverheadContainer && this.bossOverheadContainer.active) {
       this.bossOverheadContainer.x = this.bossSprite.x;
-      this.bossOverheadContainer.y = this.bossSprite.y - 190;
+      const overheadOffsetY = (this.bossSprite.displayHeight || (this.config.useSingleSpriteProcedural ? 384 : 288)) + 24;
+      this.bossOverheadContainer.y = this.bossSprite.y - overheadOffsetY;
     }
 
     const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, this.bossSprite.x, this.bossSprite.y);
@@ -3035,7 +3522,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
     const barWidth = 170;
     const barHeight = 14;
 
-    this.bossOverheadContainer = this.add.container(this.bossSprite.x, this.bossSprite.y - 190);
+    const overheadOffsetY = (this.bossSprite.displayHeight || (this.config.useSingleSpriteProcedural ? 384 : 288)) + 24;
+    this.bossOverheadContainer = this.add.container(this.bossSprite.x, this.bossSprite.y - overheadOffsetY);
     this.bossOverheadContainer.setDepth(26);
     this.bossOverheadContainer.setAlpha(0); // Fades in on boss awaken
 
@@ -3085,6 +3573,55 @@ export abstract class ActBaseScene extends Phaser.Scene {
   protected triggerBossAttack() {
     if (!this.bossSprite || !this.bossSprite.active || this.isBossDefeated || this.isTransitioning) return;
 
+    if (this.config.useSingleSpriteProcedural) {
+      // Procedural Boss Attack: windup telegraph + slam
+      this.bossSprite.setTint(0xff3366);
+      sound.playBossRoar();
+
+      const baseScaleX = this.bossSprite.scaleX;
+      const baseScaleY = this.bossSprite.scaleY;
+
+      this.tweens.add({
+        targets: this.bossSprite,
+        angle: -7,
+        scaleY: baseScaleY * 1.08,
+        duration: 250,
+        ease: 'Back.easeIn'
+      });
+
+      this.time.delayedCall(380, () => {
+        if (!this.bossSprite || !this.bossSprite.active || this.isBossDefeated) return;
+        this.bossSprite.clearTint();
+
+        // Slam down
+        this.tweens.add({
+          targets: this.bossSprite,
+          angle: 4,
+          scaleY: baseScaleY * 0.90,
+          scaleX: baseScaleX * 1.10,
+          duration: 120,
+          yoyo: true,
+          ease: 'Quad.easeOut'
+        });
+
+        const bx = this.bossSprite.x;
+        const by = this.bossSprite.y;
+        const dir = this.player.x < bx ? -1 : 1;
+
+        const bulletKey = this.config.hazardBulletKey || 'void_bullet';
+        const proj = this.hazardBulletsGroup.create(bx + dir * 130, by - 130, bulletKey) as Phaser.Physics.Arcade.Image;
+        if (proj) {
+          proj.setDisplaySize(48, 48);
+          (proj.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+          proj.setVelocity(dir * 190, 0);
+          proj.setDepth(15);
+        }
+
+        this.cameras.main.shake(180, 0.012);
+      });
+      return;
+    }
+
     const bKey = this.config.boss?.key;
     const attackAnim = `${bKey}_attack_anim`;
     if (this.anims.exists(attackAnim)) {
@@ -3129,6 +3666,28 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
     this.bossHp = Math.max(0, this.bossHp - damage);
     this.updateBossHpBar();
+
+    if (this.config.useSingleSpriteProcedural) {
+      sound.playHit();
+      this.bossSprite.setTint(isSkill ? 0xfde047 : 0xff4444);
+      this.tweens.add({
+        targets: this.bossSprite,
+        x: this.bossSprite.x + (this.player.x < this.bossSprite.x ? 8 : -8),
+        duration: 50,
+        yoyo: true,
+        repeat: 2,
+        onComplete: () => {
+          if (this.bossSprite && this.bossSprite.active) {
+            this.bossSprite.clearTint();
+          }
+        }
+      });
+
+      if (this.bossHp <= 0) {
+        this.defeatBoss();
+      }
+      return;
+    }
 
     const bKey = this.config.boss?.key;
     if (bKey && this.textures.exists(`${bKey}_flinch`)) {
@@ -3227,18 +3786,18 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
       const act4Cutscene = [
         { speaker: 'Hero', text: "It's over." },
-        { speaker: 'King Aurel', text: "No." },
-        { speaker: 'King Aurel', text: "(A sharp crack echoes through the chamber) No, no… the seal!" },
+        { speaker: 'King Krish', text: "No." },
+        { speaker: 'King Krish', text: "(A sharp crack echoes through the chamber) No, no… the seal!" },
         { speaker: 'Narrator', text: "[The crown fractures! A wave of violent purple magic bursts outward across the throne room.]" },
-        { speaker: 'Mascot', text: "My heart…!" },
-        { speaker: 'Narrator', text: "[The released energy spirals wildly toward the mascot.]" },
+        { speaker: 'Zeno', text: "My heart…!" },
+        { speaker: 'Narrator', text: "[The released energy spirals wildly toward Zeno.]" },
         { speaker: 'Hero', text: "Wait! Don't touch it!" },
-        { speaker: 'Narrator', text: "[The mascot absorbs the swirling magic. Its body rises into the air as light and darkness twist around it.]" },
-        { speaker: 'Mascot', text: "I can feel everything!" },
-        { speaker: 'Mascot', text: "(Voice distorting into an echo) I can fix everything!" },
+        { speaker: 'Narrator', text: "[Zeno absorbs the swirling magic. Its body rises into the air as light and darkness twist around it.]" },
+        { speaker: 'Zeno', text: "I can feel everything!" },
+        { speaker: 'Zeno', text: "(Voice distorting into an echo) I can fix everything!" },
         { speaker: 'Narrator', text: "[Its body expands into a monstrous silhouette. The sky turns black.]" },
         { speaker: 'Hero', text: "What's happening to you?" },
-        { speaker: 'Narrator', text: "[The transformed mascot unleashes a blast. The hero is thrown across the chamber.]" },
+        { speaker: 'Narrator', text: "[The transformed guardian unleashes a blast. The hero is thrown across the chamber.]" },
         { speaker: 'Hero', text: "No… what have I done?" }
       ];
 
@@ -3268,41 +3827,41 @@ export abstract class ActBaseScene extends Phaser.Scene {
       const playResolution = (branch: 'embrace' | 'strike') => {
         const resolutionLines: DialogueLine[] = branch === 'embrace' ? [
           { speaker: 'Narrator', text: "[The hero kneels upon the obsidian ground, lowering the weapon. The golden blade softens into a warm aura of sunlight.]" },
-          { speaker: 'King Aurel', text: "What are you doing? It is wide open! Strike!" },
-          { speaker: 'Hero', text: "Violence shattered this kingdom, King Aurel. It will never mend it." },
-          { speaker: 'Mascot', text: "Please…" },
+          { speaker: 'King Krish', text: "What are you doing? It is wide open! Strike!" },
+          { speaker: 'Hero', text: "Violence shattered this kingdom, King Krish. It will never mend it." },
+          { speaker: 'Zeno', text: "Please…" },
           { speaker: 'Hero', text: "I came here because I believed you needed a warrior. But I never stopped to ask what you needed." },
-          { speaker: 'Mascot', text: "I wanted to be whole again." },
+          { speaker: 'Zeno', text: "I wanted to be whole again." },
           { speaker: 'Hero', text: "I know." },
-          { speaker: 'Mascot', text: "I wanted everything to go back to the way it was. I didn't want to hurt anyone." },
+          { speaker: 'Zeno', text: "I wanted everything to go back to the way it was. I didn't want to hurt anyone." },
           { speaker: 'Hero', text: "Then let me help you stop." },
-          { speaker: 'Narrator', text: "[The Heart of Dawn releases a wave of golden light. The darkness separates from the mascot, swirling around the arena.]" },
-          { speaker: 'King Aurel', text: "Now! Let it go!" },
-          { speaker: 'Narrator', text: "[The mascot closes its eyes. The hero reaches out and gently takes its paw.]" },
+          { speaker: 'Narrator', text: "[The Heart of Dawn releases a wave of golden light. The darkness separates from Zeno, swirling around the arena.]" },
+          { speaker: 'King Krish', text: "Now! Let it go!" },
+          { speaker: 'Narrator', text: "[Zeno closes its eyes. The hero reaches out and gently takes its paw.]" },
           { speaker: 'Hero', text: "You don't have to be afraid anymore." },
-          { speaker: 'Mascot', text: "I'm still scared." },
+          { speaker: 'Zeno', text: "I'm still scared." },
           { speaker: 'Hero', text: "Then we'll be scared together." },
-          { speaker: 'Narrator', text: "[The darkness dissolves into thousands of tiny lights. The mascot returns to its original form and falls into the hero's arms.]" },
-          { speaker: 'Mascot', text: "I'm sorry." },
+          { speaker: 'Narrator', text: "[The darkness dissolves into thousands of tiny lights. Zeno returns to its original form and falls into the hero's arms.]" },
+          { speaker: 'Zeno', text: "I'm sorry." },
           { speaker: 'Hero', text: "So am I." }
         ] : [
           { speaker: 'Narrator', text: "[The hero lunges forward, swinging the golden blade with all their might!]" },
-          { speaker: 'Narrator', text: "[A blinding flash erupts! But instead of cutting, the blade dissolves into thousands of gentle golden motes that envelop the trembling mascot!]" },
-          { speaker: 'King Aurel', text: "The blade... it dissolved?! Why did it not strike?!" },
+          { speaker: 'Narrator', text: "[A blinding flash erupts! But instead of cutting, the blade dissolves into thousands of gentle golden motes that envelop the trembling guardian!]" },
+          { speaker: 'King Krish', text: "The blade... it dissolved?! Why did it not strike?!" },
           { speaker: 'Hero', text: "The Heart of Dawn refuses to kill. It never was a weapon... it was a seal of love, not slaughter." },
           { speaker: 'Hero', text: "[Lowering empty hands and kneeling in the dust] I was wrong to fight you. I understand now." },
-          { speaker: 'Mascot', text: "Please…" },
+          { speaker: 'Zeno', text: "Please…" },
           { speaker: 'Hero', text: "I came here believing you were a monster to defeat. But you were hurting all along." },
-          { speaker: 'Mascot', text: "I wanted to be whole again. I didn't want to hurt anyone." },
+          { speaker: 'Zeno', text: "I wanted to be whole again. I didn't want to hurt anyone." },
           { speaker: 'Hero', text: "Then let me help you stop." },
-          { speaker: 'Narrator', text: "[The Heart of Dawn releases a wave of golden light. The darkness separates from the mascot, swirling around the arena.]" },
-          { speaker: 'King Aurel', text: "Now! Let it go!" },
-          { speaker: 'Narrator', text: "[The mascot closes its eyes. The hero reaches out and gently takes its paw.]" },
+          { speaker: 'Narrator', text: "[The Heart of Dawn releases a wave of golden light. The darkness separates from Zeno, swirling around the arena.]" },
+          { speaker: 'King Krish', text: "Now! Let it go!" },
+          { speaker: 'Narrator', text: "[Zeno closes its eyes. The hero reaches out and gently takes its paw.]" },
           { speaker: 'Hero', text: "You don't have to be afraid anymore." },
-          { speaker: 'Mascot', text: "I'm still scared." },
+          { speaker: 'Zeno', text: "I'm still scared." },
           { speaker: 'Hero', text: "Then we'll be scared together." },
-          { speaker: 'Narrator', text: "[The darkness dissolves into thousands of tiny lights. The mascot returns to its original form and falls into the hero's arms.]" },
-          { speaker: 'Mascot', text: "I'm sorry." },
+          { speaker: 'Narrator', text: "[The darkness dissolves into thousands of tiny lights. Zeno returns to its original form and falls into the hero's arms.]" },
+          { speaker: 'Zeno', text: "I'm sorry." },
           { speaker: 'Hero', text: "So am I." }
         ];
 
@@ -3317,8 +3876,8 @@ export abstract class ActBaseScene extends Phaser.Scene {
       };
 
       const act5InitialCutscene: DialogueLine[] = [
-        { speaker: 'Narrator', text: "[The Heart of Dawn glows in the hero's hands. The mascot's monstrous form begins to weaken.]" },
-        { speaker: 'King Aurel', text: "The darkness is exposed! You hold the Heart of Dawn in your hands." },
+        { speaker: 'Narrator', text: "[The Heart of Dawn glows in the hero's hands. The shadowy monstrous form begins to weaken.]" },
+        { speaker: 'King Krish', text: "The darkness is exposed! You hold the Heart of Dawn in your hands." },
         {
           speaker: 'Heart of Dawn',
           text: "A golden blade forms above the Heart of Dawn. What choice will you make?",
@@ -3404,16 +3963,18 @@ export abstract class ActBaseScene extends Phaser.Scene {
 
     // Set defeated boss sprite visual if available
     const bKey = this.config.boss?.key;
-    if (bKey && this.textures.exists(`${bKey}_defeated`)) {
+    if (!this.config.useSingleSpriteProcedural && bKey && this.textures.exists(`${bKey}_defeated`)) {
       this.bossSprite.setTexture(`${bKey}_defeated`);
     }
 
     // Fade out and destroy boss sprite
+    const currentScaleX = this.bossSprite.scaleX;
+    const currentScaleY = this.bossSprite.scaleY;
     this.tweens.add({
       targets: this.bossSprite,
       alpha: 0,
-      scaleX: 1.4,
-      scaleY: 1.4,
+      scaleX: currentScaleX * 1.25,
+      scaleY: currentScaleY * 1.25,
       duration: 1200,
       onComplete: () => {
         if (this.bossSprite) this.bossSprite.destroy();

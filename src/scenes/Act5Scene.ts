@@ -24,6 +24,8 @@ const act5Config: ActConfig = {
   platformKeys: ['platform_act5'],
   boxKey: 'box_void',           // Floating void crystal blocks
   hazardBoxKey: 'box_spike_void', // Antimatter volatile void spike crystals
+  useSingleSpriteProcedural: true,
+  heroJumpVelocity: -550,
   hazardShoots: true,              // Spiked boxes fire slow-moving bullets!
   hazardShootInterval: 2000,       // Interval of 2 seconds
   hazardBulletSpeed: 110,          // Slow-moving projectile speed
