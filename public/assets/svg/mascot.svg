@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="56" height="56">
+  <!-- Storybook Illustrated Mascot Spirit Guardian -->
+  <!-- Golden Miracle Sparkle Aura -->
+  <circle cx="28" cy="30" r="23" fill="#fef9c3" opacity="0.45"/>
+
+  <!-- Left Tiny Spirit Wing / Floating Tail -->
+  <ellipse cx="14" cy="36" rx="7" ry="4" transform="rotate(-30 14 36)" fill="#f1f5f9" stroke="#22252a" stroke-width="1.8"/>
+  <!-- Right Tiny Spirit Wing -->
+  <ellipse cx="42" cy="36" rx="7" ry="4" transform="rotate(30 42 36)" fill="#f1f5f9" stroke="#22252a" stroke-width="1.8"/>
+
+  <!-- Adorable Ears / Soft Horns -->
+  <path d="M 17 21 Q 13 10 19 8 Q 23 12 24 19 Z" fill="#ffffff" stroke="#22252a" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M 18 18 Q 16 11 20 10 Q 21 12 22 17 Z" fill="#fbcfe8"/>
+
+  <path d="M 39 21 Q 43 10 37 8 Q 33 12 32 19 Z" fill="#ffffff" stroke="#22252a" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M 38 18 Q 40 11 36 10 Q 35 12 34 17 Z" fill="#fbcfe8"/>
+
+  <!-- Round Fluffy Chibi Body -->
+  <circle cx="28" cy="32" r="16.5" fill="#ffffff" stroke="#22252a" stroke-width="2.2"/>
+  <!-- Soft Lower Cel Shadow -->
+  <path d="M 13 36 C 16 46, 40 46, 43 36 C 40 48, 16 48, 13 36 Z" fill="#e2e8f0"/>
+
+  <!-- Big Glowing Innocent Eyes (Cyan) -->
+  <circle cx="22" cy="30" r="4.5" fill="#06b6d4" stroke="#22252a" stroke-width="1.4"/>
+  <circle cx="23.2" cy="28.8" r="1.8" fill="#ffffff"/>
+  <circle cx="21" cy="31.8" r="0.9" fill="#ffffff"/>
+
+  <circle cx="34" cy="30" r="4.5" fill="#06b6d4" stroke="#22252a" stroke-width="1.4"/>
+  <circle cx="35.2" cy="28.8" r="1.8" fill="#ffffff"/>
+  <circle cx="33" cy="31.8" r="0.9" fill="#ffffff"/>
+
+  <!-- Rosy Cheeks -->
+  <ellipse cx="16.5" cy="34" rx="2.8" ry="1.6" fill="#f472b6" opacity="0.6"/>
+  <ellipse cx="39.5" cy="34" rx="2.8" ry="1.6" fill="#f472b6" opacity="0.6"/>
+
+  <!-- Tiny Cute Smile -->
+  <path d="M 26 34.5 Q 28 36.8 30 34.5" stroke="#22252a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+  <!-- Floating Miracle Flower Sparkles -->
+  <polygon points="28,2 29.5,5 32,6 29.5,7 28,10 26.5,7 24,6 26.5,5" fill="#fde047" stroke="#22252a" stroke-width="0.8"/>
+  <polygon points="46,18 47.2,20 49,21 47.2,22 46,24 44.8,22 43,21 44.8,20" fill="#38bdf8" stroke="#22252a" stroke-width="0.8"/>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 64" width="32" height="64">
+  <!-- Storybook Illustrated Wrought-Iron Road Lamp -->
+  <!-- Ambient Warm Butter-Yellow Glow -->
+  <circle cx="16" cy="18" r="14" fill="#fef3c7" opacity="0.45"/>
+  <circle cx="16" cy="18" r="9" fill="#fde047" opacity="0.3"/>
+
+  <!-- Ornate Cast-Iron Lamp Cap -->
+  <path d="M 16 3 L 18 5 L 26 12 L 6 12 L 14 5 Z" fill="#2d2826" stroke="#1d1917" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- Finial Ball on Top -->
+  <circle cx="16" cy="3" r="1.8" fill="#d97706" stroke="#1d1917" stroke-width="0.8"/>
+
+  <!-- Glowing Hand-Drawn Glass Cage -->
+  <path d="M 8.5 12 L 23.5 12 L 21.5 24 L 10.5 24 Z" fill="#fef08a" stroke="#1d1917" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- Inner Warm Flame Core -->
+  <path d="M 16 14 Q 19 18 17 22 Q 16 23 15 22 Q 13 18 16 14 Z" fill="#ea580c"/>
+  <circle cx="16" cy="20" r="2.2" fill="#ffffff"/>
+
+  <!-- Iron Lamp Base & Crossbar -->
+  <path d="M 8 24 L 24 24 L 22 27 L 10 27 Z" fill="#2d2826" stroke="#1d1917" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- Curved Support Bracket -->
+  <path d="M 11 27 Q 16 31 21 27" stroke="#1d1917" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+  <!-- Lamp Post Pole (Slightly organic, not sterile straight line) -->
+  <path d="M 14.5 27 L 17.5 27 L 17.5 58 L 14.5 58 Z" fill="#38322e" stroke="#1d1917" stroke-width="1.4"/>
+  <!-- Decorative Mid-Ring -->
+  <ellipse cx="16" cy="42" rx="3" ry="1.2" fill="#d97706" stroke="#1d1917" stroke-width="0.8"/>
+
+  <!-- Stone Foundation Pedestal -->
+  <path d="M 9 58 L 23 58 L 25 62 L 7 62 Z" fill="#64625b" stroke="#1d1917" stroke-width="1.6" stroke-linejoin="round"/>
+  <ellipse cx="16" cy="62.5" rx="10" ry="1.2" fill="#1d1917" opacity="0.3"/>
+</svg>

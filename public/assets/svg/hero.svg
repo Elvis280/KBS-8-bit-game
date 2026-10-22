@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 88" width="64" height="88">
+  <!-- Storybook Illustrated Hero Traveler Chibi -->
+  <!-- Ground Shadow -->
+  <ellipse cx="32" cy="85" rx="20" ry="2.5" fill="#20221e" opacity="0.35"/>
+
+  <!-- Flowing Red Cape (Behind) -->
+  <path d="M 22 28 Q 12 50 14 74 Q 24 72 32 70 Q 26 48 28 28 Z" fill="#b91c1c" stroke="#2c1f19" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M 16 32 Q 13 54 15 73 Q 22 71 28 69" fill="#991b1b"/>
+
+  <!-- Left Leg & Sturdy Leather Boot -->
+  <rect x="23" y="58" width="7" height="18" fill="#1e293b" stroke="#2c1f19" stroke-width="1.6" rx="2"/>
+  <path d="M 21 72 L 31 72 L 31 82 L 19 82 Q 19 78 21 72 Z" fill="#854d0e" stroke="#2c1f19" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- Right Leg & Sturdy Leather Boot -->
+  <rect x="34" y="58" width="7" height="18" fill="#1e293b" stroke="#2c1f19" stroke-width="1.6" rx="2"/>
+  <path d="M 32 72 L 42 72 L 44 82 L 32 82 Q 32 78 32 72 Z" fill="#854d0e" stroke="#2c1f19" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- Traveler Sapphire Tunic & Torso -->
+  <path d="M 20 30 L 44 30 L 46 58 L 18 58 Z" fill="#2563eb" stroke="#2c1f19" stroke-width="2" stroke-linejoin="round" rx="3"/>
+  <path d="M 20 30 L 26 30 L 24 58 L 18 58 Z" fill="#1d4ed8"/>
+
+  <!-- Warm Leather Belt with Gold Buckle -->
+  <rect x="18" y="52" width="28" height="6" fill="#854d0e" stroke="#2c1f19" stroke-width="1.4"/>
+  <rect x="29" y="51" width="6" height="8" rx="1" fill="#facc15" stroke="#2c1f19" stroke-width="1.2"/>
+
+  <!-- Golden Sword Sheath on Hip -->
+  <rect x="42" y="44" width="4.5" height="26" transform="rotate(-25 42 44)" fill="#475569" stroke="#2c1f19" stroke-width="1.4" rx="1"/>
+  <polygon points="40,40 46,38 48,42 42,44" fill="#fbbf24" stroke="#2c1f19" stroke-width="1.2"/>
+
+  <!-- Left Arm -->
+  <rect x="14" y="32" width="6" height="18" fill="#2563eb" stroke="#2c1f19" stroke-width="1.6" rx="3"/>
+  <circle cx="17" cy="51" r="3.2" fill="#fed7aa" stroke="#2c1f19" stroke-width="1.4"/>
+
+  <!-- Right Arm -->
+  <rect x="44" y="32" width="6" height="18" fill="#2563eb" stroke="#2c1f19" stroke-width="1.6" rx="3"/>
+  <circle cx="47" cy="51" r="3.2" fill="#fed7aa" stroke="#2c1f19" stroke-width="1.4"/>
+
+  <!-- Chibi Head & Warm Skin Tone -->
+  <circle cx="32" cy="18" r="10.5" fill="#fed7aa" stroke="#2c1f19" stroke-width="2"/>
+  <ellipse cx="26" cy="22" rx="2.5" ry="1.4" fill="#fca5a5" opacity="0.6"/>
+  <ellipse cx="38" cy="22" rx="2.5" ry="1.4" fill="#fca5a5" opacity="0.6"/>
+
+  <!-- Expressive Chibi Eyes -->
+  <ellipse cx="36" cy="17" rx="2.2" ry="3" fill="#1e293b" stroke="#2c1f19" stroke-width="0.8"/>
+  <circle cx="36.5" cy="16.5" r="1" fill="#ffffff"/>
+
+  <!-- Traveler Hair Bangs & Tresses -->
+  <path d="M 21 18 Q 21 7 32 7 Q 43 7 43 18 Q 39 11 32 12 Q 25 11 21 18 Z" fill="#6e3b12" stroke="#2c1f19" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M 23 14 Q 28 17 32 17 Q 36 15 38 12 Q 33 9 23 14 Z" fill="#854d0e"/>
+
+  <!-- Golden Circlet Headband -->
+  <path d="M 21.5 13.5 Q 32 10.5 42.5 13.5" stroke="#facc15" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+</svg>

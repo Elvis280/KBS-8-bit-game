@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Storybook Illustrated Village Gift Parcel -->
+  <!-- Subtle Ground Shadow -->
+  <ellipse cx="12" cy="21.5" rx="8" ry="1.5" fill="#2d2016" opacity="0.3"/>
+
+  <!-- Wrapped Box Base -->
+  <path d="M 4 11 C 4 10, 5 9.5, 6 9.5 L 18 9.5 C 19 9.5, 20 10, 20 11 L 19.5 20 C 19.5 21, 18.5 21.5, 17.5 21.5 L 6.5 21.5 C 5.5 21.5, 4.5 21, 4.5 20 Z" 
+        fill="#fbf4e4" stroke="#2b211a" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Cel Shading Bottom-Right -->
+  <path d="M 12 11 L 19.5 11 L 19.5 20.5 L 12 20.5 Z" fill="#ebdfc4" opacity="0.6"/>
+
+  <!-- Parcel Lid -->
+  <path d="M 3 7 C 3 6, 4 5.5, 5 5.5 L 19 5.5 C 20 5.5, 21 6, 21 7 L 20.5 10 C 20.5 10.5, 19.5 11, 18.5 11 L 5.5 11 C 4.5 11, 3.5 10.5, 3.5 10 Z" 
+        fill="#f5ebd2" stroke="#2b211a" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Vertical Terracotta Ribbon -->
+  <path d="M 10.5 5.5 L 13.5 5.5 L 13.5 21.5 L 10.5 21.5 Z" fill="#d96a4c" stroke="#2b211a" stroke-width="1.2"/>
+  <!-- Horizontal Terracotta Ribbon -->
+  <path d="M 4.2 14.5 L 19.8 14.5 L 19.8 17.5 L 4.2 17.5 Z" fill="#d96a4c" stroke="#2b211a" stroke-width="1.2"/>
+
+  <!-- Ribbon Highlight -->
+  <line x1="12" y1="6" x2="12" y2="21" stroke="#fca5a5" stroke-width="0.8"/>
+
+  <!-- Charming Hand-Tied Ribbon Bow -->
+  <!-- Left Loop -->
+  <path d="M 12 5.5 Q 7 1.5 8 4 Q 9 6.5 12 5.5 Z" fill="#e87a5d" stroke="#2b211a" stroke-width="1.3" stroke-linejoin="round"/>
+  <!-- Right Loop -->
+  <path d="M 12 5.5 Q 17 1.5 16 4 Q 15 6.5 12 5.5 Z" fill="#e87a5d" stroke="#2b211a" stroke-width="1.3" stroke-linejoin="round"/>
+  <!-- Center Knot -->
+  <circle cx="12" cy="5.5" r="1.6" fill="#fca5a5" stroke="#2b211a" stroke-width="1.2"/>
+</svg>

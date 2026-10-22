@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Storybook Illustrated Memory Anchor Relic -->
+  <!-- Ground Shadow -->
+  <ellipse cx="32" cy="62" rx="22" ry="2.5" fill="#150a1c" opacity="0.45"/>
+
+  <!-- Weathered Dark Obsidian Stone Pedestal -->
+  <path d="M 14 62 L 50 62 L 44 47 L 20 47 Z" fill="#2d1c36" stroke="#1a0d21" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Pedestal Center Carved Column -->
+  <path d="M 23 47 L 41 47 L 38 41 L 26 41 Z" fill="#432852" stroke="#1a0d21" stroke-width="1.6"/>
+
+  <!-- Ancient Inscribed Runes on Base -->
+  <line x1="22" y1="55" x2="42" y2="55" stroke="#a855f7" stroke-width="1.2" stroke-dasharray="3 2"/>
+  <circle cx="32" cy="55" r="1.8" fill="#f472b6"/>
+
+  <!-- Levitating Memory Tear Crystal (Hand-Drawn Rhombus Diamond) -->
+  <!-- Soft Violet Radiance Halo -->
+  <circle cx="32" cy="26" r="16" fill="#f0abfc" opacity="0.35"/>
+  <circle cx="32" cy="26" r="11" fill="#f43f5e" opacity="0.2"/>
+
+  <!-- Main Memory Crystal -->
+  <polygon points="32,10 44,26 32,42 20,26" fill="#7d348a" stroke="#1a0d21" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Left Facet (Light Plum Highlight) -->
+  <polygon points="32,10 32,42 20,26" fill="#a448b5"/>
+  <!-- Right Facet (Deep Amethyst Shadow) -->
+  <polygon points="32,10 32,42 44,26" fill="#5c2466"/>
+
+  <!-- Inner Shimmering Memory Core -->
+  <polygon points="32,16 38,26 32,36 26,26" fill="#f472b6" stroke="#1a0d21" stroke-width="1"/>
+  <circle cx="32" cy="26" r="2.5" fill="#ffffff"/>
+
+  <!-- Hand-drawn Orbiting Memory Halo Ring -->
+  <ellipse cx="32" cy="26" rx="20" ry="6.5" fill="none" stroke="#e879f9" stroke-width="1.5" stroke-dasharray="6 3" transform="rotate(-15 32 26)"/>
+  <circle cx="15" cy="22" r="2" fill="#38bdf8" stroke="#1a0d21" stroke-width="0.8"/>
+  <circle cx="49" cy="30" r="2" fill="#fde047" stroke="#1a0d21" stroke-width="0.8"/>
+
+  <!-- Top Beacon Star Flare -->
+  <circle cx="32" cy="5" r="3.2" fill="#fbcfe8" stroke="#1a0d21" stroke-width="0.8"/>
+  <polygon points="32,0 33.5,3.5 37,5 33.5,6.5 32,10 30.5,6.5 27,5 30.5,3.5" fill="#ffffff"/>
+</svg>

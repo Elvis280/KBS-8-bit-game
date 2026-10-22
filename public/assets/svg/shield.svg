@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Storybook Illustrated Aegis Kite Shield -->
+  <!-- Subtle Ground Shadow -->
+  <ellipse cx="12" cy="22" rx="7" ry="1.5" fill="#1b2226" opacity="0.3"/>
+
+  <!-- Main Shield Boundary -->
+  <path d="M 12 2.5 
+           L 20.5 4.5 
+           C 20.5 13.5, 16 19, 12 21.5 
+           C 8 19, 3.5 13.5, 3.5 4.5 Z" 
+        fill="#367f80" stroke="#1c252a" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Left Side Cel Shading / Highlight Split -->
+  <path d="M 12 3 L 4.5 4.8 C 4.5 13, 8 18, 12 20.5 Z" fill="#4ea5a3"/>
+  <path d="M 12 3 L 19.5 4.8 C 19.5 13, 16 18, 12 20.5 Z" fill="#2d6869"/>
+
+  <!-- Hand-drawn Bronze Outer Rim -->
+  <path d="M 12 2.5 L 20.5 4.5 L 19 6.5 L 12 5 L 5 6.5 L 3.5 4.5 Z" fill="#cf9036" stroke="#1c252a" stroke-width="1"/>
+
+  <!-- Center Sanctuary Star Gem Emblem -->
+  <polygon points="12,7.5 14.5,11.5 12,15.5 9.5,11.5" fill="#fdf8e6" stroke="#1c252a" stroke-width="1" stroke-linejoin="round"/>
+  <circle cx="12" cy="11.5" r="1.5" fill="#99f6e4"/>
+  <circle cx="12" cy="11.5" r="0.6" fill="#ffffff"/>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 56" width="44" height="56">
+  <!-- Storybook Illustrated Crossroads Signpost -->
+  <!-- Ground Shadow -->
+  <ellipse cx="22" cy="54" rx="11" ry="1.8" fill="#2b1c12" opacity="0.35"/>
+
+  <!-- Wooden Post Body (Hand-Drawn Organic Taper) -->
+  <path d="M 20 6 L 24 6 L 24.5 53 L 19.5 53 Z" fill="#9e6933" stroke="#2c1f17" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Post Top Pyramid Cap -->
+  <polygon points="19,6 25,6 22,2" fill="#75471d" stroke="#2c1f17" stroke-width="1.2"/>
+
+  <!-- Upper Direction Fingerboard (Pointing Right -> Citadel / Castle) -->
+  <path d="M 11 11 L 34 11 L 41 16 L 34 21 L 11 21 Z" 
+        fill="#cf904e" stroke="#2c1f17" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Cel Highlight on Top Edge of Board -->
+  <path d="M 12 12.5 L 34 12.5 L 39 16 L 34 14 L 12 14 Z" fill="#e8b478"/>
+  <!-- Carved Rune Text Lines -->
+  <path d="M 15 16 L 23 16 M 26 16 L 32 16" stroke="#522f11" stroke-width="1.6" stroke-linecap="round"/>
+
+  <!-- Lower Direction Fingerboard (Pointing Left <- Village / Outskirts) -->
+  <path d="M 33 23 L 10 23 L 3 28 L 10 33 L 33 33 Z" 
+        fill="#b87837" stroke="#2c1f17" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Cel Highlight -->
+  <path d="M 32 24.5 L 10 24.5 L 5 28 L 10 26 L 32 26 Z" fill="#d99959"/>
+  <!-- Carved Rune Text Lines -->
+  <path d="M 12 28 L 18 28 M 21 28 L 29 28" stroke="#48270b" stroke-width="1.6" stroke-linecap="round"/>
+
+  <!-- Iron Mounting Nails / Studs -->
+  <circle cx="22" cy="16" r="1.3" fill="#f5ebe0" stroke="#2c1f17" stroke-width="0.8"/>
+  <circle cx="22" cy="28" r="1.3" fill="#f5ebe0" stroke="#2c1f17" stroke-width="0.8"/>
+
+  <!-- Moss Clump at Post Base -->
+  <path d="M 17 53 Q 22 49 27 53 Z" fill="#6d8a5c" stroke="#2c1f17" stroke-width="1.2"/>
+</svg>

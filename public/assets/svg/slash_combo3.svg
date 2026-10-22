@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <!-- Storybook Hand-Drawn Radiant Thrust Finisher (Combo 3) -->
+  <!-- Outer Soft Golden Dawn Bloom -->
+  <circle cx="40" cy="40" r="32" fill="#fef3c7" opacity="0.4"/>
+
+  <!-- Hand-drawn Big Crescent Wave -->
+  <path d="M 14 68 Q 42 40 72 40 Q 42 36 14 12 Q 32 40 14 68 Z" 
+        fill="#fde047" stroke="#2d2218" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Inner Radiant Blade Core -->
+  <path d="M 22 60 Q 44 40 66 40 Q 44 37 22 20 Q 34 40 22 60 Z" fill="#ffffff"/>
+
+  <!-- Hand-drawn Star Burst Spikes -->
+  <path d="M 40 40 L 74 40 M 40 40 L 64 56 M 40 40 L 48 70 M 40 40 L 26 62 M 40 40 L 12 40 M 40 40 L 26 18 M 40 40 L 48 10 M 40 40 L 64 24" 
+        stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 40 40 L 70 40 M 40 40 L 60 52 M 40 40 L 46 64 M 40 40 L 30 56 M 40 40 L 16 40 M 40 40 L 30 24 M 40 40 L 46 16 M 40 40 L 60 28" 
+        stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Core Golden Star Jewel -->
+  <polygon points="40,28 43,37 52,40 43,43 40,52 37,43 28,40 37,37" 
+           fill="#ffffff" stroke="#2d2218" stroke-width="1.4" stroke-linejoin="round"/>
+  <circle cx="40" cy="40" r="3.5" fill="#fde047" stroke="#2d2218" stroke-width="0.8"/>
+  <circle cx="40" cy="40" r="1.5" fill="#ffffff"/>
+</svg>

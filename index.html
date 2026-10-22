@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Crown That Held the Dark — Whimsical Storybook Action-Platformer</title>
+  <meta name="description" content="A hand-drawn 2D whimsical storybook adventure following a young traveler and an ancient mascot through the kingdom of Lumenfall." />
+  
+  <!-- Modern & Retro Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <link rel="icon" type="image/svg+xml" href="/assets/svg/mascot.svg" />
+  <link rel="alternate icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="game-app">
+    <!-- Canvas Container -->
+    <div id="canvas-container">
+      <div id="game-canvas"></div>
+
+      <!-- Cinematic Letterboxing -->
+      <div id="letterbox-top" class="cinematic-bar"></div>
+      <div id="letterbox-bottom" class="cinematic-bar"></div>
+
+      <!-- In-Game HUD -->
+      <header id="hud" class="hud-layer">
+        <div class="hud-left">
+          <div class="hud-stat health-container" id="health-container" title="Hero Health">
+            <span class="hud-label">HP</span>
+            <div class="health-bar-wrapper">
+              <div class="health-bar-track">
+                <div id="health-bar-trail" class="health-bar-trail"></div>
+                <div id="health-bar-fill" class="health-bar-fill high" style="width: 100%;"></div>
+              </div>
+              <div class="health-numeric">
+                <span id="health-value">100</span><span class="health-max">/100</span>
+              </div>
+            </div>
+          </div>
+          <div class="hud-stat shield-container" id="shield-container" title="Aegis Shield (Press Shift or C to Guard & Deflect)">
+            <img src="/assets/svg/shield.svg" alt="Shield" class="shield-hud-icon" />
+            <div class="shield-bar-wrapper">
+              <div class="shield-bar-track">
+                <div id="shield-bar-fill" class="shield-bar-fill" style="width: 100%;"></div>
+              </div>
+              <div class="shield-numeric">
+                <span id="shield-value">50</span><span class="shield-max">/50</span>
+              </div>
+            </div>
+          </div>
+          <div class="hud-stat coins-container">
+            <img src="/assets/svg/coin.svg" alt="Coin" class="coin-icon" />
+            <span id="coin-counter">0</span>
+            <span class="coin-target">/ 40</span>
+          </div>
+        </div>
+
+        <div class="hud-center">
+          <div class="act-badge" id="act-badge">ACT I</div>
+          <div class="objective-banner" id="objective-banner">Before the Light Went Out</div>
+          <div class="act-nav-pills">
+            <button class="act-pill-btn" data-act="Act1Scene">Act I</button>
+            <button class="act-pill-btn" data-act="Act2Scene">Act II</button>
+            <button class="act-pill-btn" data-act="Act3Scene">Act III</button>
+            <button class="act-pill-btn" data-act="Act4Scene">Act IV</button>
+            <button class="act-pill-btn" data-act="Act5Scene">Act V</button>
+            <button class="act-pill-btn" data-act="EpilogueScene">Epilogue</button>
+          </div>
+        </div>
+
+        <div class="hud-right">
+          <div class="hud-stat skill-container" id="skill-container" title="Lumen Blade Skill Wave (Press K or Right-Click)">
+            <span class="hud-label">SKILL</span>
+            <div class="skill-status-pill ready" id="skill-pill">
+              <div class="skill-progress" id="skill-progress" style="width: 100%;"></div>
+              <span class="skill-key-badge">[K]</span>
+              <span class="skill-text" id="skill-text">LUMEN BLADE</span>
+            </div>
+          </div>
+          <button id="btn-gifts" class="hud-btn" title="View Collected Gifts (12 Relics)">
+            Gifts <span id="gift-counter">0/12</span>
+          </button>
+          <button id="btn-sound" class="hud-btn" title="Toggle Sound">
+            Sound: ON
+          </button>
+          <button id="btn-controls" class="hud-btn" title="Game Controls">
+            Controls
+          </button>
+        </div>
+      </header>
+
+      <!-- Floating Interaction Prompt (e.g., "[E] Rescue Mascot", "[E] Inspect Mural") -->
+      <div id="interaction-prompt" class="interaction-prompt hidden">
+        <span class="key-badge">E</span> <span id="interaction-text">Interact</span>
+      </div>
+
+      <!-- Dialogue & Cutscene Overlay -->
+      <div id="dialogue-overlay" class="dialogue-overlay hidden">
+        <div class="dialogue-box">
+          <div class="portrait-frame" id="portrait-frame">
+            <img id="dialogue-portrait" src="/assets/svg/hero.svg" alt="Speaker Portrait" />
+          </div>
+          <div class="dialogue-content">
+            <div class="dialogue-header">
+              <span id="speaker-name" class="speaker-name">HERO</span>
+              <button id="btn-skip-dialogue" class="skip-btn" title="Skip Dialogue (Esc)">Skip (Esc)</button>
+            </div>
+            <div id="dialogue-text" class="dialogue-text"></div>
+            <div id="dialogue-choices" class="dialogue-choices hidden"></div>
+            <div class="dialogue-footer">
+              <span class="continue-hint">Press [E] or Space to continue</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Boss Health Bar -->
+      <div id="boss-hud" class="boss-hud hidden">
+        <div class="boss-info">
+          <span id="boss-name" class="boss-name">KING AUREL</span>
+          <span id="boss-phase-text" class="boss-phase-text">Bearer of the Crown</span>
+        </div>
+        <div class="boss-bar-track">
+          <div id="boss-bar-fill" class="boss-bar-fill" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Memory Anchors Status (Act V) -->
+      <div id="anchors-hud" class="anchors-hud hidden">
+        <div class="anchor-slot" id="anchor-1">
+          <span class="anchor-gem">•</span> Anchor of Village
+        </div>
+        <div class="anchor-slot" id="anchor-2">
+          <span class="anchor-gem">•</span> Anchor of Disaster
+        </div>
+        <div class="anchor-slot" id="anchor-3">
+          <span class="anchor-gem">•</span> Anchor of Promise
+        </div>
+      </div>
+
+      <!-- Gifts Inventory Modal -->
+      <div id="gifts-modal" class="modal-backdrop hidden">
+        <div class="modal-window">
+          <div class="modal-header">
+            <h2>The 12 Village Gifts & Relics</h2>
+            <button id="btn-close-gifts" class="close-modal-btn">Close</button>
+          </div>
+          <p class="modal-subtitle">Gifts left behind across Lumenfall holding forgotten memories.</p>
+          <div class="gifts-grid" id="gifts-grid">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls Guide Modal -->
+      <div id="controls-modal" class="modal-backdrop hidden">
+        <div class="modal-window compact">
+          <div class="modal-header">
+            <h2>Game Controls</h2>
+            <button id="btn-close-controls" class="close-modal-btn">Close</button>
+          </div>
+          <div class="controls-grid">
+            <div class="control-row"><kbd>A</kbd> / <kbd>D</kbd> or <kbd>Left</kbd> <kbd>Right</kbd> <span>Move Left / Right</span></div>
+            <div class="control-row"><kbd>W</kbd> / <kbd>Space</kbd> or <kbd>Up</kbd> <span>Jump</span></div>
+            <div class="control-row"><kbd>J</kbd> / <kbd>Z</kbd> or <kbd>Left Click</kbd> <span>3-Hit Sword Attack Combo</span></div>
+            <div class="control-row"><kbd>K</kbd> / <kbd>X</kbd> or <kbd>Right Click</kbd> <span>Lumen Blade Radiant Skill Wave</span></div>
+            <div class="control-row"><kbd>Shift</kbd> / <kbd>C</kbd> <span>Aegis Shield Guard (Deflect Bullets)</span></div>
+            <div class="control-row"><kbd>E</kbd> / <kbd>Enter</kbd> <span>Interact / Advance Dialogue</span></div>
+            <div class="control-row"><kbd>Esc</kbd> <span>Skip Cutscene</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Title & Chapter Splash Card -->
+      <div id="chapter-splash" class="chapter-splash hidden">
+        <h1 id="splash-title">THE CROWN THAT HELD THE DARK</h1>
+        <h2 id="splash-subtitle">Prologue — The Day the Light Went Out</h2>
+        <div class="splash-prompt">Press Any Key or Click to Begin</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

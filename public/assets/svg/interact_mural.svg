@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Storybook Illustrated Ancient Carved Stele Mural -->
+  <!-- Ground Shadow -->
+  <ellipse cx="32" cy="62" rx="24" ry="2" fill="#1b2024" opacity="0.35"/>
+
+  <!-- Stepped Stone Base -->
+  <path d="M 8 53 L 56 53 L 56 62 L 8 62 Z" fill="#3b424d" stroke="#20242b" stroke-width="2" stroke-linejoin="round"/>
+  <line x1="8" y1="57" x2="56" y2="57" stroke="#20242b" stroke-width="1.2"/>
+
+  <!-- Carved Stone Stele Tablet Body -->
+  <path d="M 12 53 L 12 18 Q 32 8 52 18 L 52 53 Z" fill="#525c6c" stroke="#20242b" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Left Side Cel Highlight -->
+  <path d="M 14 51 L 14 19 Q 32 10.5 50 19 L 50 24 Q 32 16 16 26 L 16 51 Z" fill="#69768a"/>
+
+  <!-- Carved Relief of King Aurel & the Golden Crown -->
+  <!-- Aurel Chibi Silhouette Head -->
+  <circle cx="26" cy="30" r="4.5" fill="#cfc7b4" stroke="#20242b" stroke-width="1.2"/>
+  <!-- Aurel Shoulders -->
+  <path d="M 20 44 L 20 37 Q 26 35 32 37 L 32 44 Z" fill="#b0a792" stroke="#20242b" stroke-width="1.2"/>
+
+  <!-- The Sacred Golden Crown (Carved in Gold) -->
+  <path d="M 36 28 L 36 23 L 38 25 L 41 21 L 44 25 L 46 23 L 46 28 Z" fill="#fde047" stroke="#854d0e" stroke-width="1" stroke-linejoin="round"/>
+  <!-- Hands of the Miracle Offering the Crown -->
+  <path d="M 46 31 Q 42 29 38 30" fill="none" stroke="#e2dac6" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Storybook Corrupted Violet Fissure Crack -->
+  <path d="M 32 9 Q 29 20 36 28 Q 30 38 35 53" fill="none" stroke="#c084fc" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M 36 28 Q 42 33 46 36" fill="none" stroke="#f0abfc" stroke-width="1.4"/>
+
+  <!-- Top Beacon Violet Crystal -->
+  <polygon points="32,2 35,7 32,12 29,7" fill="#fbcfe8" stroke="#20242b" stroke-width="1" stroke-linejoin="round"/>
+  <circle cx="32" cy="7" r="1.5" fill="#ffffff"/>
+</svg>

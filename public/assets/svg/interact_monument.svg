@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Storybook Illustrated Epilogue Overlook Monument -->
+  <!-- Ground Shadow -->
+  <ellipse cx="32" cy="62" rx="22" ry="2" fill="#20241e" opacity="0.35"/>
+
+  <!-- Stepped Limestone Base -->
+  <polygon points="12,62 52,62 48,54 16,54" fill="#dfd8c7" stroke="#252720" stroke-width="1.8" stroke-linejoin="round"/>
+  <rect x="18" y="50" width="28" height="5" fill="#ece6d7" stroke="#252720" stroke-width="1.2"/>
+
+  <!-- Carved White Marble Obelisk Stele -->
+  <polygon points="20,50 44,50 40,16 24,16" fill="#fcfbf7" stroke="#252720" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Left Side Cel Highlight -->
+  <polygon points="24,16 32,16 32,50 20,50" fill="#ffffff"/>
+  <!-- Right Side Cel Shadow -->
+  <polygon points="32,16 40,16 44,50 32,50" fill="#ede8dc"/>
+
+  <!-- Golden Pyramidion Cap -->
+  <polygon points="24,16 40,16 32,8" fill="#fde047" stroke="#252720" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- Golden Dawn Crest Carving on Monument -->
+  <circle cx="32" cy="24" r="5" fill="#facc15" stroke="#252720" stroke-width="1.2"/>
+  <circle cx="32" cy="24" r="2" fill="#ffffff"/>
+  <line x1="32" y1="16" x2="32" y2="18.5" stroke="#252720" stroke-width="1.2"/>
+  <line x1="32" y1="29.5" x2="32" y2="32" stroke="#252720" stroke-width="1.2"/>
+  <line x1="24" y1="24" x2="26.5" y2="24" stroke="#252720" stroke-width="1.2"/>
+  <line x1="37.5" y1="24" x2="40" y2="24" stroke="#252720" stroke-width="1.2"/>
+
+  <!-- Inscribed Golden Script of the New Dawn -->
+  <line x1="25" y1="35" x2="39" y2="35" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="26" y1="39" x2="38" y2="39" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="25" y1="43" x2="39" y2="43" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Flowering Green Vine Wrapped around Obelisk -->
+  <path d="M 16 54 Q 22 47 20 41 Q 26 36 23 30 Q 30 25 28 20" fill="none" stroke="#4d7c38" stroke-width="2" stroke-linecap="round"/>
+  <!-- Tiny Wildflower Blossoms -->
+  <circle cx="21" cy="46" r="2.2" fill="#f43f5e" stroke="#252720" stroke-width="0.8"/>
+  <circle cx="21" cy="35" r="2.2" fill="#38bdf8" stroke="#252720" stroke-width="0.8"/>
+  <circle cx="29" cy="25" r="2.2" fill="#facc15" stroke="#252720" stroke-width="0.8"/>
+
+  <!-- Interactive Beacon (Golden Morning Star) -->
+  <circle cx="32" cy="2" r="3.2" fill="#fde047" stroke="#252720" stroke-width="0.8"/>
+  <polygon points="32,-2 33.5,1 36,2 33.5,3 32,6 30.5,3 28,2 30.5,1" fill="#ffffff"/>
+</svg>

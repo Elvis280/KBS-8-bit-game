@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Storybook Illustrated Sanctuary Sandstone Relic Block -->
+  <!-- Ground Shadow -->
+  <ellipse cx="24" cy="45" rx="19" ry="2.5" fill="#1e2224" opacity="0.3"/>
+
+  <!-- Main Stone Block -->
+  <path d="M 6.5 8 C 6 6.5, 7.5 5, 9.5 5 L 38.5 5 C 40.5 5, 42 6.5, 41.5 8.5 L 42 38.5 C 42 40.5, 40.5 42, 38.5 42 L 9.5 42 C 7.5 42, 6 40.5, 6 38.5 Z" 
+        fill="#cfc7b4" stroke="#2b2d28" stroke-width="2.2" stroke-linejoin="round"/>
+
+  <!-- Top Cel Highlight -->
+  <path d="M 8 7 L 40 7 L 39 12 L 8 13 Z" fill="#e5dfcf"/>
+  <!-- Bottom Shadow Tone -->
+  <path d="M 7 32 L 41 31 L 41 40 L 7 40 Z" fill="#b1a894"/>
+
+  <!-- Weathered Ancient Inscription Border -->
+  <rect x="9" y="8.5" width="30" height="30" rx="2" fill="none" stroke="#7a7362" stroke-width="1.2" stroke-dasharray="4 2"/>
+
+  <!-- Muted Sage Moss Patches -->
+  <path d="M 7 6 Q 11 9 14 7 Q 15 11 12 14 Q 7 11 7 6 Z" fill="#758f69" stroke="#2b2d28" stroke-width="1.2"/>
+  <path d="M 37 38 Q 41 35 42 41 Q 38 42 35 41 Q 35 38 37 38 Z" fill="#758f69" stroke="#2b2d28" stroke-width="1.2"/>
+  <circle cx="16" cy="10" r="1.2" fill="#9db890"/>
+  <circle cx="34" cy="39" r="1.2" fill="#9db890"/>
+
+  <!-- Central Sanctuary Sun-Diamond Relief -->
+  <path d="M 24 13 L 33 24 L 24 35 L 15 24 Z" fill="#3b7a8c" stroke="#2b2d28" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M 24 16 L 30 24 L 24 32 L 18 24 Z" fill="#5ba6ba"/>
+  <circle cx="24" cy="24" r="3" fill="#fdf8e6" stroke="#2b2d28" stroke-width="1"/>
+</svg>

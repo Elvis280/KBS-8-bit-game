@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Storybook Illustrated Corrupted Stone Relic Block -->
+  <!-- Ground Shadow -->
+  <ellipse cx="24" cy="45" rx="19" ry="2.5" fill="#1e1022" opacity="0.4"/>
+
+  <!-- Main Organic Carved Stone Block -->
+  <path d="M 6.5 8 C 6 6.5, 7.5 5.5, 9.5 5.5 L 38.5 5 C 40.5 5, 42 6.5, 41.5 8.5 L 42 38.5 C 42 40.5, 40.5 42, 38.5 42 L 9.5 42 C 7.5 42, 6 40.5, 6 38.5 Z" 
+        fill="#39243e" stroke="#221226" stroke-width="2.2" stroke-linejoin="round"/>
+
+  <!-- Chipped Stone Texture & Top Facet Highlight -->
+  <path d="M 8 7 L 40 7 L 39 12 L 8 13 Z" fill="#4d3254"/>
+  <!-- Dark Lower Shadow -->
+  <path d="M 7 32 L 41 31 L 41 40 L 7 40 Z" fill="#29182d"/>
+
+  <!-- Hand-Drawn Wobbly Stone Cracks -->
+  <path d="M 6.5 19 Q 15 23 20 17 Q 27 21 35 18 Q 40 23 42 20" stroke="#221226" stroke-width="1.6" fill="none"/>
+  <path d="M 18 6 Q 20 13 19 20 Q 23 28 22 41" stroke="#221226" stroke-width="1.6" fill="none"/>
+  <path d="M 28 20 Q 32 24 38 23" stroke="#221226" stroke-width="1.3" fill="none"/>
+
+  <!-- Restrained Storybook Violet Miasma Glyphs -->
+  <circle cx="24" cy="24" r="8.5" fill="#4a2656" stroke="#221226" stroke-width="1.5"/>
+  <circle cx="24" cy="24" r="6" fill="#6d397e" stroke="#9d5cb3" stroke-width="1.2"/>
+  <circle cx="24" cy="24" r="2.8" fill="#e9a8f2"/>
+
+  <!-- Small Glowing Violet Runes -->
+  <path d="M 24 11 L 24 14" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M 24 34 L 24 37" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M 11 24 L 14 24" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M 34 24 L 37 24" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round"/>
+
+  <!-- Creeping Bramble Twig Accent -->
+  <path d="M 6 36 Q 10 33 11 39" stroke="#1f1024" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  <path d="M 42 12 Q 38 14 41 18" stroke="#1f1024" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>

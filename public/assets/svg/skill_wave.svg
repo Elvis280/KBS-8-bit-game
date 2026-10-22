@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 64" width="96" height="64">
+  <!-- Storybook Illustrated Lumen Blade Radiant Crescent Wave -->
+  <!-- Outer Soft Golden Dawn Trail -->
+  <path d="M 12 32 Q 40 6 82 8 Q 92 32 82 56 Q 40 58 12 32 Z" fill="#fef3c7" opacity="0.45"/>
+
+  <!-- Main Radiant Crescent Blade -->
+  <path d="M 24 32 Q 52 10 88 14 Q 94 32 88 50 Q 52 54 24 32 Z" 
+        fill="#fde047" stroke="#2d2218" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Inner Pure White Core Blade -->
+  <path d="M 36 32 Q 60 16 86 18 Q 90 32 86 46 Q 60 48 36 32 Z" fill="#ffffff"/>
+
+  <!-- Stylized Leading Crescent Edge -->
+  <path d="M 88 14 Q 95 32 88 50" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M 87 17 Q 92 32 87 47" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Trailing Hand-Drawn Speed Streaks -->
+  <path d="M 8 32 L 68 32" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 16 22 L 62 24" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 16 42 L 62 40" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 12 32 L 72 32" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Illustrated Starlight Sparks -->
+  <circle cx="85" cy="32" r="3" fill="#ffffff" stroke="#2d2218" stroke-width="1"/>
+  <polygon points="88,32 92,29 95,32 92,35" fill="#fde047"/>
+  <circle cx="66" cy="18" r="1.8" fill="#fef08a"/>
+  <circle cx="66" cy="46" r="1.8" fill="#fef08a"/>
+</svg>

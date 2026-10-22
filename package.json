@@ -1,0 +1,21 @@
+{
+  "name": "gamer",
+  "version": "1.0.0",
+  "description": "The Crown That Held the Dark — Whimsical Storybook Action-Platformer",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "node scripts/verify_game_integrity.cjs",
+    "slice": "node scripts/slice_all_assets.cjs"
+  },
+  "dependencies": {
+    "phaser": "^4.2.1"
+  },
+  "devDependencies": {
+    "pngjs": "^7.0.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

@@ -1,0 +1,914 @@
+/* ========================================================
+   THE CROWN THAT HELD THE DARK — STORYBOOK DESIGN SYSTEM
+   Official Art Direction: Hand-drawn 2D indie adventure,
+   whimsical storybook illustration, dark warm ink outlines,
+   flat pastel colors, minimal cel shading, cozy fantasy.
+   ======================================================== */
+
+:root {
+  /* Ink Outlines & Charcoal Tones */
+  --ink-charcoal: #241c17;
+  --ink-outline: #2c221e;
+  --ink-muted: #544439;
+  --ink-corrupt: #28172b;
+
+  /* Storybook Parchment & Paper Tones */
+  --parchment-light: #fdfaf2;
+  --parchment-base: #f7f0e0;
+  --parchment-aged: #eee3cd;
+  --parchment-dark: #2b211a;
+  --parchment-shadow: rgba(36, 28, 23, 0.45);
+
+  /* Curated Earthy & Pastel Accent Palette */
+  --gold-ochre: #d97706;
+  --gold-warm: #f59e0b;
+  --gold-cream: #fef3c7;
+  --gold-light: #fde68a;
+
+  --coral-health: #e05046;
+  --coral-shadow: #b8342c;
+  --coral-trail: rgba(224, 80, 70, 0.4);
+
+  --teal-shield: #2dd4bf;
+  --teal-shield-dark: #0d9488;
+  --teal-glow: #99f6e4;
+
+  --sage-moss: #15803d;
+  --sage-light: #86efac;
+
+  --violet-plum: #701a75;
+  --violet-twilight: #9d5cb3;
+  --violet-bloom: #f0abfc;
+
+  /* Typography Colors */
+  --text-light: #fdfaf2;
+  --text-parchment: #2c221e;
+  --text-muted: #b8a898;
+  --text-parchment-muted: #736152;
+
+  /* Typography Families (Storybook Serif & Friendly Sans) */
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-accent: 'Cinzel', serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0f0b09;
+  color: var(--text-light);
+  font-family: var(--font-body);
+}
+
+#game-app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle at center, #1f1712 0%, #0a0705 100%);
+}
+
+#canvas-container {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  max-width: 100vw;
+  max-height: 100vh;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(44, 34, 30, 0.6);
+  overflow: hidden;
+  border: 2px solid var(--ink-outline);
+  border-radius: 4px;
+}
+
+#game-canvas {
+  width: 100%;
+  height: 100%;
+  image-rendering: auto;
+}
+
+#game-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* ========================================================
+   CINEMATIC LETTERBOXING (Illuminated Storybook Framing)
+   ======================================================== */
+.cinematic-bar {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: #140e0b;
+  z-index: 40;
+  transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  border-bottom: 2px solid var(--ink-outline);
+}
+
+#letterbox-top {
+  top: 0;
+}
+
+#letterbox-bottom {
+  bottom: 0;
+  border-top: 2px solid var(--ink-outline);
+  border-bottom: none;
+}
+
+#canvas-container.cinematic-mode #letterbox-top,
+#canvas-container.cinematic-mode #letterbox-bottom {
+  height: 60px;
+}
+
+/* ========================================================
+   TOP HUD — WHIMSICAL STORYBOOK RIBBONS & CARDS
+   ======================================================== */
+.hud-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 50;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(20, 14, 11, 0.85) 0%, rgba(20, 14, 11, 0) 100%);
+}
+
+.hud-layer * {
+  pointer-events: auto;
+}
+
+.hud-left, .hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Storybook Illustrated Stat Panels */
+.hud-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--parchment-dark);
+  border: 1.8px solid var(--ink-outline);
+  padding: 5px 12px;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px var(--parchment-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.hud-label {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  color: var(--gold-light);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Health Bar (Hand-Drawn Coral Cel Shading) */
+.health-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.health-bar-track {
+  position: relative;
+  width: 130px;
+  height: 12px;
+  background: #19120e;
+  border: 1.5px solid var(--ink-outline);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.health-bar-trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--coral-trail);
+  border-radius: 4px;
+  transition: width 0.4s ease-out;
+}
+
+.health-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.health-bar-fill.high {
+  background: linear-gradient(180deg, #f87171 0%, var(--coral-health) 60%, var(--coral-shadow) 100%);
+  border-bottom: 1.5px solid var(--coral-shadow);
+}
+
+.health-bar-fill.medium {
+  background: linear-gradient(180deg, #fde047 0%, var(--gold-warm) 60%, #b45309 100%);
+  border-bottom: 1.5px solid #b45309;
+}
+
+.health-bar-fill.critical {
+  background: linear-gradient(180deg, #f87171 0%, #dc2626 60%, #991b1b 100%);
+  border-bottom: 1.5px solid #7f1d1d;
+  animation: healthCriticalPulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes healthCriticalPulse {
+  from { filter: drop-shadow(0 0 2px #dc2626); }
+  to { filter: drop-shadow(0 0 6px #ef4444); }
+}
+
+.health-numeric {
+  font-family: var(--font-title);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-cream);
+  min-width: 48px;
+}
+
+.health-max {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Aegis Shield Stat */
+.shield-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shield-hud-icon {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.shield-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shield-bar-track {
+  position: relative;
+  width: 85px;
+  height: 10px;
+  background: #19120e;
+  border: 1.5px solid var(--ink-outline);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.shield-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--teal-glow) 0%, var(--teal-shield) 60%, var(--teal-shield-dark) 100%);
+  border-bottom: 1.5px solid var(--teal-shield-dark);
+  transition: width 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shield-numeric {
+  font-family: var(--font-title);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal-glow);
+  min-width: 40px;
+}
+
+.shield-max {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Coins Display */
+.coins-container {
+  color: var(--gold-warm);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.coin-icon {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.coin-target {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+}
+
+/* Skill Container */
+.skill-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.skill-status-pill {
+  position: relative;
+  background: #1d1612;
+  border: 1.5px solid var(--gold-ochre);
+  border-radius: 8px;
+  padding: 3px 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px var(--parchment-shadow);
+  transition: all 0.2s ease;
+}
+
+.skill-status-pill.ready {
+  border-color: var(--gold-warm);
+}
+
+.skill-status-pill.cooling {
+  border-color: var(--ink-muted);
+  opacity: 0.75;
+}
+
+.skill-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.3), rgba(45, 212, 191, 0.3));
+  pointer-events: none;
+  transition: width 0.1s linear;
+}
+
+.skill-key-badge {
+  position: relative;
+  font-family: var(--font-accent);
+  font-size: 10px;
+  color: var(--gold-warm);
+  font-weight: bold;
+}
+
+.skill-text {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-cream);
+  letter-spacing: 0.5px;
+}
+
+/* Center Objective Banner (Storybook Title Ribbon) */
+.hud-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.act-badge {
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold-warm);
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.objective-banner {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--parchment-light);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.act-nav-pills {
+  display: flex;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.act-pill-btn {
+  background: var(--parchment-dark);
+  border: 1.2px solid var(--ink-outline);
+  color: var(--gold-cream);
+  font-family: var(--font-title);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px var(--parchment-shadow);
+}
+
+.act-pill-btn:hover {
+  background: var(--gold-ochre);
+  border-color: var(--gold-light);
+  color: #1a120b;
+  transform: translateY(-1px);
+}
+
+/* HUD Buttons */
+.hud-btn {
+  background: var(--parchment-dark);
+  border: 1.5px solid var(--ink-outline);
+  color: var(--gold-cream);
+  padding: 5px 12px;
+  border-radius: 7px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 6px var(--parchment-shadow);
+}
+
+.hud-btn:hover {
+  background: var(--gold-ochre);
+  color: #1a120b;
+  border-color: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+/* ========================================================
+   FLOATING INTERACTION PROMPT
+   ======================================================== */
+.interaction-prompt {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  background: var(--parchment-base);
+  color: var(--text-parchment);
+  border: 2px solid var(--ink-outline);
+  padding: 7px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 16px var(--parchment-shadow);
+  animation: promptBob 1.6s ease-in-out infinite alternate;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@keyframes promptBob {
+  from { transform: translate(-50%, 0); }
+  to { transform: translate(-50%, -5px); }
+}
+
+.key-badge {
+  background: var(--gold-warm);
+  color: var(--ink-charcoal);
+  font-family: var(--font-accent);
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1.2px solid var(--ink-outline);
+  font-weight: bold;
+}
+
+/* ========================================================
+   CINEMATIC DIALOGUE OVERLAY (Illuminated Storybook Page)
+   ======================================================== */
+.dialogue-overlay {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 960px;
+  z-index: 70;
+  animation: dialogueSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dialogueSlideUp {
+  from { opacity: 0; transform: translate(-50%, 16px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.dialogue-box {
+  display: flex;
+  background: var(--parchment-base);
+  border: 2.5px solid var(--ink-outline);
+  border-radius: 12px;
+  padding: 16px 22px;
+  gap: 20px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), inset 0 0 0 1px #d6c6a8;
+}
+
+.portrait-frame {
+  width: 108px;
+  height: 108px;
+  min-width: 108px;
+  border-radius: 10px;
+  border: 2px solid var(--ink-outline);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  background: #1a1410;
+}
+
+.portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dialogue-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dialogue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid #d4c2a3;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.speaker-name {
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--ink-charcoal);
+}
+
+.skip-btn {
+  background: transparent;
+  border: 1px solid var(--text-parchment-muted);
+  color: var(--text-parchment-muted);
+  font-family: var(--font-body);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.skip-btn:hover {
+  color: var(--ink-charcoal);
+  border-color: var(--ink-charcoal);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.dialogue-text {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text-parchment);
+  min-height: 48px;
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.dialogue-choices {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.choice-btn {
+  background: var(--gold-cream);
+  border: 1.8px solid var(--gold-ochre);
+  color: var(--ink-charcoal);
+  padding: 8px 16px;
+  border-radius: 7px;
+  font-family: var(--font-title);
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 5px var(--parchment-shadow);
+  transition: all 0.2s ease;
+}
+
+.choice-btn:hover {
+  background: var(--gold-warm);
+  color: #1a120b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px var(--parchment-shadow);
+}
+
+.dialogue-footer {
+  text-align: right;
+  margin-top: 6px;
+}
+
+.continue-hint {
+  font-size: 11px;
+  color: var(--text-parchment-muted);
+  animation: pulseHint 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes pulseHint {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
+
+/* ========================================================
+   BOSS HUD (Storybook Banner)
+   ======================================================== */
+.boss-hud {
+  position: absolute;
+  top: 65px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  z-index: 55;
+  background: var(--parchment-dark);
+  border: 2px solid var(--ink-outline);
+  border-radius: 8px;
+  padding: 10px 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+}
+
+.boss-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-family: var(--font-title);
+}
+
+.boss-name {
+  color: var(--violet-bloom);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.boss-phase-text {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.boss-bar-track {
+  width: 100%;
+  height: 12px;
+  background: #18110e;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1.5px solid var(--ink-outline);
+}
+
+.boss-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e11d48, var(--violet-plum));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* ========================================================
+   ACT V MEMORY ANCHORS HUD
+   ======================================================== */
+.anchors-hud {
+  position: absolute;
+  top: 125px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  z-index: 55;
+}
+
+.anchor-slot {
+  background: var(--parchment-dark);
+  border: 1.5px solid var(--ink-outline);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 7px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.anchor-slot.active {
+  border-color: var(--teal-shield);
+  color: var(--parchment-light);
+  background: rgba(45, 212, 191, 0.15);
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.4);
+}
+
+.anchor-gem {
+  color: var(--teal-shield);
+}
+
+/* ========================================================
+   MODALS (Traveler's Codex: Gifts & Controls)
+   ======================================================== */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 10, 8, 0.8);
+  backdrop-filter: blur(6px);
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-window {
+  width: 90%;
+  max-width: 640px;
+  background: var(--parchment-base);
+  color: var(--text-parchment);
+  border: 2.5px solid var(--ink-outline);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), inset 0 0 0 1px #d6c6a8;
+}
+
+.modal-window.compact {
+  max-width: 480px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-bottom: 1.5px solid #d4c2a3;
+  padding-bottom: 8px;
+}
+
+.modal-header h2 {
+  font-family: var(--font-title);
+  font-size: 18px;
+  color: var(--ink-charcoal);
+}
+
+.close-modal-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-parchment-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.close-modal-btn:hover {
+  color: var(--ink-charcoal);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.modal-subtitle {
+  font-size: 13px;
+  color: var(--text-parchment-muted);
+  margin-bottom: 16px;
+}
+
+.gifts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.gift-card {
+  background: #fdfaf3;
+  border: 1.5px solid #d4c2a3;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.gift-card.unlocked {
+  border-color: var(--gold-warm);
+  background: var(--gold-cream);
+  box-shadow: 0 3px 8px rgba(217, 119, 6, 0.2);
+}
+
+.gift-card .gift-num {
+  font-size: 10px;
+  color: var(--text-parchment-muted);
+  font-family: var(--font-accent);
+}
+
+.gift-card .gift-name {
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 4px;
+  color: var(--ink-charcoal);
+}
+
+.controls-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fdfaf3;
+  border: 1.2px solid #dcd0bc;
+  padding: 8px 14px;
+  border-radius: 7px;
+  font-size: 13px;
+  color: var(--ink-charcoal);
+  font-weight: 500;
+}
+
+kbd {
+  background: var(--parchment-dark);
+  border: 1.2px solid var(--ink-outline);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-family: var(--font-accent);
+  font-size: 11px;
+  color: var(--gold-light);
+  box-shadow: 0 2px 0 var(--ink-charcoal);
+}
+
+/* ========================================================
+   CHAPTER & TITLE SPLASH
+   ======================================================== */
+.chapter-splash {
+  position: absolute;
+  inset: 0;
+  background: #140e0b;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+  cursor: pointer;
+  animation: splashFadeIn 0.8s ease;
+}
+
+@keyframes splashFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#splash-title {
+  font-family: var(--font-title);
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--gold-warm);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  margin-bottom: 12px;
+}
+
+#splash-subtitle {
+  font-family: var(--font-title);
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--parchment-light);
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.splash-prompt {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  animation: promptBob 1.2s infinite alternate;
+}
+
+/* Helper Utilities */
+.hidden {
+  display: none !important;
+}

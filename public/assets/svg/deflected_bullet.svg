@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Storybook Illustrated Deflected Radiant Sun-Mote -->
+  <!-- Warm Golden Halo -->
+  <circle cx="12" cy="12" r="10" fill="#fef3c7" opacity="0.45"/>
+  <circle cx="12" cy="12" r="8" fill="#99f6e4" opacity="0.3"/>
+
+  <!-- Hand-drawn 4-Pointed Golden Sun Star -->
+  <path d="M 12 3 Q 13.5 10 21 12 Q 13.5 14 12 21 Q 10.5 14 3 12 Q 10.5 10 12 3 Z" 
+        fill="#f59e0b" stroke="#2c2214" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Inner Radiant Celadon Diamond -->
+  <polygon points="12,6 18,12 12,18 6,12" fill="#2dd4bf" stroke="#2c2214" stroke-width="1"/>
+
+  <!-- Center Pure Light Spark -->
+  <circle cx="12" cy="12" r="3.2" fill="#fef08a" stroke="#2c2214" stroke-width="1"/>
+  <circle cx="12" cy="12" r="1.5" fill="#ffffff"/>
+</svg>

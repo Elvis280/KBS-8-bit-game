@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 56" width="32" height="56">
+  <!-- Storybook Illustrated Iron Standing Torch Brazier -->
+  <!-- Ambient Soft Orange Fire Glow -->
+  <circle cx="16" cy="18" r="14" fill="#fed7aa" opacity="0.45"/>
+  <circle cx="16" cy="18" r="9" fill="#fde047" opacity="0.3"/>
+
+  <!-- Dancing Hand-Drawn Fire Flame -->
+  <path d="M 16 3 
+           C 20 8, 23 14, 21 21 
+           C 19 25, 13 25, 11 21 
+           C 9 14, 12 8, 16 3 Z" 
+        fill="#ea580c" stroke="#2b1c14" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- Middle Warm Golden Flame Core -->
+  <path d="M 16 7 
+           C 19 11, 20 16, 19 21 
+           C 17 23.5, 15 23.5, 13 21 
+           C 12 16, 13 11, 16 7 Z" 
+        fill="#facc15"/>
+  <!-- Inner White-Hot Flame Core -->
+  <ellipse cx="16" cy="17" rx="2.5" ry="4" fill="#ffffff"/>
+
+  <!-- Iron Brazier Cup / Sconce -->
+  <path d="M 8 21 L 24 21 L 22 29 L 10 29 Z" fill="#39332e" stroke="#221c18" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- Bronze Band Trim -->
+  <rect x="9" y="21" width="14" height="2.5" rx="0.8" fill="#d97706" stroke="#221c18" stroke-width="0.8"/>
+
+  <!-- Brazier Iron Post Stem -->
+  <path d="M 14.5 29 L 17.5 29 L 17.5 51 L 14.5 51 Z" fill="#39332e" stroke="#221c18" stroke-width="1.4"/>
+
+  <!-- Flared Cast Iron Foot Pedestal -->
+  <polygon points="9,54 23,54 18,50 14,50" fill="#29231f" stroke="#221c18" stroke-width="1.4" stroke-linejoin="round"/>
+  <ellipse cx="16" cy="54.5" rx="9" ry="1.2" fill="#221c18" opacity="0.35"/>
+</svg>

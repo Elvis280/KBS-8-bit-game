@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 64" width="38" height="64">
+  <!-- Storybook Illustrated Wayside Stone Shrine -->
+  <!-- Ground Shadow -->
+  <ellipse cx="19" cy="62" rx="14" ry="2" fill="#20221e" opacity="0.35"/>
+
+  <!-- Ancient Carved Stele Body -->
+  <path d="M 19 3 L 28 15 L 26 56 L 12 56 L 10 15 Z" fill="#cfc7b4" stroke="#262824" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Left Facet Cel Highlight -->
+  <polygon points="19,3 19,56 12,56 10,15" fill="#dfd8c7"/>
+  <!-- Right Facet Cel Shadow -->
+  <polygon points="19,3 28,15 26,56 19,56" fill="#b8af9a"/>
+
+  <!-- Weathered Pyramidion Cap Peak -->
+  <polygon points="19,3 28,15 19,12 10,15" fill="#fef9eb" stroke="#262824" stroke-width="1.2" stroke-linejoin="round"/>
+
+  <!-- Carved Serene Sanctuary Runes -->
+  <path d="M 19 18 L 19 48" stroke="#3d828c" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 15 25 L 23 25" stroke="#3d828c" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 16 35 L 22 35" stroke="#3d828c" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="19" cy="25" r="2.2" fill="#99f6e4" stroke="#262824" stroke-width="0.8"/>
+  <circle cx="19" cy="25" r="0.8" fill="#ffffff"/>
+
+  <!-- Muted Sage Moss Clumps on Stone -->
+  <path d="M 10 14 Q 13 18 15 15 Q 16 20 12 21 Z" fill="#728c66" stroke="#262824" stroke-width="1"/>
+  <path d="M 23 48 Q 27 45 26 51 Q 23 53 23 48 Z" fill="#728c66" stroke="#262824" stroke-width="1"/>
+
+  <!-- Stepped Stone Plinth Base -->
+  <path d="M 7 56 L 31 56 L 32 60 L 6 60 Z" fill="#9e9581" stroke="#262824" stroke-width="1.4" stroke-linejoin="round"/>
+  <rect x="4" y="60" width="30" height="3" rx="1" fill="#7a7260" stroke="#262824" stroke-width="1.2"/>
+</svg>

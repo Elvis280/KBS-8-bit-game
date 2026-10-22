@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Storybook Illustrated Village Noticeboard -->
+  <!-- Ground Shadow -->
+  <ellipse cx="32" cy="62" rx="24" ry="2" fill="#2b1c12" opacity="0.35"/>
+
+  <!-- Timber Support Posts -->
+  <path d="M 12 32 L 18 32 L 18 61 L 12 61 Z" fill="#8c5828" stroke="#2c1e13" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M 46 32 L 52 32 L 52 61 L 46 61 Z" fill="#8c5828" stroke="#2c1e13" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- Main Wooden Board Frame -->
+  <path d="M 7 11 L 57 11 L 57 46 L 7 46 Z" fill="#a46830" stroke="#2c1e13" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Inner Cork/Wood Surface -->
+  <path d="M 10 14 L 54 14 L 54 43 L 10 43 Z" fill="#6e421c" stroke="#2c1e13" stroke-width="1.4"/>
+
+  <!-- Pinned Parchment 1 (Left - Story Quest Notice) -->
+  <path d="M 13 17 L 30 17 L 29 40 L 13 38 Z" fill="#fdf6e7" stroke="#2c1e13" stroke-width="1.4" stroke-linejoin="round"/>
+  <line x1="16" y1="23" x2="27" y2="23" stroke="#855225" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="16" y1="28" x2="27" y2="28" stroke="#855225" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="16" y1="33" x2="25" y2="33" stroke="#855225" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Red Wax Pin Seal -->
+  <circle cx="21" cy="17" r="2" fill="#e11d48" stroke="#2c1e13" stroke-width="0.8"/>
+
+  <!-- Pinned Parchment 2 (Right - Warning of the Darkness) -->
+  <path d="M 33 19 L 51 19 L 49 41 L 33 40 Z" fill="#fef08a" stroke="#2c1e13" stroke-width="1.4" stroke-linejoin="round"/>
+  <line x1="36" y1="25" x2="47" y2="25" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="36" y1="30" x2="47" y2="30" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="36" y1="35" x2="44" y2="35" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+  <circle cx="42" cy="19" r="2" fill="#0284c7" stroke="#2c1e13" stroke-width="0.8"/>
+
+  <!-- Overhanging Wooden Roof Shingle -->
+  <path d="M 4 11 L 32 4 L 60 11 Z" fill="#4d2c14" stroke="#2c1e13" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Floating Storybook Sparkle Indicator on Top -->
+  <circle cx="32" cy="4" r="3.2" fill="#fde047" stroke="#2c1e13" stroke-width="0.8"/>
+  <polygon points="32,0 33.5,3 36,4 33.5,5 32,8 30.5,5 28,4 30.5,3" fill="#ffffff"/>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Storybook Illustrated Clockwork Coin Machine -->
+  <!-- Ground Shadow -->
+  <ellipse cx="32" cy="62" rx="22" ry="2" fill="#1b2024" opacity="0.35"/>
+
+  <!-- Heavy Cast-Iron Foundation with Rivets -->
+  <path d="M 10 52 L 54 52 L 54 62 L 10 62 Z" fill="#333945" stroke="#1d2128" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="16" cy="57" r="1.5" fill="#cbd5e1" stroke="#1d2128" stroke-width="0.8"/>
+  <circle cx="48" cy="57" r="1.5" fill="#cbd5e1" stroke="#1d2128" stroke-width="0.8"/>
+
+  <!-- Warm Brass Clockwork Housing -->
+  <path d="M 14 18 C 14 16.5, 15.5 15, 17 15 L 47 15 C 48.5 15, 50 16.5, 50 18 L 50 52 L 14 52 Z" 
+        fill="#c2883c" stroke="#1d2128" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Top Highlight -->
+  <path d="M 15 16 L 49 16 L 48 21 L 15 21 Z" fill="#e0a656"/>
+
+  <!-- Interlocking Storybook Cogs & Gears -->
+  <circle cx="26" cy="30" r="8" fill="#593917" stroke="#1d2128" stroke-width="1.8"/>
+  <circle cx="26" cy="30" r="7.5" fill="none" stroke="#fde047" stroke-width="2" stroke-dasharray="3 3"/>
+  <circle cx="26" cy="30" r="3" fill="#fde047" stroke="#1d2128" stroke-width="0.8"/>
+
+  <circle cx="38" cy="36" r="6" fill="#593917" stroke="#1d2128" stroke-width="1.6"/>
+  <circle cx="38" cy="36" r="5.5" fill="none" stroke="#fde047" stroke-width="1.8" stroke-dasharray="2.5 2.5"/>
+  <circle cx="38" cy="36" r="2" fill="#fde047" stroke="#1d2128" stroke-width="0.8"/>
+
+  <!-- Coin Ingestion Funnel / Slot -->
+  <rect x="22" y="44" width="20" height="6" rx="1.5" fill="#1d2128" stroke="#1d2128" stroke-width="1"/>
+  <!-- Little Gold Coin Hovering at Slot -->
+  <circle cx="32" cy="45" r="3.2" fill="#facc15" stroke="#854d0e" stroke-width="0.8"/>
+  <circle cx="32" cy="45" r="1.8" fill="none" stroke="#ffffff" stroke-width="0.5"/>
+
+  <!-- Mechanical Lever on Right Side -->
+  <line x1="49" y1="26" x2="57" y2="18" stroke="#333945" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="57" cy="18" r="3.5" fill="#e11d48" stroke="#1d2128" stroke-width="1"/>
+
+  <!-- Pressure Gauge Meter on Top -->
+  <rect x="24" y="8" width="16" height="9" rx="2" fill="#1d2128" stroke="#1d2128" stroke-width="1.5"/>
+  <path d="M 26 9.5 L 38 9.5 L 38 15.5 L 26 15.5 Z" fill="#fdfaf3"/>
+  <line x1="32" y1="15" x2="36" y2="11" stroke="#e11d48" stroke-width="1.4" stroke-linecap="round"/>
+
+  <!-- Interactive Storybook Indicator Light on Top -->
+  <circle cx="32" cy="3" r="3.2" fill="#fbbf24" stroke="#1d2128" stroke-width="0.8"/>
+  <polygon points="32,-1 33.5,2 36,3 33.5,4 32,7 30.5,4 28,3 30.5,2" fill="#ffffff"/>
+</svg>
